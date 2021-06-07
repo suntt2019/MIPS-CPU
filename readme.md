@@ -2,9 +2,9 @@
 
 数字逻辑、计算机组成原理大作业和课设，主要任务是设计MIPS的CPU。具体分为以下几个部分：
 
-* 数字逻辑大作业（DLAssignment.circ）
+* 数字逻辑大作业（[DLA](DLA)）
 
-* 计算机组成原理大作业（PCOAssignment.circ）
+* 计算机组成原理大作业（[PCOA](PCOA)）
 
 
 
