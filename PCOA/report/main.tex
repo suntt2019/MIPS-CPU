@@ -12,15 +12,15 @@
 \usepackage{caption}
 \usepackage{makecell}
 \graphicspath{ {./images/} }
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{第 \pageref*{#1} 页：\autoref*{#1} \nameref*{#1}}} % One single link
 \usepackage{varioref}
 \usepackage{float}
 \usepackage{listings}
 \usepackage{minted}
+\usepackage{longtable}
 \usepackage{subfiles}
 
 \begin{document}
-\title{MIPS单周期CPU开发}
+\title{Logicsim完成单周期处理器开发}
 \author{孙天天 19071110}
 \includepdf[pages=-,pagecommand={},width=\textwidth]{cover.pdf}
 
@@ -35,8 +35,7 @@
 \clearpage
 \subfile{section3-testing.tex}
 \clearpage
-
-\section{总结与收获}
-
+\subfile{section4-summary.tex}
+\clearpage
 
 \end{document}
