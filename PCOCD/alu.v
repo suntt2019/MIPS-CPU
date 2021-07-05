@@ -1,3 +1,5 @@
+`include "macro.v"
+
 module ALU(x, y, ALUOp, ALUOut, shamt, zero);
     input [31:0] x, y;
     input [2:0] ALUOp;
@@ -7,10 +9,10 @@ module ALU(x, y, ALUOp, ALUOut, shamt, zero);
 
     always @(x, y, ALUOp, shamt) begin
         case (ALUOp)
-            3'b000: ALUOut = x + y;
-            3'b001: ALUOut = x - y;
-            3'b010: ALUOut = x & y;
-            3'b011: ALUOut = x | y;
+            `ALU_OP_ADD: ALUOut = x + y;
+            `ALU_OP_SUB: ALUOut = x - y;
+            `ALU_OP_AND: ALUOut = x & y;
+            `ALU_OP_OR: ALUOut = x | y;
         endcase
     end
 

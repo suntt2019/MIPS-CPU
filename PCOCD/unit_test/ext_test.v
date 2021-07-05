@@ -1,4 +1,6 @@
 `timescale 1ns/ 1ns
+`include "unit_test/macro.v"
+
 module ext_test (start, finish);
     input start;
     output reg finish;
@@ -23,15 +25,15 @@ module ext_test (start, finish);
         finish = 0; #1 while(~start) #1;
         $display(" *EXT test started.");
         
-        in = 'hfe34; EXTOp = 0'b00; expectedOut = 'h0000_fe34;
+        in = 'hfe34; EXTOp = `EXT_OP_ZERO; expectedOut = 'h0000_fe34;
         #1 $display("    zero-ext test: %h -> %h == %h", in, out, expectedOut);
         ext_zero: assert(out == expectedOut);
         
-        in = 'hfe34; EXTOp = 0'b01; expectedOut = 'hffff_fe34;
+        in = 'hfe34; EXTOp = `EXT_OP_SIGN; expectedOut = 'hffff_fe34;
         #1 $display("    sign-ext test: %h -> %h == %h", in, out, expectedOut);
         ext_sign: assert(out == expectedOut);
         
-        in = 'hfe34; EXTOp = 0'b10; expectedOut = 'hfe34_0000;
+        in = 'hfe34; EXTOp = `EXT_OP_LUI; expectedOut = 'hfe34_0000;
         #1 $display("    lui-ext test: %h -> %h == %h", in, out, expectedOut);
         ext_lui: assert(out == expectedOut);
 
