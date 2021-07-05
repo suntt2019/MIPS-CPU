@@ -6,10 +6,6 @@ module dm_test ();
     reg [9:0] addr;
     wire [31:0] dout;
 
-    // test helper
-    reg check_clk;
-    reg [31:0] ex_dout;
-
     // local variables
     integer i;
     parameter base = 8;
@@ -26,7 +22,6 @@ module dm_test ();
 
         $display("DM test start.");
         clk = 0;
-        check_clk = 0;
         
         $display("Write test.");
         we = 1;
@@ -49,7 +44,7 @@ module dm_test ();
         end
 
         $display("DM test finished.");
-        $finish;
+        $stop;
     end
 
     always begin
