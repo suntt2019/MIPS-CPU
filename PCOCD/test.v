@@ -4,7 +4,7 @@ module test();
 reg clk, reset;
 wire debug_output;
 
-reg dm_start, im_start, ifu_start;
+reg dm_start, im_start, ifu_start, alu_start;
 wire finish;
 
 mips mips1 (
@@ -15,7 +15,8 @@ mips mips1 (
 
 dm_test dmt(.start(dm_start),.finish(im_start));
 im_test imt(.start(im_start),.finish(ifu_start));
-ifu_test ifut(.start(ifu_start),.finish(finish));
+ifu_test ifut(.start(ifu_start),.finish(alu_start));
+alu_test alut(.start(alu_start),.finish(finish));
 
 initial begin
     $display("Test Started.");
