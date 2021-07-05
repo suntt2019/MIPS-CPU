@@ -1,0 +1,1 @@
+`define code_seg_pc 32'h0000_3000

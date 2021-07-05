@@ -1,8 +1,11 @@
 `timescale 1ns/ 1ns
-module simple_test();
+module test();
 
 reg clk, reset;
 wire debug_output;
+
+reg dm_start, im_start, ifu_start;
+wire finish;
 
 mips mips1 (
     .clk(clk),
@@ -10,17 +13,16 @@ mips mips1 (
     .debug_output(debug_output)
 );
 
+dm_test dmt(.start(dm_start),.finish(im_start));
+im_test imt(.start(im_start),.finish(ifu_start));
+ifu_test ifut(.start(ifu_start),.finish(finish));
 
 initial begin
-    $display("Start");
-    clk = 0;
-end
-
-always begin
-    // @eachvec;
-    #10
-    clk = ~clk;
-    $display("clk=%d",clk);
+    $display("Test Started.");
+    dm_start = 1;
+    #1 while(~finish) #1;
+    $display("Test finished.");
+    $stop;
 end
 
 endmodule
