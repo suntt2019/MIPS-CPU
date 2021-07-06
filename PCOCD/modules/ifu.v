@@ -1,4 +1,4 @@
-`include "macro.v"
+`include "../macro.v"
 
 module IFU(clk, reset, NPCSel, regPC, instruction, pc);
     input clk, reset;

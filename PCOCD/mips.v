@@ -1,4 +1,4 @@
-`include "macro.v"
+`include "../macro.v"
 
 module mips(clk, rst) ;
     input           clk; // clock

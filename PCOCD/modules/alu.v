@@ -1,4 +1,4 @@
-`include "macro.v"
+`include "../macro.v"
 
 module ALU(x, y, ALUOp, ALUOut, shamt, Flag, NFlag);
     input [31:0] x, y, Flag;

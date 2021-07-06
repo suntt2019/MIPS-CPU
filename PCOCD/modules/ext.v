@@ -1,4 +1,4 @@
-`include "macro.v"
+`include "../macro.v"
 
 module EXT(in, out, EXTOp);
     input [15:0] in;

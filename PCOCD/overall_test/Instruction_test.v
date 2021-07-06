@@ -1,5 +1,5 @@
 `timescale 1ns/ 1ns
-`include "macro.v"
+`include "../macro.v"
 
 module instruction_test (start, finish);
     input start;

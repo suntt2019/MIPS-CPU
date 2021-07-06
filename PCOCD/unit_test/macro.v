@@ -1,6 +1,6 @@
-`include "macro.v"
+`include "../macro.v"
 
-`define unit_test_hex_filename "unit_test/unit-test.txt"
+`define unit_test_hex_filename "../unit_test/unit-test.txt"
 `define hex_0h 32'h00010203
 `define hex_1h 32'h04050607
 `define hex_2h 32'h08090a0b
@@ -19,4 +19,3 @@
 `define hex_49h 32'h0000_0003 // beq-jmp +1+3 = +4
 `define hex_4ah 32'h0000_0000 // beq-jmp +1+0 = +1 [1]
 `define hex_4bh 32'h0000_fffb // beq-jmp +1-5 = -4 [2]
-

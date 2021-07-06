@@ -1,4 +1,4 @@
-`include "macro.v"
+`include "../macro.v"
 
 module GPR(clk, reset, WE, FlagOp, A1, A2, AWr, RD1, RD2, Din, Flag, NFlag);
     input clk, reset, WE;

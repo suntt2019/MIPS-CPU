@@ -1,4 +1,4 @@
-`include "macro.v"
+`include "../macro.v"
 
 module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp);
     input [5:0] opcode, funct;
