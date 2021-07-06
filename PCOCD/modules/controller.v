@@ -7,7 +7,7 @@ module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, N
     output [1:0] RegDst, Mem2Reg, NPCSel, EXTOp, FlagOp;
     output [2:0] ALUOp;
 
-    wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr;
+    wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr, nop;
     reg [`SIGNAL_WIDTH:1] signals;
     wire zero, overflow;
 
@@ -15,6 +15,7 @@ module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, N
     assign subu = opcode === `OPCODE_SPECIAL && funct === `FUNCT_SUBU;
     assign slt = opcode === `OPCODE_SPECIAL && funct === `FUNCT_SLT;
     assign jr = opcode === `OPCODE_SPECIAL && funct === `FUNCT_JR;
+    assign nop = opcode === `OPCODE_SPECIAL && funct === `FUNCT_NOP;
     assign ori = opcode === `OPCODE_ORI;
     assign lw = opcode === `OPCODE_LW;
     assign sw = opcode === `OPCODE_SW;
@@ -49,6 +50,7 @@ module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, N
         if (slt)   signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_LESS, `FLAG_OP_DIS};
         if (jal)   signals = {`REGDST_RET, `ALUSRC_ZZ, `MEM2REG_RET, `WR_EN, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
         if (jr)    signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
+        if (nop)   signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
     end
 
     assign {RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp} = signals;

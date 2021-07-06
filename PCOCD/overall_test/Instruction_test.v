@@ -95,8 +95,17 @@ module instruction_test (start, finish);
         mips1.gpr.regs[8] = 100; $display("      Set regs[8]<-100(%h)", mips1.gpr.regs[8]);
         mips1.gpr.regs[9] = 200; $display("      Set regs[9]<-200(%h)", mips1.gpr.regs[9]);
         #10 $display("      --==Execute==--");
-        $display("      Check PC=%h == %h", mips1.PC, 32'h0000_3004);
-        beq_njmp_pc: assert(mips1.PC === 32'h0000_3004);
+        $display("      Check PC=%h == %h", mips1.PC, `CODE_SEG_PC+4);
+        beq_njmp_pc: assert(mips1.PC === `CODE_SEG_PC+4);
+
+        // NOP Test
+        $display("    NOP Test:"); reset = 1; clk = 0; t = 1;
+        instr = 32'h00000000; #10 $display("      Load instruction: nop (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        $display("      Ctr: nop=%d, signals=%b", mips1.ctr.nop, mips1.ctr.signals);
+        #10 $display("      --==Execute==--");
+        $display("      Check PC=%h == %h", mips1.PC, `CODE_SEG_PC+4);
+        nop_pc: assert(mips1.PC === `CODE_SEG_PC+4);
         
         // LUI Test
         $display("    LUI Test:"); reset = 1; clk = 0; t = 1;
@@ -136,8 +145,8 @@ module instruction_test (start, finish);
         $display("      Ctr: addi=%d, signals=%b", mips1.ctr.addi, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h7fff_ffff; $display("      Set regs[8]<-32'h7fff_ffff(%h)", mips1.gpr.regs[8]);
         #10 $display("      --==Execute==--");
-        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'b0);
-        addi_of_reg10: assert(mips1.gpr.regs[10] === 32'b0);
+        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h8000_0063);
+        addi_of_reg10: assert(mips1.gpr.regs[10] === 32'h8000_0063);
         $display("      Check regs[30]=%h == %h", mips1.gpr.regs[30], 32'b1);
         addi_of_reg_flag: assert(mips1.gpr.regs[30] === 32'b1);
         
@@ -172,8 +181,8 @@ module instruction_test (start, finish);
         #10 $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, 32'h0000_3020);
         jal_pc: assert(mips1.PC === 32'h0000_3020);
-        $display("      Check regs[`REG_ADDR_RET]=%h == %h", mips1.gpr.regs[`REG_ADDR_RET], `CODE_SEG_PC);
-        addiu_reg_ret: assert(mips1.gpr.regs[`REG_ADDR_RET] === `CODE_SEG_PC);
+        $display("      Check regs[`REG_ADDR_RET]=%h == %h", mips1.gpr.regs[`REG_ADDR_RET], `CODE_SEG_PC+4);
+        addiu_reg_ret: assert(mips1.gpr.regs[`REG_ADDR_RET] === `CODE_SEG_PC+4);
 
         // JR Test
         $display("    JR Test:"); reset = 1; clk = 0; t = 1;

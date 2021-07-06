@@ -29,14 +29,16 @@ module p1_test (start, finish);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Start running");
         LastAWr = 0;
-        for(i=0;i<100;i=i+1) begin
+        for(i=0; i<100 && mips1.instruction !== 32'bx; i=i+1) begin
             $display("      t=%d,Step[%d], PC=%h, instruction=%h, signals=%b, last instr: regs[%d]=%h",
              t, i, mips1.PC, mips1.instruction, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
             // $stop;
             LastAWr = mips1.AWr;
             #10;
         end
-        for(i=0;i<32;i=i+1) $display("regs[%d]=%h",i,mips1.gpr.regs[i]);
+        $display("      t=%d,Step[%d], PC=%h, instruction=%h, signals=%b, last instr: regs[%d]=%h",
+         t, i, mips1.PC, mips1.instruction, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
+        for(i=0;i<32;i=i+1) $display("      regs[%d]=%h",i,mips1.gpr.regs[i]);
         $display(" *P1 test finished.");
         finish = 1;
     end

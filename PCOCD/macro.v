@@ -40,6 +40,7 @@
 `define FUNCT_SUBU 6'b100011
 `define FUNCT_SLT 6'b101010
 `define FUNCT_JR 6'b001000
+`define FUNCT_NOP 6'b000000
 `define FUNCT_ZZ 6'bzzzzzz
 
 `define OPCODE_ORI 6'b001101
