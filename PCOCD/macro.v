@@ -14,13 +14,25 @@
 `define ALU_OP_OR 3'b011
 `define ALU_OP_LESS 3'b100
 `define ALU_OP_B 3'b101
-`define ALU_OP_XX 3'bxxx
+`define ALU_OP_ZZ 3'bzzz
 
 // EXT
 `define EXT_OP_ZERO 2'b00
 `define EXT_OP_SIGN 2'b01
 `define EXT_OP_LUI 2'b10
-`define EXT_OP_XX 2'bxx
+`define EXT_OP_ZZ 2'bzz
+
+// GPR
+`define REG_ADDR_FLAG 30
+`define REG_ADDR_RET 31
+
+// Flag
+`define FLAG_OP_DIS 2'b00
+`define FLAG_OP_SET 2'b01
+`define FLAG_OP_SET_AND_WR 2'b10
+// Flag digits:
+`define FLAG_BIT_OVERFLOW 4'b0
+`define FLAG_BIT_ZERO 4'b1
 
 // Instructions
 `define OPCODE_SPECIAL 6'b000000
@@ -28,7 +40,7 @@
 `define FUNCT_SUBU 6'b100011
 `define FUNCT_SLT 6'b101010
 `define FUNCT_JR 6'b001000
-`define FUNCT_XX 6'bxxxxxx
+`define FUNCT_ZZ 6'bzzzzzz
 
 `define OPCODE_ORI 6'b001101
 `define OPCODE_LW 6'b100011
@@ -41,24 +53,22 @@
 `define OPCODE_JAL 6'b000011
 
 // Signals
-`define SIGNAL_WIDTH 15
+`define SIGNAL_WIDTH 16
 
 `define REGDST_RT 2'b00
 `define REGDST_RD 2'b01
 `define REGDST_RET 2'b10
-`define REGDST_XX 2'bxx
+`define REGDST_ZZ 2'bzz
 
 `define ALUSRC_B 1'b0
 `define ALUSRC_EXT 1'b1
-`define ALUSRC_XX 1'bx
+`define ALUSRC_ZZ 1'bz
 
 `define MEM2REG_ALU 2'b00
 `define MEM2REG_RAM 2'b01
 `define MEM2REG_RET 2'b10
-`define MEM2REG_XX 2'bxx
+`define MEM2REG_ZZ 2'bzz
 
 `define WR_EN 1'b1
 `define WR_DIS 1'b0
 
-`define SET_FLAG_EN 1'b1
-`define SET_FLAG_DIS 1'b0

@@ -1,15 +1,14 @@
 `include "macro.v"
 
-module ALU(x, y, ALUOp, ALUOut, shamt, zero, flag);
-    input [31:0] x, y;
+module ALU(x, y, ALUOp, ALUOut, shamt, Flag, NFlag);
+    input [31:0] x, y, Flag;
     input [2:0] ALUOp;
     input [5:0] shamt;
     output reg [31:0] ALUOut;
-    output [31:0] flag;
-    output zero;
+    output reg [31:0] NFlag;
 
     reg overflowBit;
-    wire overflow;
+    reg zero, overflow;
 
     always @(x, y, ALUOp, shamt) begin
         case (ALUOp)
@@ -20,10 +19,15 @@ module ALU(x, y, ALUOp, ALUOut, shamt, zero, flag);
             `ALU_OP_LESS: ALUOut = {31'b0, (x < y)};
             `ALU_OP_B: ALUOut = y;
         endcase
-    end
 
-    assign zero = ALUOut === 32'b0;
-    assign overflow = (ALUOp === `ALU_OP_ADD || ALUOp === `ALU_OP_SUB) & overflowBit ^ ALUOut[31] ^ x[31] ^ y[31];
-    assign flag = {31'b0, overflow};
+        zero = ALUOut === 32'b0;
+        overflow = overflowBit ^ ALUOut[31] ^ x[31] ^ y[31];
+
+        NFlag = Flag;
+        NFlag[`FLAG_BIT_ZERO] = zero;
+        if ((ALUOp === `ALU_OP_ADD || ALUOp === `ALU_OP_SUB) && overflow) begin
+            NFlag[`FLAG_BIT_OVERFLOW] = overflow;
+        end
+    end
 
 endmodule
