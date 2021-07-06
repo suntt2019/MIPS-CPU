@@ -12,6 +12,8 @@
 `define ALU_OP_SUB 3'b001
 `define ALU_OP_AND 3'b010
 `define ALU_OP_OR 3'b011
+`define ALU_OP_LESS 3'b100
+`define ALU_OP_B 3'b101
 `define ALU_OP_XX 3'bxxx
 
 // EXT
@@ -39,8 +41,11 @@
 `define OPCODE_JAL 6'b000011
 
 // Signals
+`define SIGNAL_WIDTH 15
+
 `define REGDST_RT 2'b00
 `define REGDST_RD 2'b01
+`define REGDST_RET 2'b10
 `define REGDST_XX 2'bxx
 
 `define ALUSRC_B 1'b0
@@ -49,7 +54,11 @@
 
 `define MEM2REG_ALU 2'b00
 `define MEM2REG_RAM 2'b01
+`define MEM2REG_RET 2'b10
 `define MEM2REG_XX 2'bxx
 
 `define WR_EN 1'b1
 `define WR_DIS 1'b0
+
+`define SET_FLAG_EN 1'b1
+`define SET_FLAG_DIS 1'b0
