@@ -3,7 +3,7 @@ module test();
 
 reg clk, reset;
 
-reg dm_start, im_start, ifu_start, alu_start, ext_start, gpr_start, instruction_start;
+reg dm_start, im_start, ifu_start, alu_start, ext_start, gpr_start, instruction_start, p1_start;
 wire finish;
 
 mips mips1 (
@@ -17,8 +17,8 @@ ifu_test ifut(.start(ifu_start),.finish(alu_start));
 alu_test alut(.start(alu_start),.finish(ext_start));
 ext_test extt(.start(ext_start),.finish(gpr_start));
 gpr_test gprt(.start(gpr_start),.finish(instruction_start));
-instruction_test instructiont(.start(instruction_start),.finish(finish));
-// controller_test controllert(.start(controller_start),.finish(finish));
+instruction_test instructiont(.start(instruction_start),.finish(p1_start));
+p1_test p1t(.start(p1_start),.finish(finish));
 
 initial begin
     $display("Test Started.");

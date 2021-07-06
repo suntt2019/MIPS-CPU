@@ -117,7 +117,7 @@ module mips(clk, rst) ;
         case(Mem2Reg)
             `MEM2REG_ALU: GPRIn = ALUOut;
             `MEM2REG_RAM: GPRIn = DMOut;
-            `MEM2REG_RET: GPRIn = PC;
+            `MEM2REG_RET: GPRIn = PC+4;
         endcase
     end
 

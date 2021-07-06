@@ -16,7 +16,7 @@ module ALU(x, y, ALUOp, ALUOut, shamt, Flag, NFlag);
             `ALU_OP_SUB: {overflowBit, ALUOut} = x - y;
             `ALU_OP_AND: ALUOut = x & y;
             `ALU_OP_OR: ALUOut = x | y;
-            `ALU_OP_LESS: ALUOut = {31'b0, (x < y)};
+            `ALU_OP_LESS: ALUOut = {31'b0, x[31] ^ y[31] ^ (x < y)};
             `ALU_OP_B: ALUOut = y;
         endcase
 
