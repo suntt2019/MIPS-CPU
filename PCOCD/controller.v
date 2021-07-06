@@ -3,8 +3,8 @@
 module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp);
     input [5:0] opcode, funct;
     input [31:0] NFlag;
-    output ALUSrc, RegWr, MemWr, FlagOp;
-    output [1:0] RegDst, Mem2Reg, NPCSel, EXTOp;
+    output ALUSrc, RegWr, MemWr;
+    output [1:0] RegDst, Mem2Reg, NPCSel, EXTOp, FlagOp;
     output [2:0] ALUOp;
 
     wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr;
@@ -42,7 +42,7 @@ module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, N
         if (addi)  signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZERO, `ALU_OP_ADD, `FLAG_OP_SET};
         if (addiu) signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZERO, `ALU_OP_ADD, `FLAG_OP_DIS};
         if (slt)   signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_LESS, `FLAG_OP_DIS};
-        if (jal)   signals = {`REGDST_RET, `ALUSRC_B, `MEM2REG_RET, `WR_EN, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_B, `FLAG_OP_DIS};
+        if (jal)   signals = {`REGDST_RET, `ALUSRC_ZZ, `MEM2REG_RET, `WR_EN, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
         if (jr)    signals = {`REGDST_ZZ, `ALUSRC_B, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `ALU_OP_B, `FLAG_OP_DIS};
     end
 

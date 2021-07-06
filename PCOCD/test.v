@@ -2,15 +2,13 @@
 module test();
 
 reg clk, reset;
-wire debug_output;
 
 reg dm_start, im_start, ifu_start, alu_start, ext_start, gpr_start;
 wire finish;
 
 mips mips1 (
     .clk(clk),
-    .rst(reset),
-    .debug_output(debug_output)
+    .rst(reset)
 );
 
 dm_test dmt(.start(dm_start),.finish(im_start));
