@@ -36,7 +36,7 @@ module mips(clk, rst) ;
         .clk(clk),
         .reset(rst),
         .NPCSel(NPCSel),
-        .regPC(ALUOut),
+        .regPC(a),
         .instruction(instruction),
         .pc(PC)
     );
