@@ -1,7 +1,7 @@
 `timescale 1ns/ 1ns
 `include "../unit_test/macro.v"
 
-module gpr_test(start, finish);
+module gpr_test (start, finish);
     input start;
     output reg finish;
 
@@ -73,6 +73,7 @@ module gpr_test(start, finish);
         #10 $display("    Flag test(FlagOp=SetAndWr): regs[%d]<-%h, regs[%d]=%h == %h, NFlag=%h, Flag=%h == %h",
          AWr, Din, AWr, RD1, Din, NFlag, Flag, NFlag);
         gpr_flag_set_and_wr: assert(RD1 === Din && Flag === NFlag);
+        WE = 0;
 
         $display(" *GPR test finished.");
         finish = 1;

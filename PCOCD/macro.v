@@ -12,7 +12,8 @@
 
 // Instructions
 `define INSTR_CNT_WD 5
-`define INSTR_COUNT 15
+`define INSTR_WIDTH 5
+`define INSTR_COUNT 16
 
 `define INSTR_ADDU 5'h1
 `define INSTR_SUBU 5'h2
@@ -28,6 +29,8 @@
 `define INSTR_NOP 5'hc
 `define INSTR_LB 5'hd
 `define INSTR_SB 5'he
+`define INSTR_JAL 5'hf
+`define INSTR_JR 5'h10
 
 `define OPCODE_SPECIAL 6'b000000
 `define FUNCT_ADDU 6'b100001
@@ -46,6 +49,8 @@
 `define OPCODE_ADDI 6'b001000
 `define OPCODE_ADDIU 6'b001001
 `define OPCODE_JAL 6'b000011
+`define OPCODE_LB 6'b100000
+`define OPCODE_SB 6'b101000
 
 // Statuses
 `define STATUS_WIDTH 5
@@ -83,7 +88,7 @@
 `define S_INVALID   5'h00
 
 // Signals
-`define SIGNAL_WIDTH 18
+`define SIGNAL_WIDTH 19
 
 // Write enable signals
 `define WR_EN 1'b1

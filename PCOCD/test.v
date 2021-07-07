@@ -11,9 +11,9 @@ im_test imt(.start(im_start), .finish(ifu_start));
 ifu_test ifut(.start(ifu_start), .finish(alu_start));
 alu_test alut(.start(alu_start), .finish(ext_start));
 ext_test extt(.start(ext_start), .finish(gpr_start));
-gpr_test gprt(.start(gpr_start), .finish(bac_start));
+gpr_test gprt(.start(gpr_start), .finish(p1_start));
 // instruction_test instructiont(.start(instruction_start), .finish(p1_start));
-// p1_test p1t(.start(p1_start), .finish(bac_start));
+p1_test p1t(.start(p1_start), .finish(bac_start));
 
 // Project 2
 bac_test bact(.start(bac_start), .finish(controller_start));

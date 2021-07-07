@@ -32,18 +32,21 @@ module p1_test(start, finish);
         $display("      Start running");
         LastAWr = 0;
         for(i=0; i<100 && mips1.instruction !== 32'bx; i=i+1) begin
-            $display("      t=%d,Step[%d], PC=%h, instruction=%h, signals=%b, last instr: regs[%d]=%h",
-             t, i, mips1.PC, mips1.instruction, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
-            // $stop;
+            #1 $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b",
+             t, i, mips1.PC, mips1.StoredInstruction, mips1.ctr.status, mips1.ctr.signals);
+            if(i===43)$stop;
             LastAWr = mips1.AWr;
-            #10;
+            #9;
+            while(mips1.ctr.status !== `S1) #10;
         end
-        $display("      t=%d,Step[%d], PC=%h, instruction=%h, signals=%b, last instr: regs[%d]=%h",
-         t, i, mips1.PC, mips1.instruction, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
-        
+        $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b, last instr: regs[%d]=%h",
+         t, i, mips1.PC, mips1.StoredInstruction, mips1.ctr.status, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
+            
         $readmemh(`P1_TEST_REGS_FILENAME, expectedRegs);
-        for(i=0;i<32;i=i+1) $display("      regs[%d]=%h == %h",i,mips1.gpr.regs[i], expectedRegs[i]);
-        p1_reg: assert(mips1.gpr.regs[i] === expectedRegs[i]);
+        for(i=0;i<32;i=i+1) begin
+            $display("      regs[%d]=%h == %h",i,mips1.gpr.regs[i], expectedRegs[i]);
+            p1_reg: assert(mips1.gpr.regs[i] === expectedRegs[i]);
+        end
         $display(" *P1 test finished.");
         finish = 1;
     end

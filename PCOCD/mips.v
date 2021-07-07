@@ -16,22 +16,25 @@ module mips(clk, rst) ;
     wire [2:0] ALUOp;
 
     // instruction
-    wire [31:0] instruction;
+    wire [31:0] instruction, StoredInstruction;
     wire [4:0] rs, rt, rd;
     wire [5:0] opcode, shamt, funct;
     wire [15:0] imm;
     wire [31:0] PC;
-    assign opcode = instruction[31:26];
-    assign rs = instruction[25:21];
-    assign rt = instruction[20:16];
-    assign rd = instruction[15:11];
-    assign imm = instruction[15:0];
-    assign shmat = instruction[10:6];
-    assign funct = instruction[5:0];
+    assign opcode = StoredInstruction[31:26];
+    assign rs = StoredInstruction[25:21];
+    assign rt = StoredInstruction[20:16];
+    assign rd = StoredInstruction[15:11];
+    assign imm = StoredInstruction[15:0];
+    assign shmat = StoredInstruction[10:6];
+    assign funct = StoredInstruction[5:0];
 
     // MUX destination
     reg [4:0] A2, AWr;
     reg [31:0] ALUIn, GPRIn;
+
+    // // Stored variables
+    wire [31:0] StoredA, StoredB, StoredDMOut, StoredNFlag, StoredALUOut;
 
     // Intermediate variables
     wire [31:0] a, b, ALUOut, EXTOut, DMOut, Flag, NFlag, CvtdALUOut, CvtdB, CvtdDMOut;
@@ -43,10 +46,11 @@ module mips(clk, rst) ;
         .clk(clk),
         .reset(rst),
         .NPCSel(NPCSel),
-        .regPC(a),
+        .regPC(StoredA),
         .instruction(instruction),
         .pc(PC),
-        .PCWr(PCWr)
+        .PCWr(PCWr),
+        .StoredInstruction(StoredInstruction)
     );
 
     GPR gpr(
@@ -61,12 +65,12 @@ module mips(clk, rst) ;
         .RD2(b),
         .Din(GPRIn),
         .Flag(Flag),
-        .NFlag(NFlag)
+        .NFlag(StoredNFlag)
     );
 
     ALU alu(
         .ALUOp(ALUOp),
-        .x(a),
+        .x(StoredA),
         .y(ALUIn),
         .ALUOut(ALUOut),
         .shamt(shamt),
@@ -90,8 +94,8 @@ module mips(clk, rst) ;
 
     BAC bac(
         .BACOp(BACOp),
-        .Ain(ALUOut),
-        .Din1(b),
+        .Ain(StoredALUOut),
+        .Din1(StoredB),
         .Din2(DMOut),
         .Aout(CvtdALUOut),
         .Dout1(CvtdB),
@@ -100,10 +104,10 @@ module mips(clk, rst) ;
 
     controller ctr(
         .clk(clk),
-        .reset(reset),
+        .reset(rst),
         .opcode(opcode),
         .funct(funct),
-        .NFlag(NFlag),
+        .NFlag(StoredNFlag),
         .RegDst(RegDst),
         .ALUSrc(ALUSrc),
         .Mem2Reg(Mem2Reg),
@@ -118,6 +122,60 @@ module mips(clk, rst) ;
         .IRWr(IRWr)
     );
 
+    // Register IR
+    Reg32 ir(
+        .clk(clk),
+        .reset(rst),
+        .we(IRWr),
+        .in(instruction),
+        .out(StoredInstruction)
+    );
+
+    // Register RegA
+    Reg32 regA(
+        .clk(clk),
+        .reset(rst),
+        .we(`WR_EN),
+        .in(a),
+        .out(StoredA)
+    );
+
+    // Register RegB
+    Reg32 regB(
+        .clk(clk),
+        .reset(rst),
+        .we(`WR_EN),
+        .in(b),
+        .out(StoredB)
+    );
+
+    // Register DR
+    Reg32 dr(
+        .clk(clk),
+        .reset(rst),
+        .we(`WR_EN),
+        .in(CvtdDMOut),
+        .out(StoredDMOut)
+    );
+
+    // Register RegALUOut
+    Reg32 regALUOut(
+        .clk(clk),
+        .reset(rst),
+        .we(`WR_EN),
+        .in(ALUOut),
+        .out(StoredALUOut)
+    );
+
+    // Register RegNFlag
+    Reg32 regNFlag(
+        .clk(clk),
+        .reset(rst),
+        .we(`WR_EN),
+        .in(NFlag),
+        .out(StoredNFlag)
+    );
+
     // MUX {rt, rd, `REG_ADDR_RET}-[RegDst]->AWr
     always @(RegDst or rt or rd) begin
         case(RegDst)
@@ -127,20 +185,20 @@ module mips(clk, rst) ;
         endcase
     end
 
-    // MUX {b, EXTOut}-[ALUSrc]->ALUIn
-    always @(ALUSrc or b or EXTOut) begin
+    // MUX {StoredB, EXTOut}-[ALUSrc]->ALUIn
+    always @(ALUSrc or StoredB or EXTOut) begin
         case(ALUSrc)
-            `ALUSRC_B: ALUIn = b;
+            `ALUSRC_B: ALUIn = StoredB;
             `ALUSRC_EXT: ALUIn = EXTOut;
         endcase
     end
 
-    // MUX {ALUOut, CvtdDMOut, PC}-[Mem2Reg]->GPRIn
-    always @(Mem2Reg or ALUOut or CvtdDMOut or PC) begin
+    // MUX {StoredALUOut, StoredDMOut, PC}-[Mem2Reg]->GPRIn
+    always @(Mem2Reg or StoredALUOut or StoredDMOut or PC) begin
         case(Mem2Reg)
-            `MEM2REG_ALU: GPRIn = ALUOut;
-            `MEM2REG_RAM: GPRIn = CvtdDMOut;
-            `MEM2REG_RET: GPRIn = PC+4;
+            `MEM2REG_ALU: GPRIn = StoredALUOut;
+            `MEM2REG_RAM: GPRIn = StoredDMOut;
+            `MEM2REG_RET: GPRIn = PC;
         endcase
     end
 

@@ -9,7 +9,11 @@ module Reg32(clk, reset, we, in, out);
         if(reset) begin
             out = 32'b0;
         end else if(we) begin
+            // $display("Reg32: %b->%b",out, in);
             out = in;
         end
     end
 endmodule
+
+// module Reg32Eff(clk, reset, in, out);
+//     input 
