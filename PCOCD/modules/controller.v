@@ -30,27 +30,27 @@ module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, N
     assign zero = NFlag[`FLAG_BIT_ZERO];
 
     always @(*) begin
-        // width               2           1          2             1       1        2                  2           3            2
-        if (addu)  signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ADD, `FLAG_OP_DIS};
-        if (subu)  signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS};
-        if (ori)   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZERO, `ALU_OP_OR, `FLAG_OP_DIS};
-        if (lw)    signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_RAM, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS};
-        if (sw)    signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_RAM, `WR_DIS, `WR_EN, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS};
+        // width               2           1          2             1       1        2                  2           3            2            2
+        if (addu)  signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN};
+        if (subu)  signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS, `WR_EN};
+        if (ori)   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZERO, `ALU_OP_OR, `FLAG_OP_DIS, `WR_EN};
+        if (lw)    signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_RAM, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN};
+        if (sw)    signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_RAM, `WR_DIS, `WR_EN, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN};
         if (beq&&~zero)
-                   signals = {`REGDST_RT, `ALUSRC_B, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS};
+                   signals = {`REGDST_RT, `ALUSRC_B, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS, `WR_EN};
         if (beq&&zero)
-                   signals = {`REGDST_RT, `ALUSRC_B, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_BEQ_JMP, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS};
-        if (lui)   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_LUI, `ALU_OP_OR, `FLAG_OP_DIS};
-        if (j)     signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
+                   signals = {`REGDST_RT, `ALUSRC_B, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_BEQ_JMP, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS, `WR_EN};
+        if (lui)   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_LUI, `ALU_OP_OR, `FLAG_OP_DIS, `WR_EN};
+        if (j)     signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN};
         if (addi&&overflow)
-                   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_SET_AND_WR};
+                   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_SET_AND_WR, `WR_EN};
         if (addi&&~overflow)
-                   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS};
-        if (addiu) signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS};
-        if (slt)   signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_LESS, `FLAG_OP_DIS};
-        if (jal)   signals = {`REGDST_RET, `ALUSRC_ZZ, `MEM2REG_RET, `WR_EN, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
-        if (jr)    signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
-        if (nop)   signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
+                   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN};
+        if (addiu) signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN};
+        if (slt)   signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_LESS, `FLAG_OP_DIS, `WR_EN};
+        if (jal)   signals = {`REGDST_RET, `ALUSRC_ZZ, `MEM2REG_RET, `WR_EN, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN};
+        if (jr)    signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN};
+        if (nop)   signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN};
     end
 
     assign {RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp, PCWr} = signals;

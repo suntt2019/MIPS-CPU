@@ -93,7 +93,8 @@ module mips(clk, rst) ;
         .NPCSel(NPCSel),
         .EXTOp(EXTOp),
         .ALUOp(ALUOp),
-        .FlagOp(FlagOp)
+        .FlagOp(FlagOp),
+        .PCWr(PCWr)
     );
 
     // MUX {rt, rd, `REG_ADDR_RET}-[RegDst]->AWr

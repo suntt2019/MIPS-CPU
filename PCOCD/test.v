@@ -1,15 +1,8 @@
 `timescale 1ns/ 1ns
 module test();
 
-reg clk, reset;
-
 reg dm_start, im_start, ifu_start, alu_start, ext_start, gpr_start, instruction_start, p1_start;
 wire finish;
-
-mips mips1 (
-    .clk(clk),
-    .rst(reset)
-);
 
 dm_test dmt(.start(dm_start),.finish(im_start));
 im_test imt(.start(im_start),.finish(ifu_start));

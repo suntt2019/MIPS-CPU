@@ -48,7 +48,7 @@ module ifu_test (start, finish);
         reset = 0;
         NPCSel = `NPC_SEL_PC_ADD_4; PCWr = 0;
         #10 $display("      PCWr = %d, pc=%h == %h, instruction=%h == %h", PCWr, pc, `CODE_SEG_PC, instruction, `hex_0h);
-        ifu_pcwr_1: assert(pc === `CODE_SEG_PC + 'h1*4 && instruction === `hex_0h);
+        ifu_pcwr_1: assert(pc === `CODE_SEG_PC + 'h0*4 && instruction === `hex_0h);
         PCWr = 1;
         #10 $display("      PCWr = %d, pc=%h == %h, instruction=%h == %h", PCWr,  pc, `CODE_SEG_PC + 'h1*4, instruction, `hex_1h);
         ifu_pcwr_2: assert(pc === `CODE_SEG_PC + 'h1*4 && instruction === `hex_1h);

@@ -1,6 +1,7 @@
 `timescale 1ns/ 1ns
 `include "../macro.v"
-`define p1_test_hex_filename "../overall_test/p1-test.txt"
+`define P1_TEST_HEX_FILENAME "../overall_test/p1-test.txt"
+`define P1_TEST_REGS_FILENAME "../overall_test/p1-test-regs.txt"
 
 module p1_test (start, finish);
     input start;
@@ -12,6 +13,7 @@ module p1_test (start, finish);
     // local variables
     integer i, t;
     reg [4:0] LastAWr;
+    reg [31:0] expectedRegs[31:0];
 
     // tested module
     mips mips1(
@@ -25,7 +27,7 @@ module p1_test (start, finish);
         
         clk = 0; t = 1; reset = 1;
         $display("      Read from file");
-        $readmemh(`p1_test_hex_filename, mips1.ifu.im.im);
+        $readmemh(`P1_TEST_HEX_FILENAME, mips1.ifu.im.im);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Start running");
         LastAWr = 0;
@@ -38,7 +40,10 @@ module p1_test (start, finish);
         end
         $display("      t=%d,Step[%d], PC=%h, instruction=%h, signals=%b, last instr: regs[%d]=%h",
          t, i, mips1.PC, mips1.instruction, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
-        for(i=0;i<32;i=i+1) $display("      regs[%d]=%h",i,mips1.gpr.regs[i]);
+        
+        $readmemh(`P1_TEST_REGS_FILENAME, expectedRegs);
+        for(i=0;i<32;i=i+1) $display("      regs[%d]=%h == %h",i,mips1.gpr.regs[i], expectedRegs[i]);
+        p1_reg: assert(mips1.gpr.regs[i] === expectedRegs[i]);
         $display(" *P1 test finished.");
         finish = 1;
     end
