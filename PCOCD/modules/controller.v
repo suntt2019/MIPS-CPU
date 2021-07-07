@@ -112,8 +112,8 @@ module controller(
             end
             $write("        Ready to execute: status=%h(signals=%b)-[Instr=%h]->Next:", status, signals, InstrID);
             if(status === `S3_BR_BEQ) begin
-                $display("beq, NFlag=%b",NFlag);
-                $stop;
+                // $display("beq, NFlag=%b",NFlag);
+                // $stop;
                 status = NFlag[`FLAG_BIT_ZERO] ? `S6_BEQ : `S1;
             end else begin
                 status = next[InstrID][status];

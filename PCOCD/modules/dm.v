@@ -8,6 +8,7 @@ module dm_1k(addr, din, we, clk, dout);
 
     always @(posedge clk) begin
         if(we) begin
+            $display("dm[%d]=%h",addr,din);
             dm[addr] = din[7:0];
             dm[addr+1] = din[15:8];
             dm[addr+2] = din[23:16];
