@@ -1,6 +1,6 @@
 `timescale 1ns/ 1ns
 
-module dm_test (start, finish);
+module dm_test(start, finish);
     input start;
     output reg finish;
 

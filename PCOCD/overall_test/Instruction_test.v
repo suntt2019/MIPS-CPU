@@ -1,7 +1,7 @@
 `timescale 1ns/ 1ns
 `include "../macro.v"
 
-module instruction_test (start, finish);
+module instruction_test(start, finish);
     input start;
     output reg finish;
 
@@ -78,7 +78,7 @@ module instruction_test (start, finish);
         
         // BEQ Test(jmp)
         $display("    BEQ Test(jmp):"); reset = 1; clk = 0; t = 1;
-        instr = 32'h11090002; #10 $display("      Load instruction: beq $8, $9, beq_test (im[%h]=%h)", mips1.PC, mips1.instruction);
+        instr = 32'h11090002; #10 $display("      Load instruction: beq $8, $9, beq_test(im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: beq=%d, signals=%b", mips1.ctr.beq, mips1.ctr.signals);
         mips1.gpr.regs[8] = 100; $display("      Set regs[8]<-100(%h)", mips1.gpr.regs[8]);
@@ -89,7 +89,7 @@ module instruction_test (start, finish);
         
         // BEQ Test(not-jmp)
         $display("    BEQ Test(not-jmp):"); reset = 1; clk = 0; t = 1;
-        instr = 32'h11090001; #10 $display("      Load instruction: beq $8, $9, beq_test (im[%h]=%h)", mips1.PC, mips1.instruction);
+        instr = 32'h11090001; #10 $display("      Load instruction: beq $8, $9, beq_test(im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: beq=%d, signals=%b", mips1.ctr.beq, mips1.ctr.signals);
         mips1.gpr.regs[8] = 100; $display("      Set regs[8]<-100(%h)", mips1.gpr.regs[8]);
@@ -119,7 +119,7 @@ module instruction_test (start, finish);
         
         // J Test
         $display("    J Test:"); reset = 1; clk = 0; t = 1;
-        instr = 32'h08000c08; #10 $display("      Load instruction: j j_test (im[%h]=%h)", mips1.PC, mips1.instruction);
+        instr = 32'h08000c08; #10 $display("      Load instruction: j j_test(im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: j=%d, signals=%b", mips1.ctr.j, mips1.ctr.signals);
         #10 $display("      --==Execute==--");
@@ -175,7 +175,7 @@ module instruction_test (start, finish);
 
         // JAL Test
         $display("    JAL Test:"); reset = 1; clk = 0; t = 1;
-        instr = 32'h0c000c08; #10 $display("      Load instruction: jal j_test (im[%h]=%h)", mips1.PC, mips1.instruction);
+        instr = 32'h0c000c08; #10 $display("      Load instruction: jal j_test(im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: jal=%d, signals=%b", mips1.ctr.jal, mips1.ctr.signals);
         #10 $display("      --==Execute==--");

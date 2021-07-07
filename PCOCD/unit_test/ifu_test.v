@@ -1,7 +1,7 @@
 `timescale 1ns/ 1ns
 `include "../unit_test/macro.v"
 
-module ifu_test (start, finish);
+module ifu_test(start, finish);
     input start;
     output reg finish;
 

@@ -1,15 +1,29 @@
 `include "../macro.v"
 
-module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp, PCWr, BACOp);
-    input [5:0] opcode, funct;
-    input [31:0] NFlag;
-    output ALUSrc, RegWr, MemWr, PCWr, BACOp;
-    output [1:0] RegDst, Mem2Reg, NPCSel, EXTOp, FlagOp;
-    output [2:0] ALUOp;
+module controller(
+    input clk, reset,
+    input [5:0] opcode, funct,
+    input [31:0] NFlag,
+    // Write enable signals
+    output PCWr, IRWr, RegWr, MemWr,
+    // MUX switching signals
+    output ALUSrc,
+    output [1:0] RegDst, Mem2Reg, 
+    // Module control signals
+    output BACOp,
+    output [1:0] NPCSel, EXTOp, FlagOp,
+    output [2:0] ALUOp
+);
 
     wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr, nop;
     reg [`SIGNAL_WIDTH:1] signals;
+    reg [`STATUS_WIDTH:1] status;
+    reg [`STATUS_WIDTH*`STATUS_COUNT:1] steps[`INSTR_COUNT:1];
+    reg [`STATUS_WIDTH:1] next[`INSTR_COUNT:1][`STATUS_COUNT:1];
+    reg [`INSTR_CNT_WD:1] i;
+    reg [`STATUS_WIDTH*2:1] k;
     wire zero, overflow;
+    reg [`STATUS_WIDTH:1] kk;
 
     assign addu = opcode === `OPCODE_SPECIAL && funct === `FUNCT_ADDU;
     assign subu = opcode === `OPCODE_SPECIAL && funct === `FUNCT_SUBU;
@@ -29,30 +43,60 @@ module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, N
     assign overflow = NFlag[`FLAG_BIT_OVERFLOW];
     assign zero = NFlag[`FLAG_BIT_ZERO];
 
-    always @(*) begin
-        // width               2           1          2             1       1        2                  2           3            2            1        1
-        if (addu)  signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (subu)  signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (ori)   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZERO, `ALU_OP_OR, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (lw)    signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_RAM, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (sw)    signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_RAM, `WR_DIS, `WR_EN, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (beq&&~zero)
-                   signals = {`REGDST_RT, `ALUSRC_B, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (beq&&zero)
-                   signals = {`REGDST_RT, `ALUSRC_B, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_BEQ_JMP, `EXT_OP_ZZ, `ALU_OP_SUB, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (lui)   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_LUI, `ALU_OP_OR, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (j)     signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (addi&&overflow)
-                   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_SET_AND_WR, `WR_EN, `BAC_OP_WORD};
-        if (addi&&~overflow)
-                   signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (addiu) signals = {`REGDST_RT, `ALUSRC_EXT, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_SIGN, `ALU_OP_ADD, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (slt)   signals = {`REGDST_RD, `ALUSRC_B, `MEM2REG_ALU, `WR_EN, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_LESS, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (jal)   signals = {`REGDST_RET, `ALUSRC_ZZ, `MEM2REG_RET, `WR_EN, `WR_DIS, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (jr)    signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
-        if (nop)   signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS, `WR_EN, `BAC_OP_WORD};
+    always @(posedge clk or posedge reset) begin
+        if(reset) begin
+            $stop;
+            status = `STATUS_0_FETCH;
+            steps[`INSTR_ADDU] = {`STATUS_0_FETCH, `STATUS_1_DCD_RF, `STATUS_2_MA, `STATUS_0_FETCH};
+            for(i=1;i<=`INSTR_COUNT;i=i+1) begin
+                for(kk=0;kk<=`STATUS_COUNT;kk=kk+1) begin
+                    // $display("next[%d][steps[%d][%d:%d]]=next[%d][%h](%h)<-steps[%d][%d:%d](%h)",
+                    //  i, i, k+`STATUS_WIDTH-1, k, i, steps[i][k+`STATUS_WIDTH-1:k], next[i][steps[i][k+`STATUS_WIDTH-1:k]], i, k-1, k-`STATUS_WIDTH, steps[i][k-1:k-`STATUS_WIDTH]);
+                    // next[i][steps[i][k+`STATUS_WIDTH-1:k]] = steps[i][k-1:k-`STATUS_WIDTH];
+                    // $display("next[%d][%h](%h)=steps[%d][%d:%d](%h)",
+                    //  i, steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1], next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]],
+                    //  i, `STATUS_WIDTH, 1, steps[i][`STATUS_WIDTH:1]);
+                    next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]] = steps[i][`STATUS_WIDTH:1];
+                    steps[i] = (steps[i] >> `STATUS_WIDTH);
+                    // $display("ret=%h, steps[i]=%h", next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]],steps[i]);
+                end
+            end
+            `ifdef DEBUG
+            $display("Status transition matrix(each-row=instr\\each-col=status-from):");
+            $write("i\\sf");
+            for(kk=0;kk<=`STATUS_COUNT;kk=kk+1) begin
+                $write("%d ", kk);
+            end
+            $display("");
+            for(i=1;i<=`INSTR_COUNT;i=i+1) begin
+                $write("%d: ", i);
+                for(kk=0;kk<=`STATUS_COUNT;kk=kk+1) begin
+                    $write("%d ", next[i][kk]);
+                end
+                $display("");
+            end
+            `endif
+
+        end else begin
+            case(status)
+                    `STATUS_0_FETCH: signals = {
+                                        `WR_EN, `WR_EN, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                    default: begin
+                        $display("Exception: Invalid status id.");
+                        $stop;
+                    end
+            endcase
+        end
+        
     end
 
-    assign {RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp, PCWr, BACOp} = signals;
+    assign {
+        PCWr, IRWr, RegWr, MemWr,           // Write enable signals
+        ALUSrc, RegDst, Mem2Reg,            // MUX switching signals
+        BACOp, NPCSel, EXTOp, FlagOp, ALUOp // Module control signals
+    } = signals;
 
 endmodule

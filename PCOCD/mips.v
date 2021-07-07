@@ -5,8 +5,14 @@ module mips(clk, rst) ;
     input           rst; // reset
     
     // signals
-    wire ALUSrc, RegWr, MemWr, PCWr, BACOp;
-    wire [1:0] RegDst, Mem2Reg, NPCSel, EXTOp, FlagOp;
+    // Write enable signals
+    wire PCWr, IRWr, RegWr, MemWr;
+    // MUX switching signals
+    wire ALUSrc;
+    wire [1:0] RegDst, Mem2Reg; 
+    // Module control signals
+    wire BACOp;
+    wire [1:0] NPCSel, EXTOp, FlagOp;
     wire [2:0] ALUOp;
 
     // instruction
@@ -93,6 +99,8 @@ module mips(clk, rst) ;
     );
 
     controller ctr(
+        .clk(clk),
+        .reset(reset),
         .opcode(opcode),
         .funct(funct),
         .NFlag(NFlag),
@@ -106,7 +114,8 @@ module mips(clk, rst) ;
         .ALUOp(ALUOp),
         .FlagOp(FlagOp),
         .PCWr(PCWr),
-        .BACOp(BACOp)
+        .BACOp(BACOp),
+        .IRWr(IRWr)
     );
 
     // MUX {rt, rd, `REG_ADDR_RET}-[RegDst]->AWr

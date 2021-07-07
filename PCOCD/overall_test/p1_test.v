@@ -3,7 +3,7 @@
 `define P1_TEST_HEX_FILENAME "../overall_test/p1-test.txt"
 `define P1_TEST_REGS_FILENAME "../overall_test/p1-test-regs.txt"
 
-module p1_test (start, finish);
+module p1_test(start, finish);
     input start;
     output reg finish;
 
