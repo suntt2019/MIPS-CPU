@@ -24,7 +24,7 @@ module mips(clk, rst) ;
     assign funct = instruction[5:0];
 
     // MUX destination
-    reg [4:0] A2, AWr;
+    reg [4:0] AWr;
     reg [31:0] ALUIn, GPRIn;
 
     // Intermediate variables
@@ -47,7 +47,7 @@ module mips(clk, rst) ;
         .WE(RegWr),
         .FlagOp(FlagOp),
         .A1(rs),
-        .A2(A2),
+        .A2(rt),
         .AWr(AWr),
         .RD1(a),
         .RD2(b),
@@ -118,14 +118,6 @@ module mips(clk, rst) ;
             `MEM2REG_ALU: GPRIn = ALUOut;
             `MEM2REG_RAM: GPRIn = DMOut;
             `MEM2REG_RET: GPRIn = PC+4;
-        endcase
-    end
-
-    // MUX {rt, `REG_ADDR_RET}-[NPCSel]->A2
-    always @(NPCSel or rt) begin
-        case(NPCSel)
-            `NPC_SEL_REG_JMP: A2 = `REG_ADDR_RET;
-            default: A2 = rt;
         endcase
     end
 
