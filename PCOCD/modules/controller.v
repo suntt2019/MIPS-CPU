@@ -47,18 +47,11 @@ module controller(
         if(reset) begin
             $stop;
             status = `STATUS_0_FETCH;
-            steps[`INSTR_ADDU] = {`STATUS_0_FETCH, `STATUS_1_DCD_RF, `STATUS_2_MA, `STATUS_0_FETCH};
+            steps[`INSTR_ADDU] = {`STATUS_0_FETCH, `STATUS_1_DCDRF, `STATUS_2_0_MA_W, `STATUS_0_FETCH};
             for(i=1;i<=`INSTR_COUNT;i=i+1) begin
                 for(kk=0;kk<=`STATUS_COUNT;kk=kk+1) begin
-                    // $display("next[%d][steps[%d][%d:%d]]=next[%d][%h](%h)<-steps[%d][%d:%d](%h)",
-                    //  i, i, k+`STATUS_WIDTH-1, k, i, steps[i][k+`STATUS_WIDTH-1:k], next[i][steps[i][k+`STATUS_WIDTH-1:k]], i, k-1, k-`STATUS_WIDTH, steps[i][k-1:k-`STATUS_WIDTH]);
-                    // next[i][steps[i][k+`STATUS_WIDTH-1:k]] = steps[i][k-1:k-`STATUS_WIDTH];
-                    // $display("next[%d][%h](%h)=steps[%d][%d:%d](%h)",
-                    //  i, steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1], next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]],
-                    //  i, `STATUS_WIDTH, 1, steps[i][`STATUS_WIDTH:1]);
-                    next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]] = steps[i][`STATUS_WIDTH:1];
+                   next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]] = steps[i][`STATUS_WIDTH:1];
                     steps[i] = (steps[i] >> `STATUS_WIDTH);
-                    // $display("ret=%h, steps[i]=%h", next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]],steps[i]);
                 end
             end
             `ifdef DEBUG
@@ -79,18 +72,117 @@ module controller(
 
         end else begin
             case(status)
-                    `STATUS_0_FETCH: signals = {
+                `STATUS_0_FETCH:    signals = {  // STAGE-1
                                         `WR_EN, `WR_EN, `WR_DIS, `WR_DIS,
                                         `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
                                         `BAC_OP_ZZ, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
                                     };
-                    default: begin
-                        $display("Exception: Invalid status id.");
-                        $stop;
-                    end
+                `STATUS_1_DCDRF:   signals = { // STAGE-2
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_2_MA:       signals = { // STAGE-3
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_SIGN, `FLAG_OP_ZZ, `ALU_OP_ADD
+                                    };
+                `STATUS_3_0_MR_W:   signals = { // STAGE-4
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_3_1_MR_B:   signals = { // STAGE-4
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_4_0_MEMWB_W:   signals = { // STAGE-5
+                                        `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_RAM,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                    };
+                `STATUS_4_1_MEMWB_B:   signals = { // STAGE-5
+                                        `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_RAM,
+                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                    };
+                `STATUS_5_0_MW_W:   signals = { // STAGE-4
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_5_1_MW_B:   signals = { // STAGE-4
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_6_0_EXE_ADD:signals = { // STAGE-3
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_SIGN, `FLAG_OP_ZZ, `ALU_OP_ADD
+                                    };
+                `STATUS_6_1_EXE_SUB:signals = { // STAGE-3
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_SIGN, `FLAG_OP_ZZ, `ALU_OP_SUB
+                                    };
+                `STATUS_7_0_0_ALUWB_I_FD:   signals = { // STAGE-5
+                                        `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_ALU,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                    };
+                `STATUS_7_0_1_ALUWB_I_FS:   signals = { // STAGE-5
+                                        `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_ALU,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_SET, `ALU_OP_ZZ
+                                    };
+                `STATUS_7_1_0_ALUWB_R_FD:   signals = { // STAGE-5
+                                        `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_RD, `MEM2REG_ALU,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                    };
+                `STATUS_8_0_BRANCH_BEQ:   signals = { // STAGE-3
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_SIGN, `FLAG_OP_ZZ, `ALU_OP_SUB
+                                    };
+                `STATUS_9_0_JMP_BEQ:   signals = { // STAGE-6
+                                        `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_BEQ_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_9_1_JMP_J:   signals = { // STAGE-6
+                                        `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_9_2_JMP_REG:   signals = { // STAGE-6
+                                        `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `STATUS_A_RETRW:   signals = { // STAGE-5
+                                        `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_RET, `MEM2REG_RET,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                    };
+                `STATUS_B_0_EXEI_OR:signals = { // STAGE-3
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZERO, `FLAG_OP_ZZ, `ALU_OP_OR
+                                    };
+                `STATUS_B_1_EXEI_LUI:signals = { // STAGE-3
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_LUI, `FLAG_OP_ZZ, `ALU_OP_OR
+                                    };
+                default: begin
+                    $display("Exception: Invalid status id.");
+                    $stop;
+                end
             endcase
         end
-        
     end
 
     assign {

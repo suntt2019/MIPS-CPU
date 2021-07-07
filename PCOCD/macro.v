@@ -53,15 +53,26 @@
 
 `define STATUS_INVALID  4'h0
 `define STATUS_0_FETCH  4'h1
-`define STATUS_1_DCD_RF 4'h2
+`define STATUS_1_DCDRF 4'h2
 `define STATUS_2_MA     4'h3
-`define STATUS_3_MEMWB  4'h4
-`define STATUS_4_MEMWB  4'h5
-`define STATUS_5_MW     4'h6
-`define STATUS_6_EXE    4'h7
-`define STATUS_7_ALUWB  4'h8
-`define STATUS_8_BRANCH 4'h9
-`define STATUS_9_JMP    4'ha
+`define STATUS_3_0_MR_W  4'h4
+`define STATUS_3_1_MR_B
+`define STATUS_4_0_MEMWB_W  4'h5
+`define STATUS_4_1_MEMWB_B
+`define STATUS_5_0_MW_W     4'h6
+`define STATUS_5_1_MW_B
+`define STATUS_6_0_EXE_ADD    4'h7
+`define STATUS_6_1_EXE_SUB
+`define STATUS_7_0_0_ALUWB_I_FD  4'h8
+`define STATUS_7_0_1_ALUWB_I_FS  4'h8
+`define STATUS_7_1_0_ALUWB_R_FD
+`define STATUS_8_0_BRANCH_BEQ 4'h9
+`define STATUS_9_0_JMP_BEQ    4'ha
+`define STATUS_9_1_JMP_J
+`define STATUS_9_2_JMP_REG
+`define STATUS_A_RETRW
+`define STATUS_B_0_EXEI_OR
+`define STATUS_B_1_EXEI_LUI
 
 // Signals
 `define SIGNAL_WIDTH 18
@@ -96,6 +107,7 @@
 `define NPC_SEL_BEQ_JMP 2'b01
 `define NPC_SEL_J_JMP 2'b10
 `define NPC_SEL_REG_JMP 2'b11
+`define NPC_SEL_ZZ 2'bzz
 // EXTOp
 `define EXT_OP_ZERO 2'b00
 `define EXT_OP_SIGN 2'b01
