@@ -6,7 +6,7 @@ module ifu_test (start, finish);
     output reg finish;
 
     // tested module I/O
-    reg clk, reset;
+    reg clk, reset, PCWr;
     reg [1:0] NPCSel;
     reg [31:0] regPC;
     wire [31:0] instruction;
@@ -22,7 +22,8 @@ module ifu_test (start, finish);
         .NPCSel(NPCSel),
         .regPC(regPC),
         .instruction(instruction),
-        .pc(pc)
+        .pc(pc),
+        .PCWr(PCWr)
     );
 
     initial begin
@@ -37,6 +38,23 @@ module ifu_test (start, finish);
         reset = 1;
         #10 $display("      After reset, pc=%h == %h, instruction=%h == %h", pc, `CODE_SEG_PC + 'h0*4, instruction, `hex_0h);
         ifu_reset: assert(pc === `CODE_SEG_PC + 'h0*4 && instruction === `hex_0h);
+
+        // test PCWr
+        PCWr = 0;
+        $display("    PCWr test:");
+        reset = 1;
+        #10 $display("      After reset, pc=%h == %h, instruction=%h == %h", pc, `CODE_SEG_PC + 'h0*4, instruction, `hex_0h);
+        ifu_pcwr_0: assert(pc === `CODE_SEG_PC + 'h0*4 && instruction === `hex_0h);
+        reset = 0;
+        NPCSel = `NPC_SEL_PC_ADD_4; PCWr = 0;
+        #10 $display("      PCWr = %d, pc=%h == %h, instruction=%h == %h", PCWr, pc, `CODE_SEG_PC, instruction, `hex_0h);
+        ifu_pcwr_1: assert(pc === `CODE_SEG_PC + 'h1*4 && instruction === `hex_0h);
+        PCWr = 1;
+        #10 $display("      PCWr = %d, pc=%h == %h, instruction=%h == %h", PCWr,  pc, `CODE_SEG_PC + 'h1*4, instruction, `hex_1h);
+        ifu_pcwr_2: assert(pc === `CODE_SEG_PC + 'h1*4 && instruction === `hex_1h);
+        
+        
+        PCWr = 1;
 
         // test PC+4
         $display("    PC+4(NPCSel=0b00) test:");

@@ -5,7 +5,7 @@ module mips(clk, rst) ;
     input           rst; // reset
     
     // signals
-    wire ALUSrc, RegWr, MemWr;
+    wire ALUSrc, RegWr, MemWr, PCWr;
     wire [1:0] RegDst, Mem2Reg, NPCSel, EXTOp, FlagOp;
     wire [2:0] ALUOp;
 
@@ -38,7 +38,8 @@ module mips(clk, rst) ;
         .NPCSel(NPCSel),
         .regPC(a),
         .instruction(instruction),
-        .pc(PC)
+        .pc(PC),
+        .PCWr(PCWr)
     );
 
     GPR gpr(

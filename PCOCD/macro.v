@@ -54,7 +54,7 @@
 `define OPCODE_JAL 6'b000011
 
 // Signals
-`define SIGNAL_WIDTH 16
+`define SIGNAL_WIDTH 17
 
 `define REGDST_RT 2'b00
 `define REGDST_RD 2'b01

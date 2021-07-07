@@ -18,6 +18,7 @@ module ALU(x, y, ALUOp, ALUOut, shamt, Flag, NFlag);
             `ALU_OP_OR: ALUOut = x | y;
             `ALU_OP_LESS: ALUOut = {31'b0, x[31] ^ y[31] ^ (x < y)};
             `ALU_OP_B: ALUOut = y;
+            `ALU_OP_SAR: ALUOut = ($signed(y) >>> x[4:0]);
         endcase
 
         zero = ALUOut === 32'b0;

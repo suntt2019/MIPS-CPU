@@ -1,7 +1,7 @@
 `include "../macro.v"
 
-module IFU(clk, reset, NPCSel, regPC, instruction, pc);
-    input clk, reset;
+module IFU(clk, reset, NPCSel, regPC, instruction, pc, PCWr);
+    input clk, reset, PCWr;
     input [1:0] NPCSel;
     input [31:0] regPC;
     output [31:0] instruction;
@@ -14,7 +14,7 @@ module IFU(clk, reset, NPCSel, regPC, instruction, pc);
     always @(posedge clk or posedge reset) begin
         if(reset) begin
             pc = `CODE_SEG_PC;
-        end else begin
+        end else if(PCWr) begin
             pcAdd4 = pc+4;
             case(NPCSel)
                 `NPC_SEL_PC_ADD_4: pc = pcAdd4;

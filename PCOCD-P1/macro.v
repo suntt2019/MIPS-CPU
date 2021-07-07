@@ -14,6 +14,7 @@
 `define ALU_OP_OR 3'b011
 `define ALU_OP_LESS 3'b100
 `define ALU_OP_B 3'b101
+`define ALU_OP_SAR 3'b110
 `define ALU_OP_ZZ 3'bzzz
 
 // EXT
@@ -41,6 +42,7 @@
 `define FUNCT_SLT 6'b101010
 `define FUNCT_JR 6'b001000
 `define FUNCT_NOP 6'b000000
+`define FUNCT_SRAV 6'b000111
 `define FUNCT_ZZ 6'bzzzzzz
 
 `define OPCODE_ORI 6'b001101

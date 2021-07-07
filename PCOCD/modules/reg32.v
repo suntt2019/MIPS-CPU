@@ -5,7 +5,7 @@ module Reg32(clk, reset, we, in, out);
     input [31:0] in;
     output reg [31:0] out;
 
-    always @(posedge clk) begin
+    always @(posedge clk or posedge reset) begin
         if(reset) begin
             out = 32'b0;
         end else if(we) begin

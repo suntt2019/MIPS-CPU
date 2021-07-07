@@ -193,6 +193,17 @@ module instruction_test (start, finish);
         #10 $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, 32'h1234_5678);
         jr_pc: assert(mips1.PC === 32'h1234_5678);
+        
+        // SRAV Test
+        $display("    SRAV Test:"); reset = 1; clk = 0; t = 1;
+        instr = 32'h01285007; #10 $display("      Load instruction: srav $10, $8, $9 (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        $display("      Ctr: srav=%d, signals=%b", mips1.ctr.srav, mips1.ctr.signals);
+        mips1.gpr.regs[8] = 32'h8234_5678; $display("      Set regs[8]<-32'h8234_5678(%h)", mips1.gpr.regs[8]);
+        mips1.gpr.regs[9] = 32'b111000010001; $display("      Set regs[9]<-10(%h)", mips1.gpr.regs[9]);
+        #10 $display("      --==Execute==--");
+        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'hffff_c11a);
+        srav_reg10: assert(mips1.gpr.regs[10] === 32'hffff_c11a);
 
         $display(" *Instruction test finished.");
         finish = 1;

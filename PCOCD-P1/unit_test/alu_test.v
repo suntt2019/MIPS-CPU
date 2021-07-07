@@ -93,6 +93,13 @@ module alu_test (start, finish);
             y, y, ALUOut, ALUOut, expected_out, expected_out, Flag, NFlag, expected_nflag
         );
         alu_b: assert(ALUOut === expected_out && NFlag === expected_nflag );
+        
+        x = 32'b1111_000_10000; y = 32'h1234_5678; ALUOp = `ALU_OP_SAR; shamt = 6'b0; expected_out = 32'h0000_1234; Flag = 32'b0; expected_nflag = 32'b00;
+        #1 $display(
+            "    SAR test:   %h(%d) >>> %h(%d) = %h(%d) == %h(%d), Flag = %h, NFlag = %h == %h",
+            x, x, y, y, ALUOut, ALUOut, expected_out, expected_out, Flag, NFlag, expected_nflag
+        );
+        alu_sar: assert(ALUOut === expected_out && NFlag === expected_nflag );
 
         $display(" *ALU test finished.");
         finish = 1;

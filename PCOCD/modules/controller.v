@@ -1,9 +1,9 @@
 `include "../macro.v"
 
-module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp);
+module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp, PCWr);
     input [5:0] opcode, funct;
     input [31:0] NFlag;
-    output ALUSrc, RegWr, MemWr;
+    output ALUSrc, RegWr, MemWr, PCWr;
     output [1:0] RegDst, Mem2Reg, NPCSel, EXTOp, FlagOp;
     output [2:0] ALUOp;
 
@@ -53,6 +53,6 @@ module controller(opcode, funct, NFlag, RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, N
         if (nop)   signals = {`REGDST_ZZ, `ALUSRC_ZZ, `MEM2REG_ZZ, `WR_DIS, `WR_DIS, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `ALU_OP_ZZ, `FLAG_OP_DIS};
     end
 
-    assign {RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp} = signals;
+    assign {RegDst, ALUSrc, Mem2Reg, RegWr, MemWr, NPCSel, EXTOp, ALUOp, FlagOp, PCWr} = signals;
 
 endmodule
