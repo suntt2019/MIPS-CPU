@@ -145,8 +145,8 @@ module instruction_test (start, finish);
         $display("      Ctr: addi=%d, signals=%b", mips1.ctr.addi, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h7fff_ffff; $display("      Set regs[8]<-32'h7fff_ffff(%h)", mips1.gpr.regs[8]);
         #10 $display("      --==Execute==--");
-        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h8000_0063);
-        addi_of_reg10: assert(mips1.gpr.regs[10] === 32'h8000_0063);
+        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h0000_0000);
+        addi_of_reg10: assert(mips1.gpr.regs[10] === 32'h0000_0000);
         $display("      Check regs[30]=%h == %h", mips1.gpr.regs[30], 32'b1);
         addi_of_reg_flag: assert(mips1.gpr.regs[30] === 32'b1);
         
