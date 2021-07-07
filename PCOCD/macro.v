@@ -26,6 +26,10 @@
 `define REG_ADDR_FLAG 30
 `define REG_ADDR_RET 31
 
+// BAC
+`define BAC_OP_WORD 1'b0
+`define BAC_OP_BYTE 1'b1
+
 // Flag
 `define FLAG_OP_DIS 2'b00
 `define FLAG_OP_SET 2'b01
@@ -54,7 +58,7 @@
 `define OPCODE_JAL 6'b000011
 
 // Signals
-`define SIGNAL_WIDTH 17
+`define SIGNAL_WIDTH 18
 
 `define REGDST_RT 2'b00
 `define REGDST_RD 2'b01

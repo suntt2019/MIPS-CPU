@@ -5,7 +5,7 @@ module mips(clk, rst) ;
     input           rst; // reset
     
     // signals
-    wire ALUSrc, RegWr, MemWr, PCWr;
+    wire ALUSrc, RegWr, MemWr, PCWr, BACOp;
     wire [1:0] RegDst, Mem2Reg, NPCSel, EXTOp, FlagOp;
     wire [2:0] ALUOp;
 
@@ -28,9 +28,10 @@ module mips(clk, rst) ;
     reg [31:0] ALUIn, GPRIn;
 
     // Intermediate variables
-    wire [31:0] a, b, ALUOut, EXTOut, DMOut, Flag, NFlag;
+    wire [31:0] a, b, ALUOut, EXTOut, DMOut, Flag, NFlag, CvtdALUOut, CvtdB, CvtdDMOut;
+    // Cvtd = Converted
     wire [9:0] DMAddr;
-    assign DMAddr = ALUOut[9:0];
+    assign DMAddr = CvtdALUOut[9:0];
 
     IFU ifu(
         .clk(clk),
@@ -69,7 +70,7 @@ module mips(clk, rst) ;
 
     dm_1k dm(
         .clk(clk),
-        .din(b),
+        .din(CvtdB),
         .we(MemWr),
         .dout(DMOut),
         .addr(DMAddr)
@@ -79,6 +80,16 @@ module mips(clk, rst) ;
         .EXTOp(EXTOp),
         .in(imm),
         .out(EXTOut)
+    );
+
+    BAC bac(
+        .BACOp(BACOp),
+        .Ain(ALUOut),
+        .Din1(b),
+        .Din2(DMOut),
+        .Aout(CvtdALUOut),
+        .Dout1(CvtdB),
+        .Dout2(CvtdDMOut)
     );
 
     controller ctr(
@@ -94,7 +105,8 @@ module mips(clk, rst) ;
         .EXTOp(EXTOp),
         .ALUOp(ALUOp),
         .FlagOp(FlagOp),
-        .PCWr(PCWr)
+        .PCWr(PCWr),
+        .BACOp(BACOp)
     );
 
     // MUX {rt, rd, `REG_ADDR_RET}-[RegDst]->AWr
@@ -114,11 +126,11 @@ module mips(clk, rst) ;
         endcase
     end
 
-    // MUX {ALUOut, DMOut, PC}-[Mem2Reg]->GPRIn
-    always @(Mem2Reg or ALUOut or DMOut or PC) begin
+    // MUX {ALUOut, CvtdDMOut, PC}-[Mem2Reg]->GPRIn
+    always @(Mem2Reg or ALUOut or CvtdDMOut or PC) begin
         case(Mem2Reg)
             `MEM2REG_ALU: GPRIn = ALUOut;
-            `MEM2REG_RAM: GPRIn = DMOut;
+            `MEM2REG_RAM: GPRIn = CvtdDMOut;
             `MEM2REG_RET: GPRIn = PC+4;
         endcase
     end
