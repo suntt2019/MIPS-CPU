@@ -20,7 +20,8 @@ module BAC(BACOp, Aout, Ain, Din1, Dout1, Din2, Dout2);
                 AddrInWord = {3'b0, Ain[1:0]};
                 Aout = {Ain[31:2], 2'b0};
                 byte2 = Din2 >> ( AddrInWord << 3 );
-                Dout1 = (Din1[7:0] << ( AddrInWord << 3 )) | Din2;
+                if(Din2===32'bx) Dout1 = (Din1[7:0] << ( AddrInWord << 3 )); 
+                else Dout1 = (Din1[7:0] << ( AddrInWord << 3 )) | Din2;
                 Dout2 = {{24{byte2[7]}}, byte2[7:0]};
             end
         endcase
