@@ -48,31 +48,39 @@
 `define OPCODE_JAL 6'b000011
 
 // Statuses
-`define STATUS_WIDTH 4
-`define STATUS_COUNT 10
+`define STATUS_WIDTH 5
+`define STATUS_COUNT 23
 
-`define STATUS_INVALID  4'h0
-`define STATUS_0_FETCH  4'h1
-`define STATUS_1_DCDRF 4'h2
-`define STATUS_2_MA     4'h3
-`define STATUS_3_0_MR_W  4'h4
-`define STATUS_3_1_MR_B
-`define STATUS_4_0_MEMWB_W  4'h5
-`define STATUS_4_1_MEMWB_B
-`define STATUS_5_0_MW_W     4'h6
-`define STATUS_5_1_MW_B
-`define STATUS_6_0_EXE_ADD    4'h7
-`define STATUS_6_1_EXE_SUB
-`define STATUS_7_0_0_ALUWB_I_FD  4'h8
-`define STATUS_7_0_1_ALUWB_I_FS  4'h8
-`define STATUS_7_1_0_ALUWB_R_FD
-`define STATUS_8_0_BRANCH_BEQ 4'h9
-`define STATUS_9_0_JMP_BEQ    4'ha
-`define STATUS_9_1_JMP_J
-`define STATUS_9_2_JMP_REG
-`define STATUS_A_RETRW
-`define STATUS_B_0_EXEI_OR
-`define STATUS_B_1_EXEI_LUI
+// S1: Fetch instruction
+`define S1          5'h1
+// S2: Decode & Read registers
+`define S2          5'h2
+// S3: Calculate(ALU+EXT)
+`define S3_EXE_ADD  5'h3
+`define S3_EXE_SUB  5'h4
+`define S3_EXE_SLT  5'h5
+`define S3_EXEI_ADD 5'h6
+`define S3_EXEI_OR  5'h7
+`define S3_EXEI_LUI 5'h8
+`define S3_BR_BEQ   5'h9
+// S4: Read/Write memeory
+`define S4_RD_WORD  5'ha
+`define S4_RD_BYTE  5'hb
+`define S4_WR_WORD  5'hc
+`define S4_WR_BYTE  5'hd
+// S5: Write back registers
+`define S5_DM_WORD  5'he
+`define S5_DM_BYTE  5'hf
+`define S5_ALU_I_FD 5'h10
+`define S5_ALU_I_FS 5'h11
+`define S5_ALU_R_FD 5'h12
+`define S5_RET      5'h13
+// S6: Jump
+`define S6_BEQ      5'h14
+`define S6_J        5'h15
+`define S6_REG      5'h16
+// Other
+`define S_INVALID   5'h00
 
 // Signals
 `define SIGNAL_WIDTH 18
