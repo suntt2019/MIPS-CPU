@@ -147,8 +147,8 @@ module instruction_test(start, finish);
         $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'b0);
         addi_of_reg10: assert(mips1.gpr.regs[10] === 32'b0);
-        $display("      Check regs[30]=%h == %h", mips1.gpr.regs[30], 32'b1);
-        addi_of_reg_flag: assert(mips1.gpr.regs[30] === 32'b1);
+        $display("      Check regs[`REG_ADDR_FLAG]=%h == %h", mips1.gpr.regs[`REG_ADDR_FLAG], 32'b1);
+        addi_of_reg_flag: assert(mips1.gpr.regs[`REG_ADDR_FLAG] === 32'b1);
         
         // ADDIU Test
         $display("    ADDIU Test:"); reset = 1; clk = 0; t = 1;

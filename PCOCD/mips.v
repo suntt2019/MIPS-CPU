@@ -6,7 +6,7 @@ module mips(clk, rst) ;
     
     // signals
     // Write enable signals
-    wire PCWr, IRWr, RegWr, MemWr;
+    wire PCWr, IRWr, RegWr, MemWr, ALUOWr;
     // MUX switching signals
     wire ALUSrc;
     wire [1:0] RegDst, Mem2Reg; 
@@ -119,7 +119,8 @@ module mips(clk, rst) ;
         .FlagOp(FlagOp),
         .PCWr(PCWr),
         .BACOp(BACOp),
-        .IRWr(IRWr)
+        .IRWr(IRWr),
+        .ALUOWr(ALUOWr)
     );
 
     // Register IR
@@ -162,7 +163,7 @@ module mips(clk, rst) ;
     Reg32 regALUOut(
         .clk(clk),
         .reset(rst),
-        .we(`WR_EN),
+        .we(ALUOWr),
         .in(ALUOut),
         .out(StoredALUOut)
     );
@@ -171,7 +172,7 @@ module mips(clk, rst) ;
     Reg32 regNFlag(
         .clk(clk),
         .reset(rst),
-        .we(`WR_EN),
+        .we(ALUOWr),
         .in(NFlag),
         .out(StoredNFlag)
     );

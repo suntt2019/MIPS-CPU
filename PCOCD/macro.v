@@ -73,6 +73,7 @@
 `define S3_BR_BEQ   5'h9
 `define S3_EXE_LTZ  5'h17
 `define S3_BR_BLTZAL 5'h18
+`define S3_CK_OF    5'h19
 // S4: Read/Write memeory
 `define S4_RD_WORD  5'ha
 `define S4_RD_BYTE  5'hb
@@ -93,7 +94,7 @@
 `define S_INVALID   5'h00
 
 // Signals
-`define SIGNAL_WIDTH 19
+`define SIGNAL_WIDTH 20
 
 // Write enable signals
 `define WR_EN 1'b1
