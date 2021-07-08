@@ -35,7 +35,7 @@ module p2_test(start, finish);
         for(i=0; i<100 && mips1.instruction !== 32'bx; i=i+1) begin
             #1 $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b",
              t, i, mips1.PC, mips1.StoredInstruction, mips1.ctr.status, mips1.ctr.signals);
-            if(i===37)$stop;
+            // if(i===37)$stop;
             LastAWr = mips1.AWr;
             #9;
             while(mips1.ctr.status !== `S1) #10;

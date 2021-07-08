@@ -8,7 +8,7 @@ module ifu_test(start, finish);
     // tested module I/O
     reg clk, reset, PCWr;
     reg [1:0] NPCSel;
-    reg [31:0] regPC;
+    reg [31:0] regPC, StoredInstruction;
     wire [31:0] instruction;
     wire [31:0] pc;
 
@@ -23,7 +23,8 @@ module ifu_test(start, finish);
         .regPC(regPC),
         .instruction(instruction),
         .pc(pc),
-        .PCWr(PCWr)
+        .PCWr(PCWr),
+        .StoredInstruction(StoredInstruction)
     );
 
     initial begin
@@ -128,5 +129,7 @@ module ifu_test(start, finish);
     always begin
         #5 clk = ~clk;
     end
+
+    assign StoredInstruction = instruction;
 
 endmodule
