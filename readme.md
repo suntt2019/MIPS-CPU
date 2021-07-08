@@ -6,6 +6,7 @@
 * 计算机组成原理大作业（[PCOA](PCOA)）
 * 计算机组成原理课设
   * Project1：单周期（[PCOCD-P1](PCOCD-P1)）
+  * Project2：多周期（[PCOCD-P2](PCOCD-P2)）
 
 
 
