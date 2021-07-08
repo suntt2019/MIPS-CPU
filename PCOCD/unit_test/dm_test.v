@@ -37,7 +37,7 @@ module dm_test(start, finish);
             dm_wr: assert(din === dout);
         end
 
-        $display("Read test.");
+        $display("    Read test.");
         we = 0;
         for (i=0;i<10;i=i+1) begin
             addr = (9-i)*4;

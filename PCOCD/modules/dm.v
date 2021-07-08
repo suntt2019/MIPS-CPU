@@ -5,10 +5,19 @@ module dm_1k(addr, din, we, clk, dout);
     input           clk;   // clock
     output  [31:0]  dout;  // 32-bit memory output
     reg     [7:0]  dm[1023:0];
+    integer i;
+
+    initial begin
+        for(i=0;i<'h800;i=i+1) begin
+            dm[i] = 8'b0;
+        end
+    end
 
     always @(posedge clk) begin
         if(we) begin
-            $display("dm[%d]=%h",addr,din);
+            `ifdef DEBUG
+            $display("DM: dm[%d]=%h",addr,din);
+            `endif
             dm[addr] = din[7:0];
             dm[addr+1] = din[15:8];
             dm[addr+2] = din[23:16];

@@ -1,4 +1,5 @@
-`define DEBUG
+// `define DEBUG
+
 // PC
 `define CODE_SEG_PC 32'h0000_3000
 

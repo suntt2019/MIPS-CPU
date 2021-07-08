@@ -26,16 +26,18 @@ module p1_test(start, finish);
         $display(" *P1 test started.");
         
         clk = 0; t = 1; reset = 1;
-        $display("      Read from file");
+        $display("      Read from file.");
         $readmemh(`P1_TEST_HEX_FILENAME, mips1.ifu.im.im);
         #10 $display("      Reset finished."); reset = 0;
+        `ifdef DEBUG
         $stop;
+        `endif
         $display("      Start running");
         LastAWr = 0;
         for(i=0; i<100 && mips1.instruction !== 32'bx; i=i+1) begin
             #1 $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b",
              t, i, mips1.PC, mips1.StoredInstruction, mips1.ctr.status, mips1.ctr.signals);
-            if(i===43)$stop;
+            // if(i===43)$stop;
             LastAWr = mips1.AWr;
             #9;
             while(mips1.ctr.status !== `S1) #10;
@@ -57,7 +59,7 @@ module p1_test(start, finish);
     end
 
     always begin
-        #1 t = t+1;
+        #1 if(~finish) t = t+1;
     end
 
 endmodule

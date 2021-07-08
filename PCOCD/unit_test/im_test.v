@@ -21,7 +21,7 @@ module im_test(start, finish);
     initial begin
         finish = 0; #1 while(~start) #1;
         $display(" *IM test started.");
-        $display("    Read from file");
+        $display("    Read from file.");
         $readmemh(`unit_test_hex_filename, im1.im);
         $display("    Check memory");
         i = 0;

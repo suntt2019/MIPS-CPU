@@ -21,7 +21,7 @@ module instruction_test(start, finish);
     initial begin
         finish = 0; #1 while(~start) #1;
         $display(" *Instruction test started.");
-        
+
         // ADDU Test
         $display("    ADDU Test:"); reset = 1; clk = 0; t = 1;
         instr = 32'h01095021; #10 $display("      Load instruction: addu $10, $8, $9 (im[%h]=%h)", mips1.PC, mips1.instruction);
@@ -29,7 +29,7 @@ module instruction_test(start, finish);
         $display("      Ctr: addu=%d, signals=%b", mips1.ctr.addu, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h1234_5678; $display("      Set regs[8]<-32'h1234_5678(%h)", mips1.gpr.regs[8]);
         mips1.gpr.regs[9] = 32'h7654_3210; $display("      Set regs[9]<-32'h7654_3210(%h)", mips1.gpr.regs[9]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h8888_8888);
         addu_reg10: assert(mips1.gpr.regs[10] === 32'h8888_8888);
         
@@ -40,7 +40,7 @@ module instruction_test(start, finish);
         $display("      Ctr: subu=%d, signals=%b", mips1.ctr.subu, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h1234_5678; $display("      Set regs[8]<-32'h1234_5678(%h)", mips1.gpr.regs[8]);
         mips1.gpr.regs[9] = 32'h7654_3210; $display("      Set regs[9]<-32'h7654_3210(%h)", mips1.gpr.regs[9]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h9be0_2468);
         subu_reg10: assert(mips1.gpr.regs[10] === 32'h9be0_2468);
         
@@ -49,7 +49,7 @@ module instruction_test(start, finish);
         instr = 32'h340a0064; #10 $display("      Load instruction: ori $10, $0, 100 (im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: ori=%d, signals=%b", mips1.ctr.ori, mips1.ctr.signals);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h64);
         ori_reg10: assert(mips1.gpr.regs[10] === 32'h64);
         
@@ -61,7 +61,7 @@ module instruction_test(start, finish);
         mips1.gpr.regs[8] = 24; $display("      Set regs[8]<-24(%h)", mips1.gpr.regs[8]);
         {mips1.dm.dm[31],mips1.dm.dm[30],mips1.dm.dm[29],mips1.dm.dm[28]} = 32'h1234_5678;
           $display("      Set dm[28]<-32'h1234_5678(%h)", {mips1.dm.dm[31],mips1.dm.dm[30],mips1.dm.dm[29],mips1.dm.dm[28]});
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h1234_5678);
         lw_reg10: assert(mips1.gpr.regs[10] === 32'h1234_5678);
         
@@ -72,7 +72,7 @@ module instruction_test(start, finish);
         $display("      Ctr: sw=%d, signals=%b", mips1.ctr.sw, mips1.ctr.signals);
         mips1.gpr.regs[8] = 24; $display("      Set regs[8]<-24(%h)", mips1.gpr.regs[8]);
         mips1.gpr.regs[9] = 32'h3456_7890; $display("      Set regs[9]<-32'h3456_7890(%h)", mips1.gpr.regs[9]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check dm[16]=%h == %h", {mips1.dm.dm[19],mips1.dm.dm[18],mips1.dm.dm[17],mips1.dm.dm[16]}, 32'h3456_7890);
         sw_dm16: assert({mips1.dm.dm[19],mips1.dm.dm[18],mips1.dm.dm[17],mips1.dm.dm[16]} === 32'h3456_7890);
         
@@ -83,7 +83,7 @@ module instruction_test(start, finish);
         $display("      Ctr: beq=%d, signals=%b", mips1.ctr.beq, mips1.ctr.signals);
         mips1.gpr.regs[8] = 100; $display("      Set regs[8]<-100(%h)", mips1.gpr.regs[8]);
         mips1.gpr.regs[9] = 100; $display("      Set regs[9]<-100(%h)", mips1.gpr.regs[9]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, 32'h0000_300c);
         beq_jmp_pc: assert(mips1.PC === 32'h0000_300c);
         
@@ -94,7 +94,7 @@ module instruction_test(start, finish);
         $display("      Ctr: beq=%d, signals=%b", mips1.ctr.beq, mips1.ctr.signals);
         mips1.gpr.regs[8] = 100; $display("      Set regs[8]<-100(%h)", mips1.gpr.regs[8]);
         mips1.gpr.regs[9] = 200; $display("      Set regs[9]<-200(%h)", mips1.gpr.regs[9]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, `CODE_SEG_PC+4);
         beq_njmp_pc: assert(mips1.PC === `CODE_SEG_PC+4);
 
@@ -103,7 +103,7 @@ module instruction_test(start, finish);
         instr = 32'h00000000; #10 $display("      Load instruction: nop (im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: nop=%d, signals=%b", mips1.ctr.nop, mips1.ctr.signals);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, `CODE_SEG_PC+4);
         nop_pc: assert(mips1.PC === `CODE_SEG_PC+4);
         
@@ -113,7 +113,7 @@ module instruction_test(start, finish);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: lui=%d, signals=%b", mips1.ctr.lui, mips1.ctr.signals);
         mips1.gpr.regs[10] = 32'h5678; $display("      Set regs[8]<-32'h5678(%h)", mips1.gpr.regs[10]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h1234_0000);
         lui_reg10: assert(mips1.gpr.regs[10] === 32'h1234_0000);
         
@@ -122,7 +122,7 @@ module instruction_test(start, finish);
         instr = 32'h08000c08; #10 $display("      Load instruction: j j_test(im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: j=%d, signals=%b", mips1.ctr.j, mips1.ctr.signals);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, 32'h0000_3020);
         j_pc: assert(mips1.PC === 32'h0000_3020);
         
@@ -132,7 +132,7 @@ module instruction_test(start, finish);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: addi=%d, signals=%b", mips1.ctr.addi, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h1234_5678; $display("      Set regs[8]<-32'h1234_5678(%h)", mips1.gpr.regs[8]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h1234_5614);
         addi_nof_reg10: assert(mips1.gpr.regs[10] === 32'h1234_5614);
         $display("      Check regs[`REG_ADDR_FLAG]=%h == %h", mips1.gpr.regs[`REG_ADDR_FLAG], 32'b0);
@@ -144,9 +144,9 @@ module instruction_test(start, finish);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: addi=%d, signals=%b", mips1.ctr.addi, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h7fff_ffff; $display("      Set regs[8]<-32'h7fff_ffff(%h)", mips1.gpr.regs[8]);
-        #10 $display("      --==Execute==--");
-        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h8000_0063);
-        addi_of_reg10: assert(mips1.gpr.regs[10] === 32'h8000_0063);
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
+        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'b0);
+        addi_of_reg10: assert(mips1.gpr.regs[10] === 32'b0);
         $display("      Check regs[30]=%h == %h", mips1.gpr.regs[30], 32'b1);
         addi_of_reg_flag: assert(mips1.gpr.regs[30] === 32'b1);
         
@@ -156,7 +156,7 @@ module instruction_test(start, finish);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: addiu=%d, signals=%b", mips1.ctr.addiu, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h7fff_ffff; $display("      Set regs[8]<-32'h7fff_ffff(%h)", mips1.gpr.regs[8]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h8000_0063);
         addiu_reg10: assert(mips1.gpr.regs[10] === 32'h8000_0063);
         $display("      Check regs[`REG_ADDR_FLAG]=%h == %h", mips1.gpr.regs[`REG_ADDR_FLAG], 32'b0);
@@ -169,7 +169,7 @@ module instruction_test(start, finish);
         $display("      Ctr: slt=%d, signals=%b", mips1.ctr.slt, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h1234_5678; $display("      Set regs[8]<-32'h1234_5678(%h)", mips1.gpr.regs[8]);
         mips1.gpr.regs[9] = 32'h7654_3210; $display("      Set regs[9]<-32'h7654_3210(%h)", mips1.gpr.regs[9]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'b1);
         slt_reg10: assert(mips1.gpr.regs[10] === 32'b1);
 
@@ -178,7 +178,7 @@ module instruction_test(start, finish);
         instr = 32'h0c000c08; #10 $display("      Load instruction: jal j_test(im[%h]=%h)", mips1.PC, mips1.instruction);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: jal=%d, signals=%b", mips1.ctr.jal, mips1.ctr.signals);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, 32'h0000_3020);
         jal_pc: assert(mips1.PC === 32'h0000_3020);
         $display("      Check regs[`REG_ADDR_RET]=%h == %h", mips1.gpr.regs[`REG_ADDR_RET], `CODE_SEG_PC+4);
@@ -190,7 +190,7 @@ module instruction_test(start, finish);
         #10 $display("      Reset finished."); reset = 0;
         $display("      Ctr: jr=%d, signals=%b", mips1.ctr.jr, mips1.ctr.signals);
         mips1.gpr.regs[8] = 32'h1234_5678; $display("      Set regs[8]<-32'h1234_5678(%h)", mips1.gpr.regs[8]);
-        #10 $display("      --==Execute==--");
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, 32'h1234_5678);
         jr_pc: assert(mips1.PC === 32'h1234_5678);
 
@@ -211,7 +211,7 @@ module instruction_test(start, finish);
     end
 
     always begin
-        #1 t = t+1;
+        #1 if(~finish) t = t+1;
     end
 
 endmodule

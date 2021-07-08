@@ -19,9 +19,13 @@ module BAC(BACOp, Aout, Ain, Din1, Dout1, Din2, Dout2);
             `BAC_OP_BYTE: begin
                 AddrInWord = {3'b0, Ain[1:0]};
                 Aout = {Ain[31:2], 2'b0};
+                case (AddrInWord)
+                    5'b00: Dout1 = { Din2[31:8] , Din1[7:0] };
+                    5'b01: Dout1 = { Din2[31:16] , Din1[7:0], Din2[7:0] };
+                    5'b10: Dout1 = { Din2[31:24] , Din1[7:0], Din2[15:0] };
+                    5'b11: Dout1 = { Din1[7:0], Din2[23:0] };
+                endcase
                 byte2 = Din2 >> ( AddrInWord << 3 );
-                if(Din2===32'bx) Dout1 = (Din1[7:0] << ( AddrInWord << 3 )); 
-                else Dout1 = (Din1[7:0] << ( AddrInWord << 3 )) | Din2;
                 Dout2 = {{24{byte2[7]}}, byte2[7:0]};
             end
         endcase

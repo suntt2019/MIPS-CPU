@@ -14,6 +14,3 @@ module Reg32(clk, reset, we, in, out);
         end
     end
 endmodule
-
-// module Reg32Eff(clk, reset, in, out);
-//     input 

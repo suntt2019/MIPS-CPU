@@ -48,7 +48,6 @@ module controller(
 
     always @(posedge clk or posedge reset) begin
         if(reset) begin
-            status = `S1;
             //    Instruction       S1      S2      S3              S4              S5              S6          S1
             steps[`INSTR_ADDU]  ={  `S1,    `S2,    `S3_EXE_ADD,                    `S5_ALU_R_FD,               `S1};
             steps[`INSTR_SUBU]  ={  `S1,    `S2,    `S3_EXE_SUB,                    `S5_ALU_R_FD,               `S1};
@@ -74,6 +73,14 @@ module controller(
                     steps[i] = (steps[i] >> `STATUS_WIDTH);
                 end
             end
+
+            status = `S2;
+            signals = {
+                `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+            };
+
             `ifdef DEBUG
             $display("Status transition matrix(each-row=instr\\each-col=status-from):");
             $write("i\\sf");
@@ -113,10 +120,11 @@ module controller(
                 $display("Exception: Invalid instruction (opcode=%h, funct=%h)", opcode, funct);
                 $stop;
             end
-            $write("        Ready to execute: status=%h(signals=%b)-[Instr=%h]->Next:", status, signals, InstrID);
+
+            if(status === `S1) $write("        Controller: status=%h(signals=%b)-[Instr=?(delayed)]->", status, signals);
+            else $write("        Controller: status=%h(signals=%b)-[Instr=%h]->", status, signals, InstrID);
+            
             if(status === `S3_BR_BEQ) begin
-                // $display("beq, NFlag=%b",NFlag);
-                // $stop;
                 status = NFlag[`FLAG_BIT_ZERO] ? `S6_BEQ : `S1;
             end else if(status === `S3_BR_BLTZAL) begin
                 status = NFlag[`FLAG_BIT_ZERO] ? `S1 : `S5_RET;
@@ -263,7 +271,6 @@ module controller(
                     $stop;
                 end
             endcase
-            
             
             $display("%h(signals=%b)", status, signals);
             // $stop;

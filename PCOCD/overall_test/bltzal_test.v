@@ -1,9 +1,9 @@
 `timescale 1ns/ 1ns
 `include "../macro.v"
-`define P2_TEST_HEX_FILENAME "../overall_test/p2-test.txt"
-`define P2_TEST_REGS_FILENAME "../overall_test/p2-test-regs.txt"
+`define BLTZAL_TEST_HEX_FILENAME "../overall_test/bltzal-test.txt"
+`define BLTZAL_TEST_REGS_FILENAME "../overall_test/bltzal-test-regs.txt"
 
-module p2_test(start, finish);
+module bltzal_test(start, finish);
     input start;
     output reg finish;
 
@@ -23,11 +23,11 @@ module p2_test(start, finish);
 
     initial begin
         finish = 0; #1 while(~start) #1;
-        $display(" *P2 test started.");
+        $display(" *BLTZAL test started.");
         
         clk = 0; t = 1; reset = 1;
         $display("      Read from file.");
-        $readmemh(`P2_TEST_HEX_FILENAME, mips1.ifu.im.im);
+        $readmemh(`BLTZAL_TEST_HEX_FILENAME, mips1.ifu.im.im);
         #10 $display("      Reset finished."); reset = 0;
         `ifdef DEBUG
         $stop;
@@ -45,12 +45,12 @@ module p2_test(start, finish);
         $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b, last instr: regs[%d]=%h",
          t, i, mips1.PC, mips1.StoredInstruction, mips1.ctr.status, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
             
-        $readmemh(`P2_TEST_REGS_FILENAME, expectedRegs);
+        $readmemh(`BLTZAL_TEST_REGS_FILENAME, expectedRegs);
         for(i=0;i<32;i=i+1) begin
             $display("      regs[%d]=%h == %h",i,mips1.gpr.regs[i], expectedRegs[i]);
-            p2_reg: assert(mips1.gpr.regs[i] === expectedRegs[i]);
+            bltzal_reg: assert(mips1.gpr.regs[i] === expectedRegs[i]);
         end
-        $display(" *P2 test finished.");
+        $display(" *BLTZAL test finished.");
         finish = 1;
     end
 

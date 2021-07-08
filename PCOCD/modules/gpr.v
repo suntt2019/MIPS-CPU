@@ -22,8 +22,10 @@ module GPR(clk, reset, WE, FlagOp, A1, A2, AWr, RD1, RD2, Din, Flag, NFlag);
         end else begin
             if((FlagOp === `FLAG_OP_DIS || FlagOp === `FLAG_OP_SET_AND_WR) && WE && AWr !== 4'b0) begin
                 regs[AWr] = Din;
-                $display("WE=%d, regs[%d]<-%h",WE, AWr, Din);
+                `ifdef DEBUG
+                $display("GPR: WE=%d, regs[%d]<-%h",WE, AWr, Din);
                 // $stop;
+                `endif
             end
             if(FlagOp === `FLAG_OP_SET || FlagOp === `FLAG_OP_SET_AND_WR) begin
                 regs[`REG_ADDR_FLAG] = NFlag;

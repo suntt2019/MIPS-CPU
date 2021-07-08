@@ -35,8 +35,8 @@ module bac_test(start, finish);
         
         BACOp = `BAC_OP_BYTE; Ain = 'h41; Din1 = 32'h1234_5678; Din2 = 32'h7890_1234;
         #1 $display("    Byte test: Ain=%h, Aout=%h == %h, Din1=%h, Dout1=%h == %h, Din2=%h, Dout2=%h == %h",
-         Ain, Aout, 'h10, Din1, Dout1, 'h56, Din2, Dout2, 'h12);
-        bac_byte: assert(Aout === 'h10 && Dout1 === 'h56 && Dout2 === 'h12);
+         Ain, Aout, 'h40, Din1, Dout1, 'h7890_7834, Din2, Dout2, 'h12);
+        bac_byte: assert(Aout === 'h40 && Dout1 === 'h7890_7834 && Dout2 === 'h12);
 
         $display(" *BAC test finished.");
         finish = 1;

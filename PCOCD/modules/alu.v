@@ -29,7 +29,9 @@ module ALU(x, y, ALUOp, ALUOut, shamt, Flag, NFlag);
         if ((ALUOp === `ALU_OP_ADD || ALUOp === `ALU_OP_SUB) && overflow) begin
             NFlag[`FLAG_BIT_OVERFLOW] = overflow;
         end
+        `ifdef DEBUG
         $display("Gen flag: %b, ALUOp=%b, x=%d, y=%d", NFlag, ALUOp, x, y);
+        `endif
     end
 
 endmodule
