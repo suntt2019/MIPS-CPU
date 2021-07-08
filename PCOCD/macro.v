@@ -146,3 +146,22 @@
 `define ALU_OP_B 3'b101
 `define ALU_OP_LTZ 3'b110
 `define ALU_OP_ZZ 3'bzzz
+
+
+// Devices
+// TC
+`define TC_REG_CTRL 2'h0
+`define TC_REG_PST  2'h1
+`define TC_REG_CNT  2'h2
+
+`define TC_IM_EN    1'b1
+`define TC_IM_DIS   1'b0
+
+`define TC_MODE_0   2'b00
+`define TC_MODE_1   2'b01
+
+`define TC_EN       1'b1
+`define TC_DIS      1'b0
+
+`define IRQ_EN      1'b1
+`define IRQ_DIS     1'b0
