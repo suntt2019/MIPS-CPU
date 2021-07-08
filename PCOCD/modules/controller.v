@@ -54,7 +54,7 @@ module controller(
             steps[`INSTR_ORI]   ={  `S1,    `S2,    `S3_EXEI_OR,                    `S5_ALU_I_FD,               `S1};
             steps[`INSTR_LW]    ={  `S1,    `S2,    `S3_EXEI_ADD,   `S4_RD_WORD,    `S5_DM_WORD,                `S1};
             steps[`INSTR_SW]    ={  `S1,    `S2,    `S3_EXEI_ADD,   `S4_WR_WORD,                                `S1};
-            steps[`INSTR_BEQ]   ={  `S1,    `S2,    `S3_EXE_SUB,    `S3_BR_BEQ,                     `S6_BEQ,    `S1}; //judge
+            steps[`INSTR_BEQ]   ={  `S1,    `S2,    `S3_EXE_SUB,    `S3_BR_BEQ,                     `S6_BEQ,    `S1};
             steps[`INSTR_J]     ={  `S1,    `S2,                                                    `S6_J,      `S1};
             steps[`INSTR_LUI]   ={  `S1,    `S2,    `S3_EXEI_LUI,                   `S5_ALU_I_FD,               `S1};
             steps[`INSTR_ADDI]  ={  `S1,    `S2,    `S3_EXEI_ADD,                   `S5_ALU_I_FS,               `S1};
