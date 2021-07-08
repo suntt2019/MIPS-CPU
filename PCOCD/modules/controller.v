@@ -15,7 +15,7 @@ module controller(
     output [2:0] ALUOp
 );
 
-    wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr, nop, lb, sb;
+    wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr, nop, lb, sb, bltzal;
     reg [`SIGNAL_WIDTH:1] signals;
     reg [`STATUS_WIDTH:1] status;
     reg [`STATUS_WIDTH*`STATUS_COUNT:1] steps[`INSTR_COUNT:1];
@@ -41,6 +41,7 @@ module controller(
     assign jal = opcode === `OPCODE_JAL;
     assign lb = opcode === `OPCODE_LB;
     assign sb = opcode === `OPCODE_SB;
+    assign bltzal = opcode === `OPCODE_BLTZAL;
 
     assign overflow = NFlag[`FLAG_BIT_OVERFLOW];
     assign zero = NFlag[`FLAG_BIT_ZERO];
@@ -65,7 +66,8 @@ module controller(
             steps[`INSTR_SB]    ={  `S1,    `S2,    `S3_EXEI_ADD,   `S4_WR_BYTE,                                `S1};
             steps[`INSTR_JAL]   ={  `S1,    `S2,                                    `S5_RET,        `S6_J,      `S1};
             steps[`INSTR_JR]    ={  `S1,    `S2,                                                    `S6_REG,    `S1};
-
+            steps[`INSTR_BLTZAL]={  `S1,    `S2,    `S3_EXE_LTZ,    `S3_BR_BLTZAL,  `S5_RET,        `S6_BEQ,    `S1};
+            
             for(i=1;i<=`INSTR_COUNT;i=i+1) begin
                 for(k=0;k<=`STATUS_COUNT;k=k+1) begin
                    next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]] = steps[i][`STATUS_WIDTH:1];
@@ -106,6 +108,7 @@ module controller(
             else if(sb) InstrID = `INSTR_SB;
             else if(jal) InstrID = `INSTR_JAL;
             else if(jr) InstrID = `INSTR_JR;
+            else if(bltzal) InstrID = `INSTR_BLTZAL;
             else begin
                 $display("Exception: Invalid instruction (opcode=%h, funct=%h)", opcode, funct);
                 $stop;
@@ -115,6 +118,8 @@ module controller(
                 // $display("beq, NFlag=%b",NFlag);
                 // $stop;
                 status = NFlag[`FLAG_BIT_ZERO] ? `S6_BEQ : `S1;
+            end else if(status === `S3_BR_BLTZAL) begin
+                status = NFlag[`FLAG_BIT_ZERO] ? `S1 : `S5_RET;
             end else begin
                 status = next[InstrID][status];
             end
@@ -165,7 +170,17 @@ module controller(
                                         `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ,
                                         `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_LUI, `FLAG_OP_ZZ, `ALU_OP_OR
                                     };
+                `S3_EXE_LTZ:    signals = {
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_LESS
+                                    };
                 `S3_BR_BEQ:   signals = {
+                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                    };
+                `S3_BR_BLTZAL:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
                                         `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ,
                                         `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ

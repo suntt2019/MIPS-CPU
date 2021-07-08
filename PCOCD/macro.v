@@ -13,7 +13,7 @@
 // Instructions
 `define INSTR_CNT_WD 5
 `define INSTR_WIDTH 5
-`define INSTR_COUNT 16
+`define INSTR_COUNT 17
 
 `define INSTR_ADDU 5'h1
 `define INSTR_SUBU 5'h2
@@ -31,6 +31,7 @@
 `define INSTR_SB 5'he
 `define INSTR_JAL 5'hf
 `define INSTR_JR 5'h10
+`define INSTR_BLTZAL 5'h11
 
 `define OPCODE_SPECIAL 6'b000000
 `define FUNCT_ADDU 6'b100001
@@ -51,6 +52,7 @@
 `define OPCODE_JAL 6'b000011
 `define OPCODE_LB 6'b100000
 `define OPCODE_SB 6'b101000
+`define OPCODE_BLTZAL 6'b000001
 
 // Statuses
 `define STATUS_WIDTH 5
@@ -68,6 +70,8 @@
 `define S3_EXEI_OR  5'h7
 `define S3_EXEI_LUI 5'h8
 `define S3_BR_BEQ   5'h9
+`define S3_EXE_LTZ  5'h17
+`define S3_BR_BLTZAL 5'h18
 // S4: Read/Write memeory
 `define S4_RD_WORD  5'ha
 `define S4_RD_BYTE  5'hb
@@ -138,4 +142,5 @@
 `define ALU_OP_OR 3'b011
 `define ALU_OP_LESS 3'b100
 `define ALU_OP_B 3'b101
+`define ALU_OP_LTZ 3'b110
 `define ALU_OP_ZZ 3'bzzz
