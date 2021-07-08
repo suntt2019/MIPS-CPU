@@ -149,6 +149,15 @@
 
 
 // Devices
+`define DEV_ADDR_WD 8 // device address width
+`define DEV_COUNT   3 // device count
+`define DEV_ID_WD   2 // device id width
+
+// Device id
+`define DEV_TC      2'b00
+`define DEV_IN32    2'b01
+`define DEV_OUT32   2'b10
+
 // TC
 `define TC_REG_CTRL 2'h0
 `define TC_REG_PST  2'h1
