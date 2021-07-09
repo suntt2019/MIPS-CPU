@@ -147,6 +147,31 @@
 `define ALU_OP_LTZ 3'b110
 `define ALU_OP_ZZ 3'bzzz
 
+// CP0
+`define CP0_SEL_SR 2'b00
+`define CP0_SEL_CAS 2'b01
+`define CP0_SEL_EPC 2'b10
+`define CP0_SEL_PRID 2'b11
+
+`define CP0_DEV_CNT 6
+`define CP0_BIT_IP_L 10 // CP0.Cause.IP lower bit
+`define CP0_BIT_IM_L 10 // CP0.SR.IM lower bit
+
+`define CP0_BIT_EXL 1
+`define EXL_LOCK    1'b1
+`define EXL_UNLOCK  1'b0
+
+`define CP0_BIT_IE  0
+`define INT_EN      1'b1
+`define INT_DIS     1'b0
+
+`define EPC_INIT 30'h3210_fedc
+// EPC_INIT << 2 = 0xc843_fb70
+
+`define PRID     32'h838484_10
+
+`define INT_REQ_EN  1'b1
+`define INT_REQ_DIS 1'b0
 
 // Devices
 `define DEV_ADDR_WD 8 // device address width
