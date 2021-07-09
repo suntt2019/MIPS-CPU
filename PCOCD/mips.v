@@ -39,8 +39,8 @@ module mips(clk, rst) ;
     // Intermediate variables
     wire [31:0] a, b, ALUOut, EXTOut, DMOut, Flag, NFlag, CvtdALUOut, CvtdB, CvtdDMOut;
     // Cvtd = Converted
-    wire [9:0] DMAddr;
-    assign DMAddr = CvtdALUOut[9:0];
+    wire [13:0] DMAddr;
+    assign DMAddr = CvtdALUOut[13:0];
 
     IFU ifu(
         .clk(clk),
@@ -78,7 +78,7 @@ module mips(clk, rst) ;
         .NFlag(NFlag)
     );
 
-    dm_1k dm(
+    dm_12k dm(
         .clk(clk),
         .din(CvtdB),
         .we(MemWr),

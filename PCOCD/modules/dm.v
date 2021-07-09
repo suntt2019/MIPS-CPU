@@ -1,10 +1,10 @@
-module dm_1k(addr, din, we, clk, dout);
-    input   [9:0]  addr;  // address bus
+module dm_12k(addr, din, we, clk, dout);
+    input   [13:0]  addr;  // address bus
     input   [31:0]  din;   // 32-bit input data
     input           we;    // memory write enable
     input           clk;   // clock
     output  [31:0]  dout;  // 32-bit memory output
-    reg     [7:0]  dm[1023:0];
+    reg     [7:0]  dm[12*1024-1:0];
     integer i;
 
     initial begin

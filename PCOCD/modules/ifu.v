@@ -9,7 +9,7 @@ module IFU(clk, reset, NPCSel, regPC, instruction, StoredInstruction, pc, PCWr);
 
     reg[31:0] shifted_imm;
 
-    im_1k im(.addr(pc[9:0]), .dout(instruction));
+    im_32k im(.addr(pc[15:0]), .dout(instruction));
 
     always @(posedge clk or posedge reset) begin
         if(reset) begin

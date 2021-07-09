@@ -37,7 +37,7 @@ module ifu_test(start, finish);
         // test reset
         $display("    Reset test:");
         $display("      Read from file.");
-        $readmemh(`unit_test_hex_filename, ifu1.im.im);
+        $readmemh(`unit_test_hex_filename, ifu1.im.im, `CODE_SEG_PC);
         reset = 1;
         #10 $display("      After reset, pc=%h == %h, instruction=%h == %h", pc, `CODE_SEG_PC + 'h0*4, instruction, `hex_0h);
         ifu_reset: assert(pc === `CODE_SEG_PC + 'h0*4 && instruction === `hex_0h);

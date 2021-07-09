@@ -7,14 +7,14 @@ module dm_test(start, finish);
     // tested module I/O
     reg clk, we;
     reg [31:0] din;
-    reg [9:0] addr;
+    reg [13:0] addr;
     wire [31:0] dout;
 
     // local variables
     integer i;
     parameter base = 9;
 
-    dm_1k dm1 (
+    dm_12k dm1 (
         .clk(clk),
         .we(we),
         .din(din),

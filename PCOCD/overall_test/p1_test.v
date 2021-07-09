@@ -27,7 +27,7 @@ module p1_test(start, finish);
         
         clk = 0; t = 1; reset = 1;
         $display("      Read from file.");
-        $readmemh(`P1_TEST_HEX_FILENAME, mips1.ifu.im.im);
+        $readmemh(`P1_TEST_HEX_FILENAME, mips1.ifu.im.im, `CODE_SEG_PC);
         #10 $display("      Reset finished."); reset = 0;
         `ifdef DEBUG
         $stop;

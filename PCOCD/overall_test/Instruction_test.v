@@ -200,10 +200,10 @@ module instruction_test(start, finish);
 
     always begin
         #1
-        mips1.ifu.im.im[0] = instr[31:24];
-        mips1.ifu.im.im[1] = instr[23:16];
-        mips1.ifu.im.im[2] = instr[15:8];
-        mips1.ifu.im.im[3] = instr[7:0];
+        mips1.ifu.im.im[`CODE_SEG_PC] = instr[31:24];
+        mips1.ifu.im.im[`CODE_SEG_PC+1] = instr[23:16];
+        mips1.ifu.im.im[`CODE_SEG_PC+2] = instr[15:8];
+        mips1.ifu.im.im[`CODE_SEG_PC+3] = instr[7:0];
     end
 
     always begin
