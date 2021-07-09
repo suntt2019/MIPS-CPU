@@ -28,7 +28,6 @@ module im_test(start, finish);
         addr = `CODE_SEG_PC;
         // test #0
         #10 expected = 32'h00010203;
-        $stop;
         for (i=0;i<10;i=i+1) begin
             #1
             $display("      check %d: %h == %h", i, dout, expected);

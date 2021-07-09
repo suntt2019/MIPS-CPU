@@ -109,6 +109,7 @@
 `define REGDST_RT 2'b00
 `define REGDST_RD 2'b01
 `define REGDST_RET 2'b10
+`define REGDST_DEV 2'b11
 `define REGDST_ZZ 2'bzz
 // Mem2Reg(WDSel)
 `define MEM2REG_ALU 2'b00
@@ -184,9 +185,9 @@
 `define DEV_OUT32   2'b10
 
 // TC
-`define TC_REG_CTRL 2'h0
-`define TC_REG_PST  2'h1
-`define TC_REG_CNT  2'h2
+`define TC_REG_CTRL 8'h0
+`define TC_REG_PST  8'h1
+`define TC_REG_CNT  8'h2
 
 `define TC_IM_EN    1'b1
 `define TC_IM_DIS   1'b0

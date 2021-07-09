@@ -7,7 +7,7 @@ module tc_test(start, finish);
 
     // tested module I/O
     reg clk, reset, we_i;
-    reg [3:2] add_i;
+    reg [`DEV_ADDR_WD:1] add_i;
     reg [31:0] dat_i;
     wire irq;
     wire [31:0] dat_o;

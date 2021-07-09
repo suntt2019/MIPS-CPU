@@ -18,7 +18,12 @@ module p1_test(start, finish);
     // tested module
     mips mips1(
         .clk(clk),
-        .rst(reset)
+        .rst(reset),
+        .PrDIn(32'b0),
+        .HWInt(`CP0_DEV_CNT'b0),
+        .Wen(),
+        .PrAddr(),
+        .PrDOut()
     );
 
     initial begin

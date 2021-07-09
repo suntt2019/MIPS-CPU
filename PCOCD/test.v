@@ -3,7 +3,7 @@ module test();
 
 reg dm_start, im_start, ifu_start, alu_start, ext_start, gpr_start, instruction_start, p1_start;
 reg bac_start, p2_start, bltzal_start;
-reg tc_start, bridge_start, cp0_start;
+reg tc_start, bridge_start, cp0_start, p3_start;
 wire finish;
 
 // Project 1
@@ -24,7 +24,8 @@ bltzal_test bltzalt(.start(bltzal_start), .finish(tc_start));
 // Project 3
 tc_test tct(.start(tc_start), .finish(bridge_start));
 bridge_test bridget(.start(bridge_start), .finish(cp0_start));
-cp0_test cp0t(.start(cp0_start), .finish(finish));
+cp0_test cp0t(.start(cp0_start), .finish(p3_start));
+p3_test p3t(.start(p3_start), .finish(finish));
 
 initial begin
     $display("Test Started.");

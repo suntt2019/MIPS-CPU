@@ -1,9 +1,16 @@
 `include "../macro.v"
 
-module mips(clk, rst) ;
-    input           clk; // clock
-    input           rst; // reset
+module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
+    input clk; // clock
+    input rst; // reset
+    input [31:0] PrDIn;
+    input [`CP0_DEV_CNT:1] HWInt;
+    output Wen;
+    output [31:0] PrAddr, PrDOut;
     
+    // CPU I/O
+    wire [31:0] CPUDIn, CPUDOut, CPUAddr;
+
     // signals
     // Write enable signals
     wire PCWr, IRWr, RegWr, MemWr, ALUOWr;
@@ -177,12 +184,13 @@ module mips(clk, rst) ;
         .out(StoredNFlag)
     );
 
-    // MUX {rt, rd, `REG_ADDR_RET}-[RegDst]->AWr
+    // MUX {rt, rd, `REG_ADDR_RET, CPUDIn}-[RegDst]->AWr
     always @(RegDst or rt or rd) begin
         case(RegDst)
             `REGDST_RT: AWr = rt;
             `REGDST_RD: AWr = rd;
             `REGDST_RET: AWr = `REG_ADDR_RET;
+            `REGDST_DEV: AWr = CPUDIn;
         endcase
     end
 

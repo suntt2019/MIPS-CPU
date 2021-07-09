@@ -2,7 +2,7 @@
 
 module TC(clk_i, rst_i, add_i, we_i, dat_i, dat_o, irq);
     input clk_i, rst_i, we_i;
-    input [3:2] add_i;
+    input [`DEV_ADDR_WD:1] add_i;
     input [31:0] dat_i;
     output irq;
     output reg [31:0] dat_o;
