@@ -4,19 +4,20 @@ module controller(
     input clk, reset,
     input IntReq,
     input [5:0] opcode, funct,
+    input [4:0] CP0Funct,
     input [31:0] NFlag,
     // Write enable signals
     output PCWr, IRWr, RegWr, MemWr, ALUOWr, CP0Wr,
     // MUX switching signals
-    output ALUSrc, DRSrc,
+    output ALUSrc, DRSrc, JRegSrc,
     output [1:0] RegDst, Mem2Reg, 
     // Module control signals
     output BACOp,
-    output [1:0] NPCSel, EXTOp, FlagOp,
+    output [1:0] NPCSel, EXTOp, FlagOp, EXLOp,
     output [2:0] ALUOp
 );
 
-    wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr, nop, lb, sb, bltzal;
+    wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr, nop, lb, sb, bltzal, eret, mfc0, mtc0;
     reg [`SIGNAL_WIDTH:1] signals;
     reg [`STATUS_WIDTH:1] status;
     reg [`STATUS_WIDTH*`STATUS_COUNT:1] steps[`INSTR_COUNT:1];
@@ -31,6 +32,11 @@ module controller(
     assign slt = opcode === `OPCODE_SPECIAL && funct === `FUNCT_SLT;
     assign jr = opcode === `OPCODE_SPECIAL && funct === `FUNCT_JR;
     assign nop = opcode === `OPCODE_SPECIAL && funct === `FUNCT_NOP;
+
+    assign eret = opcode === `OPCODE_COP0 && funct === `FUNCT_ERET;
+    assign mfc0 = opcode === `OPCODE_COP0 && CP0Funct === `CP0FUNCT_MF;
+    assign mtc0 = opcode === `OPCODE_COP0 && CP0Funct === `CP0FUNCT_MT;
+
     assign ori = opcode === `OPCODE_ORI;
     assign lw = opcode === `OPCODE_LW;
     assign sw = opcode === `OPCODE_SW;
@@ -68,7 +74,7 @@ module controller(
             steps[`INSTR_JAL]   ={  `S1,    `S2,                                    `S5_RET,        `S6_J,      `S7, `S1};
             steps[`INSTR_JR]    ={  `S1,    `S2,                                                    `S6_REG,    `S7, `S1};
             steps[`INSTR_BLTZAL]={  `S1,    `S2,    `S3_EXE_LTZ,    `S3_BR_BLTZAL,  `S5_RET,        `S6_BEQ,    `S7, `S1};
-            steps[`INSTR_ERET]  ={  `S1,    `S2,                                                                `S7, `S1};
+            steps[`INSTR_ERET]  ={  `S1,    `S2,                                                    `S6_ERET,   `S7, `S1};
             steps[`INSTR_MFC0]  ={  `S1,    `S2,                    `S4_RD_CP0,     `S5_DM_WORD,                `S7, `S1};
             steps[`INSTR_MTC0]  ={  `S1,    `S2,                    `S4_WR_CP0,                                 `S7, `S1};
             
@@ -149,155 +155,160 @@ module controller(
             // S1: Fetch instruction
                 `S1:    signals = {
                                         `WR_EN, `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_PC_ADD_4, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
 
             // S2: Decode & Read registers
                 `S2:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
             
             // S3: Calculate(ALU+EXT)
                 `S3_EXE_ADD:    signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
-                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ADD
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ADD, `EXL_OP_NOP
                                     };
                 `S3_EXE_SUB:    signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
-                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_SUB
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_SUB, `EXL_OP_NOP
                                     };
                 `S3_EXE_SLT:    signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
-                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_LESS
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_LESS, `EXL_OP_NOP
                                     };
                 `S3_EXEI_ADD:       signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
-                                        `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_SIGN, `FLAG_OP_ZZ, `ALU_OP_ADD
+                                        `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_SIGN, `FLAG_OP_ZZ, `ALU_OP_ADD, `EXL_OP_NOP
                                     };
                 `S3_EXEI_OR:    signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
-                                        `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZERO, `FLAG_OP_ZZ, `ALU_OP_OR
+                                        `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZERO, `FLAG_OP_ZZ, `ALU_OP_OR, `EXL_OP_NOP
                                     };
                 `S3_EXEI_LUI:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
-                                        `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_LUI, `FLAG_OP_ZZ, `ALU_OP_OR
+                                        `ALUSRC_EXT, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_LUI, `FLAG_OP_ZZ, `ALU_OP_OR, `EXL_OP_NOP
                                     };
                 `S3_EXE_LTZ:    signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS,
-                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_LESS
+                                        `ALUSRC_B, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_LESS, `EXL_OP_NOP
                                     };
                 `S3_BR_BEQ:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S3_BR_BLTZAL:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S3_CK_OF:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
 
             // S4: Read/Write memeory
                 `S4_RD_WORD:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM,
-                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM, `JREGSRC_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S4_RD_BYTE:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM,
-                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM, `JREGSRC_ZZ,
+                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S4_RD_CP0:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_CP0,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_CP0, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S4_WR_WORD:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM,
-                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM, `JREGSRC_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S4_WR_BYTE:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM,
-                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_DM, `JREGSRC_ZZ,
+                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S4_WR_CP0:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_EN,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_CP0,
-                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_CP0, `JREGSRC_ZZ,
+                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
 
             // S5: Write back registers
                 `S5_DM_WORD:   signals = { // TODO: no need to divide into word and byte?
                                         `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_RAM, `DRSRC_ZZ,
-                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_RAM, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S5_DM_BYTE:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_RAM, `DRSRC_ZZ,
-                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_RAM, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_BYTE, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S5_ALU_I_FD:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_ALU, `DRSRC_ZZ,
-                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_ALU, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S5_ALU_I_FS:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_ALU, `DRSRC_ZZ,
-                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_SET, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_RT, `MEM2REG_ALU, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_SET, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S5_ALU_R_FD:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_RD, `MEM2REG_ALU, `DRSRC_ZZ,
-                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_RD, `MEM2REG_ALU, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S5_RET:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_RET, `MEM2REG_RET, `DRSRC_ZZ,
-                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_RET, `MEM2REG_RET, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_WORD, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_DIS, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
 
             // S6: Jump
                 `S6_BEQ:   signals = {
                                         `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_BEQ_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_BEQ_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S6_J:   signals = {
                                         `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_J_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
                                     };
                 `S6_REG:   signals = {
                                         `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_A,
+                                        `BAC_OP_ZZ, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_NOP
+                                    };
+                `S6_ERET:   signals = {
+                                        `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_EPC,
+                                        `BAC_OP_ZZ, `NPC_SEL_REG_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_CLR
                                     };
             
             // S7: Interrupt
                 `S7:   signals = {
                                         `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
-                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ
+                                        `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
+                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_SET
                                     };
             
             // Other
@@ -313,9 +324,9 @@ module controller(
     end
 
     assign {
-        PCWr, IRWr, RegWr, MemWr, ALUOWr, CP0Wr,    // Write enable signals
-        ALUSrc, RegDst, Mem2Reg, DRSrc,            // MUX switching signals
-        BACOp, NPCSel, EXTOp, FlagOp, ALUOp         // Module control signals
+        PCWr, IRWr, RegWr, MemWr, ALUOWr, CP0Wr,        // Write enable signals
+        ALUSrc, RegDst, Mem2Reg, DRSrc, JRegSrc,        // MUX switching signals
+        BACOp, NPCSel, EXTOp, FlagOp, ALUOp, EXLOp      // Module control signals
     } = signals;
 
 endmodule

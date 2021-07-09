@@ -12,16 +12,16 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
     // Write enable signals
     wire PCWr, IRWr, RegWr, MemWr, ALUOWr, CP0Wr;
     // MUX switching signals
-    wire ALUSrc, DRSrc;
+    wire ALUSrc, DRSrc, JRegSrc;
     wire [1:0] RegDst, Mem2Reg; 
     // Module control signals
     wire BACOp;
-    wire [1:0] NPCSel, EXTOp, FlagOp;
+    wire [1:0] NPCSel, EXTOp, FlagOp, EXLOp;
     wire [2:0] ALUOp;
 
     // instruction
     wire [31:0] instruction, StoredInstruction;
-    wire [4:0] rs, rt, rd;
+    wire [4:0] rs, rt, rd, CP0Funct;
     wire [5:0] opcode, shamt, funct;
     wire [15:0] imm;
     wire [31:0] PC;
@@ -32,10 +32,11 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
     assign imm = StoredInstruction[15:0];
     assign shmat = StoredInstruction[10:6];
     assign funct = StoredInstruction[5:0];
+    assign CP0Funct = StoredInstruction[25:21];
 
     // MUX destination
     reg [4:0] A2, AWr;
-    reg [31:0] ALUIn, GPRIn, DRIn;
+    reg [31:0] ALUIn, GPRIn, DRIn, JReg;
 
     // // Stored variables
     wire [31:0] StoredA, StoredB, StoredDMOut, StoredNFlag, StoredALUOut;
@@ -46,13 +47,14 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
     // Cvtd = Converted
     wire [13:0] DMAddr;
     wire IntReq;
+    wire [29:0] EPC;
     assign DMAddr = CvtdALUOut[13:0];
 
     IFU ifu(
         .clk(clk),
         .reset(rst),
         .NPCSel(NPCSel),
-        .regPC(StoredA),
+        .regPC(JReg),
         .instruction(instruction),
         .pc(PC),
         .PCWr(PCWr),
@@ -129,14 +131,18 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
         .ALUOWr(ALUOWr),
         .CP0Wr(CP0Wr),
         .IntReq(IntReq),
-        .DRSrc(DRSrc)
+        .DRSrc(DRSrc),
+        .JRegSrc(JRegSrc),
+        .EXLOp(EXLOp),
+        .CP0Funct(CP0Funct)
     );
 
     wire [31:2] UpperPC;
     wire [1:0] CP0Sel;
+    wire EXLSet, EXLClr;
     assign UpperPC = PC[31:2];
     assign CP0Sel = imm[1:0];
-
+    assign {EXLClr, EXLSet} = EXLOp;
 
     CP0 cp0(
         .clk(clk),
@@ -146,10 +152,10 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
         .HWInt(HWInt),
         .Sel(CP0Sel),
         .Wen(CP0Wr),
-        .EXLSet(), // S7
-        .EXLClr(), // ERET
+        .EXLSet(EXLSet),
+        .EXLClr(EXLClr),
         .IntReq(IntReq),
-        .EPC(), // ERET, EPC->PC(IFU)
+        .EPC(EPC),
         .DOut(CP0Out)
     );
 
@@ -249,6 +255,15 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
             `DRSRC_CP0: DRIn = CP0Out;
         endcase
     end
+
+    // MUX {StoredA, {EPC, 2'b0}}-[JRegSrc]->JReg
+    always @(StoredA or EPC or JRegSrc) begin
+        case(JRegSrc)
+            `JREGSRC_A: JReg = StoredA;
+            `JREGSRC_EPC: JReg = {EPC, 2'b0};
+        endcase
+    end
+
 
     assign PrAddr = StoredALUOut;
     assign PrDOut = StoredB;

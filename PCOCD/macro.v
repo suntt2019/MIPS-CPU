@@ -58,9 +58,14 @@
 `define OPCODE_SB 6'b101000
 `define OPCODE_BLTZAL 6'b000001
 
+`define OPCODE_COP0 6'b010000
+`define FUNCT_ERET 6'b011000
+`define CP0FUNCT_MT 5'b00100
+`define CP0FUNCT_MF 5'b00000
+
 // Statuses
 `define STATUS_WIDTH 5
-`define STATUS_COUNT 28
+`define STATUS_COUNT 29
 
 // S1: Fetch instruction
 `define S1          5'h1
@@ -95,13 +100,14 @@
 `define S6_BEQ      5'h14
 `define S6_J        5'h15
 `define S6_REG      5'h16
+`define S6_ERET     5'h1d
 // S7: Interrupt
 `define S7          5'h1a
 // Other
 `define S_INVALID   5'h00
 
 // Signals
-`define SIGNAL_WIDTH 22
+`define SIGNAL_WIDTH 25
 
 // Write enable signals
 `define WR_EN 1'b1
@@ -127,6 +133,10 @@
 `define DRSRC_DM 1'b0
 `define DRSRC_CP0 1'b1
 `define DRSRC_ZZ 1'bz
+// JRegSrc
+`define JREGSRC_A 1'b0
+`define JREGSRC_EPC 1'b1
+`define JREGSRC_ZZ 1'bz
 
 // Module control signals
 // BAC
@@ -158,6 +168,10 @@
 `define ALU_OP_B 3'b101
 `define ALU_OP_LTZ 3'b110
 `define ALU_OP_ZZ 3'bzzz
+// EXLOp
+`define EXL_OP_NOP 2'b00
+`define EXL_OP_SET 2'b01
+`define EXL_OP_CLR 2'b10
 
 // CP0
 `define CP0_SEL_SR 2'b00
