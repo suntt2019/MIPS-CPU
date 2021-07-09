@@ -5,7 +5,7 @@ module CP0(
     input [31:2] PC,
     input [31:0] Din,
     input [5:0] HWInt,
-    input [4:0] Sel,
+    input [1:0] Sel,
     input Wen, EXLSet, EXLClr,
     output IntReq,
     output reg [31:2] EPC,

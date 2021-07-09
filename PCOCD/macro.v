@@ -14,7 +14,7 @@
 // Instructions
 `define INSTR_CNT_WD 5
 `define INSTR_WIDTH 5
-`define INSTR_COUNT 17
+`define INSTR_COUNT 20
 
 `define INSTR_ADDU 5'h1
 `define INSTR_SUBU 5'h2
@@ -33,6 +33,9 @@
 `define INSTR_JAL 5'hf
 `define INSTR_JR 5'h10
 `define INSTR_BLTZAL 5'h11
+`define INSTR_ERET 5'h12
+`define INSTR_MFC0 5'h13
+`define INSTR_MTC0 5'h14
 
 `define OPCODE_SPECIAL 6'b000000
 `define FUNCT_ADDU 6'b100001
@@ -57,7 +60,7 @@
 
 // Statuses
 `define STATUS_WIDTH 5
-`define STATUS_COUNT 23
+`define STATUS_COUNT 28
 
 // S1: Fetch instruction
 `define S1          5'h1
@@ -77,8 +80,10 @@
 // S4: Read/Write memeory
 `define S4_RD_WORD  5'ha
 `define S4_RD_BYTE  5'hb
+`define S4_RD_CP0   5'h1b
 `define S4_WR_WORD  5'hc
 `define S4_WR_BYTE  5'hd
+`define S4_WR_CP0   5'h1c
 // S5: Write back registers
 `define S5_DM_WORD  5'he
 `define S5_DM_BYTE  5'hf
@@ -90,11 +95,13 @@
 `define S6_BEQ      5'h14
 `define S6_J        5'h15
 `define S6_REG      5'h16
+// S7: Interrupt
+`define S7          5'h1a
 // Other
 `define S_INVALID   5'h00
 
 // Signals
-`define SIGNAL_WIDTH 20
+`define SIGNAL_WIDTH 22
 
 // Write enable signals
 `define WR_EN 1'b1
@@ -109,13 +116,17 @@
 `define REGDST_RT 2'b00
 `define REGDST_RD 2'b01
 `define REGDST_RET 2'b10
-`define REGDST_DEV 2'b11
 `define REGDST_ZZ 2'bzz
 // Mem2Reg(WDSel)
 `define MEM2REG_ALU 2'b00
 `define MEM2REG_RAM 2'b01
 `define MEM2REG_RET 2'b10
+`define MEM2REG_DEV 2'b11
 `define MEM2REG_ZZ 2'bzz
+// DRSrc
+`define DRSRC_DM 1'b0
+`define DRSRC_CP0 1'b1
+`define DRSRC_ZZ 1'bz
 
 // Module control signals
 // BAC

@@ -10,7 +10,7 @@ module cp0_test(start, finish);
     reg [31:2] PC;
     reg [31:0] Din;
     reg [5:0] HWInt;
-    reg [4:0] Sel;
+    reg [1:0] Sel;
     reg Wen, EXLSet, EXLClr;
     wire IntReq;
     wire [31:2] EPC;
