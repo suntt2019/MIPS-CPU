@@ -1,6 +1,19 @@
 `timescale 1ns/ 1ns
 `include "../macro.v"
 
+module devices_for_test(clk, we, in, addr, out);
+    input clk, we;
+    input [31:0] in, addr;
+    output [31:0] out;
+    reg [31:0]regs[16'h8000:0];
+
+    assign out = regs[addr];
+    always @(posedge clk) begin
+        if(we) regs[addr] = in;
+    end
+
+endmodule
+
 module instruction_test(start, finish);
     input start;
     output reg finish;
@@ -8,6 +21,9 @@ module instruction_test(start, finish);
     // tested module I/O
     reg clk, reset;
     reg [`CP0_DEV_CNT:1] HWInt;
+    reg [31:0] PrDIn;
+    wire [31:0] PrAddr, PrDOut;
+    wire Wen;
 
     // local variables
     integer i, t;
@@ -17,11 +33,19 @@ module instruction_test(start, finish);
     mips mips1(
         .clk(clk),
         .rst(reset),
-        .PrDIn(32'b0),
+        .PrDIn(PrDIn),
         .HWInt(HWInt),
-        .Wen(),
-        .PrAddr(),
-        .PrDOut()
+        .Wen(Wen),
+        .PrAddr(PrAddr),
+        .PrDOut(PrDOut)
+    );
+
+    devices_for_test dev(
+        .clk(clk),
+        .in(PrDOut),
+        .out(PrDIn),
+        .addr(PrAddr),
+        .we(Wen)
     );
 
 
@@ -239,12 +263,33 @@ module instruction_test(start, finish);
         mips1.cp0.RegSR = {16'b0, 6'b011100, 8'b0, `EXL_UNLOCK, `INT_EN}; $display("      Set cp0.RegSR<-{16'b0, 6'b011100, 8'b0, `EXL_UNLOCK, `INT_EN}(%h)", mips1.cp0.RegSR);
         HWInt = 6'b001000; $display("      Set HWInt<-6'b001000(%h)", HWInt);
         $display("      Ctr: nop=%d, signals=%b", mips1.ctr.nop, mips1.ctr.signals);
-        $stop;
         $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check PC=%h == %h", mips1.PC, `INT_PC);
         nop_int_pc: assert(mips1.PC === `INT_PC);
         $display("      Check cp0.SR=%h == %h", mips1.cp0.RegSR, {16'b0, 6'b011100, 8'b0, `EXL_LOCK, `INT_EN});
         nop_int_sr: assert(mips1.cp0.RegSR === {16'b0, 6'b011100, 8'b0, `EXL_LOCK, `INT_EN});
+        $stop;
+        // LW Test(from devices)
+        $display("    LW Test(from devices):"); reset = 1; clk = 0; t = 1;
+        instr = 32'h8d0a0004; #10 $display("      Load instruction: lw $10, 4($8) (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        $display("      Ctr: lw=%d, signals=%b", mips1.ctr.lw, mips1.ctr.signals);
+        mips1.gpr.regs[8] = 32'h7f10; $display("      Set regs[8]<-32'h7f10(%h)", mips1.gpr.regs[8]);
+        dev.regs[32'h7f14] = 32'h1234_5678; $display("      Set dev[1][4]<-32'h1234_5678(%h)", dev.regs[32'h7f14]);
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
+        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], 32'h1234_5678);
+        lw_dev_reg10: assert(mips1.gpr.regs[10] === 32'h1234_5678);
+        
+        // SW Test(to devices)
+        $display("    SW Test(to devices):"); reset = 1; clk = 0; t = 1;
+        instr = 32'had090008; #10 $display("      Load instruction: sw $9, -8($8) (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        $display("      Ctr: sw=%d, signals=%b", mips1.ctr.sw, mips1.ctr.signals);
+        mips1.gpr.regs[8] = 32'h7f20; $display("      Set regs[8]<-32'h7f20(%h)", mips1.gpr.regs[8]);
+        mips1.gpr.regs[9] = 32'h3456_7890; $display("      Set regs[9]<-32'h3456_7890(%h)", mips1.gpr.regs[9]);
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
+        $display("      Check dev[2][8]=%h == %h", dev.regs[32'h7f28], 32'h3456_7890);
+        sw_dev_dev28: assert(dev.regs[32'h7f28] === 32'h3456_7890);
         $stop;
         $display(" *Instruction test finished.");
         finish = 1;

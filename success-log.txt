@@ -1,0 +1,392 @@
+#  *P1 test started.
+#       Read from file.
+#       Reset finished.
+#       Start running
+#       t=         12,Step[          0], PC=00003000, StoredInstruction=00000000, status=1a signals=0000000000zzzzzzzzzzzzzzzz
+#         Controller: status=1a(signals=0000000000zzzzzzzzzzzzzzzz)-[Instr=0c]->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=         22,Step[          1], PC=00003000, StoredInstruction=00000000, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=         62,Step[          2], PC=00003004, StoredInstruction=34100001, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        102,Step[          3], PC=00003008, StoredInstruction=34110003, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        142,Step[          4], PC=0000300c, StoredInstruction=34080001, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        182,Step[          5], PC=00003010, StoredInstruction=340cabab, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=08]->08(signals=0000101zzzzzzzzzz10zz01100)
+#         Controller: status=08(signals=0000101zzzzzzzzzz10zz01100)-[Instr=08]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=08]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        222,Step[          6], PC=00003014, StoredInstruction=3c0d000a, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        262,Step[          7], PC=00003018, StoredInstruction=00102021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        302,Step[          8], PC=0000301c, StoredInstruction=00082821, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0f]->13(signals=001000z1010zz0zzzzz00zzz00)
+#         Controller: status=13(signals=001000z1010zz0zzzzz00zzz00)-[Instr=0f]->15(signals=100000zzzzzzzz010zzzzzzz00)
+#         Controller: status=15(signals=100000zzzzzzzz010zzzzzzz00)-[Instr=0f]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        342,Step[          9], PC=000030c8, StoredInstruction=0c000c32, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        382,Step[         10], PC=000030cc, StoredInstruction=00851021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=09]->19(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=19(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=09]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        432,Step[         11], PC=000030d0, StoredInstruction=21801234, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=10]->16(signals=100000zzzzzz0z011zzzzzzz00)
+#         Controller: status=16(signals=100000zzzzzz0z011zzzzzzz00)-[Instr=10]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        462,Step[         12], PC=00003020, StoredInstruction=03e00008, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        502,Step[         13], PC=00003024, StoredInstruction=00028021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=02]->04(signals=0000100zzzzzzzzzzzzzz00100)
+#         Controller: status=04(signals=0000100zzzzzzzzzzzzzz00100)-[Instr=02]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=02]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        542,Step[         14], PC=00003028, StoredInstruction=02288823, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->04(signals=0000100zzzzzzzzzzzzzz00100)
+#         Controller: status=04(signals=0000100zzzzzzzzzzzzzz00100)-[Instr=06]->09(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=09(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->14(signals=100000zzzzzzzz001zzzzzzz00)
+#         Controller: status=14(signals=100000zzzzzzzz001zzzzzzz00)-[Instr=06]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        592,Step[         15], PC=00003014, StoredInstruction=1211fffa, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        632,Step[         16], PC=00003018, StoredInstruction=00102021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        672,Step[         17], PC=0000301c, StoredInstruction=00082821, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0f]->13(signals=001000z1010zz0zzzzz00zzz00)
+#         Controller: status=13(signals=001000z1010zz0zzzzz00zzz00)-[Instr=0f]->15(signals=100000zzzzzzzz010zzzzzzz00)
+#         Controller: status=15(signals=100000zzzzzzzz010zzzzzzz00)-[Instr=0f]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        712,Step[         18], PC=000030c8, StoredInstruction=0c000c32, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        752,Step[         19], PC=000030cc, StoredInstruction=00851021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=09]->19(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=19(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=09]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        802,Step[         20], PC=000030d0, StoredInstruction=21801234, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=10]->16(signals=100000zzzzzz0z011zzzzzzz00)
+#         Controller: status=16(signals=100000zzzzzz0z011zzzzzzz00)-[Instr=10]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        832,Step[         21], PC=00003020, StoredInstruction=03e00008, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        872,Step[         22], PC=00003024, StoredInstruction=00028021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=02]->04(signals=0000100zzzzzzzzzzzzzz00100)
+#         Controller: status=04(signals=0000100zzzzzzzzzzzzzz00100)-[Instr=02]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=02]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        912,Step[         23], PC=00003028, StoredInstruction=02288823, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->04(signals=0000100zzzzzzzzzzzzzz00100)
+#         Controller: status=04(signals=0000100zzzzzzzzzzzzzz00100)-[Instr=06]->09(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=09(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        952,Step[         24], PC=0000302c, StoredInstruction=1211fffa, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=        992,Step[         25], PC=00003030, StoredInstruction=34080004, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=08]->08(signals=0000101zzzzzzzzzz10zz01100)
+#         Controller: status=08(signals=0000101zzzzzzzzzz10zz01100)-[Instr=08]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=08]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1032,Step[         26], PC=00003034, StoredInstruction=3c017fff, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1072,Step[         27], PC=00003038, StoredInstruction=3421ffff, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1112,Step[         28], PC=0000303c, StoredInstruction=0001c021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0a]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=0a]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=0a]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1152,Step[         29], PC=00003040, StoredInstruction=27090003, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0a]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=0a]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=0a]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1192,Step[         30], PC=00003044, StoredInstruction=270a0005, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=09]->19(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=19(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->11(signals=001000z0000zz0zzzzz01zzz00)
+#         Controller: status=11(signals=001000z0000zz0zzzzz01zzz00)-[Instr=09]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1242,Step[         31], PC=00003048, StoredInstruction=23160006, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=05]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=05]->0c(signals=000100zzzzz0z0zzzzzzzzzz00)
+#         Controller: status=0c(signals=000100zzzzz0z0zzzzzzzzzz00)-[Instr=05]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1282,Step[         32], PC=0000304c, StoredInstruction=ad090000, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=04]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=04]->0a(signals=000000zzzzz0z0zzzzzzzzzz00)
+#         Controller: status=0a(signals=000000zzzzz0z0zzzzzzzzzz00)-[Instr=04]->0e(signals=001000z0001zz0zzzzz00zzz00)
+#         Controller: status=0e(signals=001000z0001zz0zzzzz00zzz00)-[Instr=04]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1332,Step[         33], PC=00003050, StoredInstruction=8d0e0000, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=05]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=05]->0c(signals=000100zzzzz0z0zzzzzzzzzz00)
+#         Controller: status=0c(signals=000100zzzzz0z0zzzzzzzzzz00)-[Instr=05]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1372,Step[         34], PC=00003054, StoredInstruction=ad0a0004, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=04]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=04]->0a(signals=000000zzzzz0z0zzzzzzzzzz00)
+#         Controller: status=0a(signals=000000zzzzz0z0zzzzzzzzzz00)-[Instr=04]->0e(signals=001000z0001zz0zzzzz00zzz00)
+#         Controller: status=0e(signals=001000z0001zz0zzzzz00zzz00)-[Instr=04]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1422,Step[         35], PC=00003058, StoredInstruction=8d0f0004, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=05]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=05]->0c(signals=000100zzzzz0z0zzzzzzzzzz00)
+#         Controller: status=0c(signals=000100zzzzz0z0zzzzzzzzzz00)-[Instr=05]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1462,Step[         36], PC=0000305c, StoredInstruction=ad04fffc, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=04]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=04]->0a(signals=000000zzzzz0z0zzzzzzzzzz00)
+#         Controller: status=0a(signals=000000zzzzz0z0zzzzzzzzzz00)-[Instr=04]->0e(signals=001000z0001zz0zzzzz00zzz00)
+#         Controller: status=0e(signals=001000z0001zz0zzzzz00zzz00)-[Instr=04]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1512,Step[         37], PC=00003060, StoredInstruction=8d12fffc, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1552,Step[         38], PC=00003064, StoredInstruction=00082021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1592,Step[         39], PC=00003068, StoredInstruction=00092821, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0f]->13(signals=001000z1010zz0zzzzz00zzz00)
+#         Controller: status=13(signals=001000z1010zz0zzzzz00zzz00)-[Instr=0f]->15(signals=100000zzzzzzzz010zzzzzzz00)
+#         Controller: status=15(signals=100000zzzzzzzz010zzzzzzz00)-[Instr=0f]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1632,Step[         40], PC=000030c8, StoredInstruction=0c000c32, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1672,Step[         41], PC=000030cc, StoredInstruction=00851021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=09]->19(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=19(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->11(signals=001000z0000zz0zzzzz01zzz00)
+#         Controller: status=11(signals=001000z0000zz0zzzzz01zzz00)-[Instr=09]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1722,Step[         42], PC=000030d0, StoredInstruction=21801234, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=10]->16(signals=100000zzzzzz0z011zzzzzzz00)
+#         Controller: status=16(signals=100000zzzzzz0z011zzzzzzz00)-[Instr=10]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1752,Step[         43], PC=0000306c, StoredInstruction=03e00008, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0b]->05(signals=0000100zzzzzzzzzzzzzz10000)
+#         Controller: status=05(signals=0000100zzzzzzzzzzzzzz10000)-[Instr=0b]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=0b]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1792,Step[         44], PC=00003070, StoredInstruction=0148c82a, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->04(signals=0000100zzzzzzzzzzzzzz00100)
+#         Controller: status=04(signals=0000100zzzzzzzzzzzzzz00100)-[Instr=06]->09(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=09(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1832,Step[         45], PC=00003074, StoredInstruction=13200018, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0b]->05(signals=0000100zzzzzzzzzzzzzz10000)
+#         Controller: status=05(signals=0000100zzzzzzzzzzzzzz10000)-[Instr=0b]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=0b]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1872,Step[         46], PC=00003078, StoredInstruction=0184a02a, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->04(signals=0000100zzzzzzzzzzzzzz00100)
+#         Controller: status=04(signals=0000100zzzzzzzzzzzzzz00100)-[Instr=06]->09(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=09(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->14(signals=100000zzzzzzzz001zzzzzzz00)
+#         Controller: status=14(signals=100000zzzzzzzz001zzzzzzz00)-[Instr=06]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1922,Step[         47], PC=00003080, StoredInstruction=12800001, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       1962,Step[         48], PC=00003084, StoredInstruction=34000001, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=08]->08(signals=0000101zzzzzzzzzz10zz01100)
+#         Controller: status=08(signals=0000101zzzzzzzzzz10zz01100)-[Instr=08]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=08]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2002,Step[         49], PC=00003088, StoredInstruction=3c13efef, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=08]->08(signals=0000101zzzzzzzzzz10zz01100)
+#         Controller: status=08(signals=0000101zzzzzzzzzz10zz01100)-[Instr=08]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=08]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2042,Step[         50], PC=0000308c, StoredInstruction=3c01abab, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=03]->07(signals=0000101zzzzzzzzzz00zz01100)
+#         Controller: status=07(signals=0000101zzzzzzzzzz00zz01100)-[Instr=03]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=03]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2082,Step[         51], PC=00003090, StoredInstruction=3421cdcd, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2122,Step[         52], PC=00003094, StoredInstruction=00011821, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0a]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=0a]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=0a]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2162,Step[         53], PC=00003098, StoredInstruction=24640002, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=09]->19(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=19(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->11(signals=001000z0000zz0zzzzz01zzz00)
+#         Controller: status=11(signals=001000z0000zz0zzzzz01zzz00)-[Instr=09]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2212,Step[         54], PC=0000309c, StoredInstruction=20770005, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0f]->13(signals=001000z1010zz0zzzzz00zzz00)
+#         Controller: status=13(signals=001000z1010zz0zzzzz00zzz00)-[Instr=0f]->15(signals=100000zzzzzzzz010zzzzzzz00)
+#         Controller: status=15(signals=100000zzzzzzzz010zzzzzzz00)-[Instr=0f]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2252,Step[         55], PC=000030c8, StoredInstruction=0c000c32, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2292,Step[         56], PC=000030cc, StoredInstruction=00851021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=09]->19(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=19(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->11(signals=001000z0000zz0zzzzz01zzz00)
+#         Controller: status=11(signals=001000z0000zz0zzzzz01zzz00)-[Instr=09]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2342,Step[         57], PC=000030d0, StoredInstruction=21801234, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=10]->16(signals=100000zzzzzz0z011zzzzzzz00)
+#         Controller: status=16(signals=100000zzzzzz0z011zzzzzzz00)-[Instr=10]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2372,Step[         58], PC=000030a0, StoredInstruction=03e00008, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2412,Step[         59], PC=000030a4, StoredInstruction=00024021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2452,Step[         60], PC=000030a8, StoredInstruction=00082021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2492,Step[         61], PC=000030ac, StoredInstruction=00092821, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=0f]->13(signals=001000z1010zz0zzzzz00zzz00)
+#         Controller: status=13(signals=001000z1010zz0zzzzz00zzz00)-[Instr=0f]->15(signals=100000zzzzzzzz010zzzzzzz00)
+#         Controller: status=15(signals=100000zzzzzzzz010zzzzzzz00)-[Instr=0f]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2532,Step[         62], PC=000030c8, StoredInstruction=0c000c32, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2572,Step[         63], PC=000030cc, StoredInstruction=00851021, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->06(signals=0000101zzzzzzzzzz01zz00000)
+#         Controller: status=06(signals=0000101zzzzzzzzzz01zz00000)-[Instr=09]->19(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=19(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=09]->11(signals=001000z0000zz0zzzzz01zzz00)
+#         Controller: status=11(signals=001000z0000zz0zzzzz01zzz00)-[Instr=09]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2622,Step[         64], PC=000030d0, StoredInstruction=21801234, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=10]->16(signals=100000zzzzzz0z011zzzzzzz00)
+#         Controller: status=16(signals=100000zzzzzz0z011zzzzzzz00)-[Instr=10]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2652,Step[         65], PC=000030b0, StoredInstruction=03e00008, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2692,Step[         66], PC=000030b4, StoredInstruction=00024821, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=01]->03(signals=0000100zzzzzzzzzzzzzz00000)
+#         Controller: status=03(signals=0000100zzzzzzzzzzzzzz00000)-[Instr=01]->12(signals=001000z0100zz0zzzzz00zzz00)
+#         Controller: status=12(signals=001000z0100zz0zzzzz00zzz00)-[Instr=01]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2732,Step[         67], PC=000030b8, StoredInstruction=01004821, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=08]->08(signals=0000101zzzzzzzzzz10zz01100)
+#         Controller: status=08(signals=0000101zzzzzzzzzz10zz01100)-[Instr=08]->10(signals=001000z0000zz0zzzzz00zzz00)
+#         Controller: status=10(signals=001000z0000zz0zzzzz00zzz00)-[Instr=08]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2772,Step[         68], PC=000030bc, StoredInstruction=3c0a0069, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->04(signals=0000100zzzzzzzzzzzzzz00100)
+#         Controller: status=04(signals=0000100zzzzzzzzzzzzzz00100)-[Instr=06]->09(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=09(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=06]->14(signals=100000zzzzzzzz001zzzzzzz00)
+#         Controller: status=14(signals=100000zzzzzzzz001zzzzzzz00)-[Instr=06]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2822,Step[         69], PC=000030c4, StoredInstruction=11090001, status=01 signals=110000zzzzzzzz000zzzzzzz00
+#         Controller: status=01(signals=110000zzzzzzzz000zzzzzzz00)-[Instr=?(delayed)]->02(signals=000000zzzzzzzzzzzzzzzzzz00)
+#         Controller: status=02(signals=000000zzzzzzzzzzzzzzzzzz00)-[Instr=07]->15(signals=100000zzzzzzzz010zzzzzzz00)
+#         Controller: status=15(signals=100000zzzzzzzz010zzzzzzz00)-[Instr=07]->(IntReq=0, skip S7)->01(signals=110000zzzzzzzz000zzzzzzz00)
+#       t=       2851,Step[         70], PC=000030d8, StoredInstruction=08000c36, status=01 signals=110000zzzzzzzz000zzzzzzz00, last instr: regs[10]=00690000
+#       regs[          0]=00000000 == 00000000
+#       regs[          1]=ababcdcd == ababcdcd
+#       regs[          2]=ababcdd3 == ababcdd3
+#       regs[          3]=ababcdcd == ababcdcd
+#       regs[          4]=2babcdd1 == 2babcdd1
+#       regs[          5]=80000002 == 80000002
+#       regs[          6]=00000000 == 00000000
+#       regs[          7]=00000000 == 00000000
+#       regs[          8]=2babcdd1 == 2babcdd1
+#       regs[          9]=2babcdd1 == 2babcdd1
+#       regs[         10]=00690000 == 00690000
+#       regs[         11]=00000000 == 00000000
+#       regs[         12]=0000abab == 0000abab
+#       regs[         13]=000a0000 == 000a0000
+#       regs[         14]=80000002 == 80000002
+#       regs[         15]=80000004 == 80000004
+#       regs[         16]=00000003 == 00000003
+#       regs[         17]=00000001 == 00000001
+#       regs[         18]=00000002 == 00000002
+#       regs[         19]=efef0000 == efef0000
+#       regs[         20]=00000000 == 00000000
+#       regs[         21]=00000000 == 00000000
+#       regs[         22]=00000000 == 00000000
+#       regs[         23]=00000000 == 00000000
+#       regs[         24]=7fffffff == 7fffffff
+#       regs[         25]=00000001 == 00000001
+#       regs[         26]=00000000 == 00000000
+#       regs[         27]=00000000 == 00000000
+#       regs[         28]=00000000 == 00000000
+#       regs[         29]=00000000 == 00000000
+#       regs[         30]=00000001 == 00000001
+#       regs[         31]=000030b0 == 000030b0
+#  *P1 test finished.

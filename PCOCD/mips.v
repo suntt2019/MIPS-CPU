@@ -230,13 +230,15 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
         endcase
     end
 
-    // MUX {StoredALUOut, StoredDMOut, PC, PrDIn}-[Mem2Reg]->GPRIn
-    always @(Mem2Reg or StoredALUOut or StoredDMOut or PC or PrDIn) begin
+    // MUX {StoredALUOut, StoredDMOut, PC, PrDIn}-[Mem2Reg, imm]->GPRIn
+    always @(Mem2Reg or StoredALUOut or StoredDMOut or PC or PrDIn or imm) begin
         case(Mem2Reg)
             `MEM2REG_ALU: GPRIn = StoredALUOut;
-            `MEM2REG_RAM: GPRIn = StoredDMOut;
+            `MEM2REG_RAM: begin
+                if(StoredALUOut>=32'h7f00) GPRIn = PrDIn;
+                else GPRIn = StoredDMOut;
+            end
             `MEM2REG_RET: GPRIn = PC;
-            `MEM2REG_RET: GPRIn = PrDIn;
         endcase
     end
 
@@ -267,5 +269,6 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
 
     assign PrAddr = StoredALUOut;
     assign PrDOut = StoredB;
+    assign Wen = StoredALUOut>=32'h7f00 && MemWr;
 
 endmodule

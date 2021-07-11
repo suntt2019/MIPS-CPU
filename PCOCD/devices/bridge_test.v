@@ -34,31 +34,31 @@ module bridge_test(start, finish);
         PrWD = 32'hfedc_4321;
 
         // Read test
-        //                                                  8<-`DEV_ADDR_WD
-        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_TC, 8'h45}; 
+        //                                                  4<-`DEV_ADDR_WD
+        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_TC, 4'h5}; 
         #1 $display("    Read test(DEV_TC): PrRD=%h == %h, DevAddr=%h == %h",
-         PrRD, 32'h1234_5678, DevAddr, 8'h45);
+         PrRD, 32'h1234_5678, DevAddr, 4'h5);
 
-        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_IN32, 8'h67}; 
+        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_IN32, 4'h7}; 
         #1 $display("    Read test(DEV_IN32): PrRD=%h == %h, DevAddr=%h == %h",
-         PrRD, 32'h8765_fedc, DevAddr, 8'h67);
+         PrRD, 32'h8765_fedc, DevAddr, 4'h7);
 
-        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_OUT32, 8'hdf}; 
+        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_OUT32, 4'hf}; 
         #1 $display("    Read test(DEV_OUT32): PrRD=%h == %h, DevAddr=%h == %h",
-         PrRD, 32'h89ab_cdef, DevAddr, 8'hdf);
+         PrRD, 32'h89ab_cdef, DevAddr, 4'hf);
         
         // Write test
-        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_TC, 8'h73}; 
+        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_TC, 4'h3}; 
         #1 $display("    Read test(DEV_TC): DevWD=%h == %h, DevAddr=%h == %h",
-         DevWD, 32'hfedc_4321, DevAddr, 8'h73);
+         DevWD, 32'hfedc_4321, DevAddr, 4'h3);
 
-        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_IN32, 8'h92}; 
+        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_IN32, 4'h2}; 
         #1 $display("    Read test(DEV_IN32): DevWD=%h == %h, DevAddr=%h == %h",
-         DevWD, 32'hfedc_4321, DevAddr, 8'h92);
+         DevWD, 32'hfedc_4321, DevAddr, 4'h2);
 
-        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_OUT32, 8'h7e}; 
+        PrAddr = {{32-`DEV_ADDR_WD-`DEV_ID_WD{0}}, `DEV_OUT32, 4'he}; 
         #1 $display("    Read test(DEV_OUT32): DevWD=%h == %h, DevAddr=%h == %h",
-         DevWD, 32'hfedc_4321, DevAddr, 8'h7e);
+         DevWD, 32'hfedc_4321, DevAddr, 4'he);
 
         $display(" *Bridge test finished.");
         finish = 1;

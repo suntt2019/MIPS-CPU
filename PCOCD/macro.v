@@ -202,7 +202,7 @@
 `define INT_REQ_DIS 1'b0
 
 // Devices
-`define DEV_ADDR_WD 8 // device address width
+`define DEV_ADDR_WD 4 // device address width
 `define DEV_COUNT   3 // device count
 `define DEV_ID_WD   2 // device id width
 
