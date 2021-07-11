@@ -83,10 +83,10 @@ module cp0_test(start, finish);
         #10 $display("      Set HWInt, Cause: Cause=%h == %h", DOut, {16'b0, 6'b101011, 10'b0}); 
         cp0_hwint: assert(DOut === {16'b0, 6'b101011, 10'b0});
 
-        Wen = `WR_EN; Sel = `CP0_SEL_SR; Din = {16'b0, 6'b010100, 10'b0, `EXL_UNLOCK, `INT_EN};
+        Wen = `WR_EN; Sel = `CP0_SEL_SR; Din = {16'b0, 6'b010100, 8'b0, `EXL_UNLOCK, `INT_EN};
         #10 $display("      Test IntReq, Set SR: SR=%h == %h, IntReq=%d == %d",
-         DOut, {16'b0, 6'b010100, 10'b0, `EXL_UNLOCK, `INT_EN}, IntReq, `INT_REQ_DIS); 
-        cp0_intreq_int_en: assert(DOut === {16'b0, 6'b010100, 10'b0, `EXL_UNLOCK, `INT_EN} && IntReq === `INT_REQ_DIS); Wen = `WR_DIS;
+         DOut, {16'b0, 6'b010100, 8'b0, `EXL_UNLOCK, `INT_EN}, IntReq, `INT_REQ_DIS); 
+        cp0_intreq_int_en: assert(DOut === {16'b0, 6'b010100, 8'b0, `EXL_UNLOCK, `INT_EN} && IntReq === `INT_REQ_DIS); Wen = `WR_DIS;
 
         HWInt = 6'b111011; PC = 30'h3fff_ffff;
         #10 $display("      Test IntReq, HWInt=%b == %b, IntReq=%d == %d, EPC=%h == %h",
@@ -103,10 +103,10 @@ module cp0_test(start, finish);
          IntReq, `INT_REQ_EN, EPC, 30'h3478_abcd); 
         cp0_intreq_exl_clr: assert(IntReq === `INT_REQ_EN && EPC === 30'h3478_abcd); EXLClr = 1'b0;
 
-        Wen = `WR_EN; Sel = `CP0_SEL_SR; Din = {16'b0, 6'b010100, 10'b0, `EXL_UNLOCK, `INT_DIS};
+        Wen = `WR_EN; Sel = `CP0_SEL_SR; Din = {16'b0, 6'b010100, 8'b0, `EXL_UNLOCK, `INT_DIS};
         #10 $display("      Test IntReq, Set SR: SR=%h == %h, IntReq=%d == %d",
-         DOut, {16'b0, 6'b010100, 10'b0, `EXL_UNLOCK, `INT_DIS}, IntReq, `INT_REQ_DIS); 
-        cp0_intreq_int_dis: assert(DOut === {16'b0, 6'b010100, 10'b0, `EXL_UNLOCK, `INT_DIS} && IntReq === `INT_REQ_DIS); Wen = `WR_DIS;
+         DOut, {16'b0, 6'b010100, 8'b0, `EXL_UNLOCK, `INT_DIS}, IntReq, `INT_REQ_DIS); 
+        cp0_intreq_int_dis: assert(DOut === {16'b0, 6'b010100, 8'b0, `EXL_UNLOCK, `INT_DIS} && IntReq === `INT_REQ_DIS); Wen = `WR_DIS;
 
         $display(" *CP0 test finished.");
         finish = 1;

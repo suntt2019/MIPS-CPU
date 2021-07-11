@@ -1,4 +1,6 @@
 // `define DEBUG
+`define CONTROLLER_OUTPUT
+`define INSTRUCTION_OUTPUT
 
 // PC
 `define CODE_SEG_PC 32'h0000_3000
@@ -212,9 +214,9 @@
 `define DEV_OUT32   2'b10
 
 // TC
-`define TC_REG_CTRL 8'h0
-`define TC_REG_PST  8'h1
-`define TC_REG_CNT  8'h2
+`define TC_REG_CTRL 4'h0
+`define TC_REG_PST  4'h4
+`define TC_REG_CNT  4'h8
 
 `define TC_IM_EN    1'b1
 `define TC_IM_DIS   1'b0

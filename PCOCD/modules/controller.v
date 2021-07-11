@@ -134,10 +134,10 @@ module controller(
                 $display("Exception: Invalid instruction (opcode=%h, funct=%h, CP0Funct=%h)", opcode, funct, CP0Funct);
                 $stop;
             end
-
+            `ifdef CONTROLLER_OUTPUT
             if(status === `S1) $write("        Controller: status=%h(signals=%b)-[Instr=?(delayed)]->", status, signals);
             else $write("        Controller: status=%h(signals=%b)-[Instr=%h]->", status, signals, InstrID);
-            
+            `endif
             if(status === `S3_BR_BEQ) begin
                 status = NFlag[`FLAG_BIT_ZERO] ? `S6_BEQ : `S7;
             end else if(status === `S3_BR_BLTZAL) begin
@@ -151,7 +151,9 @@ module controller(
             if(status === `S7 && ~IntReq) begin
                 // if there isn't interrupt request, skip S7
                 status = next[InstrID][status];
+                `ifdef CONTROLLER_OUTPUT
                 $write("(IntReq=%b, skip S7)->", IntReq);
+                `endif
             end
 
             case(status)
@@ -320,8 +322,15 @@ module controller(
                     $stop;
                 end
             endcase
-            
+            `ifdef CONTROLLER_OUTPUT
             $display("%h(signals=%b)", status, signals);
+            `endif
+            if(status === `S7) begin
+                `ifdef CONTROLLER_OUTPUT
+                $display("        Controller: IntReq=%b, status=%h, Interrupt!", IntReq, status);
+                `endif
+                // $stop;
+            end
             // $stop;
         end
     end

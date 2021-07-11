@@ -268,7 +268,7 @@ module instruction_test(start, finish);
         nop_int_pc: assert(mips1.PC === `INT_PC);
         $display("      Check cp0.SR=%h == %h", mips1.cp0.RegSR, {16'b0, 6'b011100, 8'b0, `EXL_LOCK, `INT_EN});
         nop_int_sr: assert(mips1.cp0.RegSR === {16'b0, 6'b011100, 8'b0, `EXL_LOCK, `INT_EN});
-        $stop;
+        
         // LW Test(from devices)
         $display("    LW Test(from devices):"); reset = 1; clk = 0; t = 1;
         instr = 32'h8d0a0004; #10 $display("      Load instruction: lw $10, 4($8) (im[%h]=%h)", mips1.PC, mips1.instruction);
@@ -290,7 +290,7 @@ module instruction_test(start, finish);
         $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
         $display("      Check dev[2][8]=%h == %h", dev.regs[32'h7f28], 32'h3456_7890);
         sw_dev_dev28: assert(dev.regs[32'h7f28] === 32'h3456_7890);
-        $stop;
+
         $display(" *Instruction test finished.");
         finish = 1;
     end

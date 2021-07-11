@@ -269,6 +269,12 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
 
     assign PrAddr = StoredALUOut;
     assign PrDOut = StoredB;
-    assign Wen = StoredALUOut>=32'h7f00 && MemWr;
+    assign Wen = (StoredALUOut>=32'h7f00) && MemWr;
+    always @(PrAddr or StoredALUOut)begin
+        if((PrAddr[`DEV_ADDR_WD+`DEV_ID_WD-1:`DEV_ADDR_WD] > `DEV_COUNT) && (StoredALUOut>=32'h7f00)) begin
+            $display("Exception: Invalid device id (DevID=%h)", PrAddr[`DEV_ADDR_WD+`DEV_ID_WD-1:`DEV_ADDR_WD]);
+            $stop;
+        end
+    end
 
 endmodule

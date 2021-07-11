@@ -21,7 +21,9 @@ module bridge_test(start, finish);
         .DevWD(DevWD),
         .PrRD(PrRD),
         .DevAddr(DevAddr),
-        .DevRD(DevRD)
+        .DevRD(DevRD),
+        .Wen(),
+        .DevWr()
     );
 
     initial begin

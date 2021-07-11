@@ -44,7 +44,7 @@ module TC(clk_i, rst_i, add_i, we_i, dat_i, dat_o, irq);
                 endcase
             end
             if(en) begin
-                case(mode) // TODO: maybe delay in assign?
+                case(mode)
                     `TC_MODE_0: begin
                         if(LastPreset !== RegPreset) begin // Write in a same value?
                             RegCount = RegPreset; // Load preset only when TC_EN?

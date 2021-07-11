@@ -190,7 +190,7 @@ module tc_test(start, finish);
     end
 
     always begin
-        #5 clk = ~clk;
+        #1 if(~finish) #4 clk = ~clk;
     end
 
 endmodule
