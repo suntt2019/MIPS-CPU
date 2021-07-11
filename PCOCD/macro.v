@@ -2,6 +2,7 @@
 
 // PC
 `define CODE_SEG_PC 32'h0000_3000
+`define INT_PC 32'h0000_4180
 
 // Regs
 `define REG_ADDR_FLAG 30
@@ -107,7 +108,7 @@
 `define S_INVALID   5'h00
 
 // Signals
-`define SIGNAL_WIDTH 25
+`define SIGNAL_WIDTH 26
 
 // Write enable signals
 `define WR_EN 1'b1
@@ -144,11 +145,12 @@
 `define BAC_OP_BYTE 1'b1
 `define BAC_OP_ZZ 1'bz
 // NPCSel
-`define NPC_SEL_PC_ADD_4 2'b00
-`define NPC_SEL_BEQ_JMP 2'b01
-`define NPC_SEL_J_JMP 2'b10
-`define NPC_SEL_REG_JMP 2'b11
-`define NPC_SEL_ZZ 2'bzz
+`define NPC_SEL_PC_ADD_4 3'b000
+`define NPC_SEL_BEQ_JMP 3'b001
+`define NPC_SEL_J_JMP 3'b010
+`define NPC_SEL_REG_JMP 3'b011
+`define NPC_SEL_INT_JMP 3'b100
+`define NPC_SEL_ZZ 3'bzzz
 // EXTOp
 `define EXT_OP_ZERO 2'b00
 `define EXT_OP_SIGN 2'b01

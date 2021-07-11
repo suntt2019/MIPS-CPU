@@ -13,8 +13,8 @@ module controller(
     output [1:0] RegDst, Mem2Reg, 
     // Module control signals
     output BACOp,
-    output [1:0] NPCSel, EXTOp, FlagOp, EXLOp,
-    output [2:0] ALUOp
+    output [1:0] EXTOp, FlagOp, EXLOp,
+    output [2:0] NPCSel, ALUOp
 );
 
     wire addu, subu, ori, lw, sw, beq, lui, j, addi, addiu, slt, jal, jr, nop, lb, sb, bltzal, eret, mfc0, mtc0;
@@ -127,8 +127,11 @@ module controller(
             else if(jal) InstrID = `INSTR_JAL;
             else if(jr) InstrID = `INSTR_JR;
             else if(bltzal) InstrID = `INSTR_BLTZAL;
+            else if(eret) InstrID = `INSTR_ERET;
+            else if(mfc0) InstrID = `INSTR_MFC0;
+            else if(mtc0) InstrID = `INSTR_MTC0;
             else begin
-                $display("Exception: Invalid instruction (opcode=%h, funct=%h)", opcode, funct);
+                $display("Exception: Invalid instruction (opcode=%h, funct=%h, CP0Funct=%h)", opcode, funct, CP0Funct);
                 $stop;
             end
 
@@ -306,9 +309,9 @@ module controller(
             
             // S7: Interrupt
                 `S7:   signals = {
-                                        `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
+                                        `WR_EN, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS, `WR_DIS,
                                         `ALUSRC_ZZ, `REGDST_ZZ, `MEM2REG_ZZ, `DRSRC_ZZ, `JREGSRC_ZZ,
-                                        `BAC_OP_ZZ, `NPC_SEL_ZZ, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_SET
+                                        `BAC_OP_ZZ, `NPC_SEL_INT_JMP, `EXT_OP_ZZ, `FLAG_OP_ZZ, `ALU_OP_ZZ, `EXL_OP_SET
                                     };
             
             // Other

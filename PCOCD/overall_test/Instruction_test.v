@@ -7,6 +7,7 @@ module instruction_test(start, finish);
 
     // tested module I/O
     reg clk, reset;
+    reg [`CP0_DEV_CNT:1] HWInt;
 
     // local variables
     integer i, t;
@@ -17,7 +18,7 @@ module instruction_test(start, finish);
         .clk(clk),
         .rst(reset),
         .PrDIn(32'b0),
-        .HWInt(`CP0_DEV_CNT'b0),
+        .HWInt(HWInt),
         .Wen(),
         .PrAddr(),
         .PrDOut()
@@ -27,6 +28,7 @@ module instruction_test(start, finish);
     initial begin
         finish = 0; #1 while(~start) #1;
         $display(" *Instruction test started.");
+        HWInt = 'b0;
 
         // ADDU Test
         $display("    ADDU Test:"); reset = 1; clk = 0; t = 1;
@@ -200,6 +202,50 @@ module instruction_test(start, finish);
         $display("      Check PC=%h == %h", mips1.PC, 32'h1234_5678);
         jr_pc: assert(mips1.PC === 32'h1234_5678);
 
+        // ERET Test
+        $display("    ERET Test:"); reset = 1; clk = 0; t = 1;
+        instr = 32'h42000018; #10 $display("      Load instruction: eret (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        $display("      Ctr: eret=%d, signals=%b", mips1.ctr.eret, mips1.ctr.signals);
+        mips1.cp0.EPC = 30'h1234_5678; $display("      Set cp0.EPC<-30'h1234_5678(%h)", mips1.cp0.EPC);
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
+        $display("      Check PC=%h == %h", mips1.PC, {30'h1234_5678, 2'b0});
+        epc_pc: assert(mips1.PC === {30'h1234_5678, 2'b0});
+
+        // MFC0 Test
+        $display("    MFC0 Test:"); reset = 1; clk = 0; t = 1;
+        instr = 32'h400a1800; #10 $display("      Load instruction: mfc0 $10, $3 (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        $display("      Ctr: mfc0=%d, signals=%b", mips1.ctr.mfc0, mips1.ctr.signals);
+        mips1.cp0.RegPRID = `PRID; $display("      Set cp0.RegPRID<-`PRID(%h)", mips1.cp0.RegPRID);
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
+        $display("      Check regs[10]=%h == %h", mips1.gpr.regs[10], `PRID);
+        mfc0_reg10: assert(mips1.gpr.regs[10] === `PRID);
+
+        // MTC0 Test
+        $display("    MTC0 Test:"); reset = 1; clk = 0; t = 1;
+        instr = 32'h40880000; #10 $display("      Load instruction: mtc0 $8, $0 (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        $display("      Ctr: mfc0=%d, signals=%b", mips1.ctr.mfc0, mips1.ctr.signals);
+        mips1.gpr.regs[8] = 32'hfedc_1234; $display("      Set regs[8]<-32'hfedc_1234(%h)", mips1.gpr.regs[8]);
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
+        $display("      Check cp0.SR=%h == %h", mips1.cp0.RegSR, 32'hfedc_1234);
+        mfc0_sr: assert(mips1.cp0.RegSR === 32'hfedc_1234);
+
+        // NOP Test(with interrupt)
+        $display("    NOP Test(with interrupt):"); reset = 1; clk = 0; t = 1;
+        instr = 32'h00000000; #10 $display("      Load instruction: nop (im[%h]=%h)", mips1.PC, mips1.instruction);
+        #10 $display("      Reset finished."); reset = 0;
+        mips1.cp0.RegSR = {16'b0, 6'b011100, 8'b0, `EXL_UNLOCK, `INT_EN}; $display("      Set cp0.RegSR<-{16'b0, 6'b011100, 8'b0, `EXL_UNLOCK, `INT_EN}(%h)", mips1.cp0.RegSR);
+        HWInt = 6'b001000; $display("      Set HWInt<-6'b001000(%h)", HWInt);
+        $display("      Ctr: nop=%d, signals=%b", mips1.ctr.nop, mips1.ctr.signals);
+        $stop;
+        $display("      --==Execute==--"); #20 while(mips1.ctr.status !== `S1) #10; $display("      --==Execute==--");
+        $display("      Check PC=%h == %h", mips1.PC, `INT_PC);
+        nop_int_pc: assert(mips1.PC === `INT_PC);
+        $display("      Check cp0.SR=%h == %h", mips1.cp0.RegSR, {16'b0, 6'b011100, 8'b0, `EXL_LOCK, `INT_EN});
+        nop_int_sr: assert(mips1.cp0.RegSR === {16'b0, 6'b011100, 8'b0, `EXL_LOCK, `INT_EN});
+        $stop;
         $display(" *Instruction test finished.");
         finish = 1;
     end

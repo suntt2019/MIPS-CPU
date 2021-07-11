@@ -16,8 +16,8 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
     wire [1:0] RegDst, Mem2Reg; 
     // Module control signals
     wire BACOp;
-    wire [1:0] NPCSel, EXTOp, FlagOp, EXLOp;
-    wire [2:0] ALUOp;
+    wire [1:0] EXTOp, FlagOp, EXLOp;
+    wire [2:0] NPCSel, ALUOp;
 
     // instruction
     wire [31:0] instruction, StoredInstruction;
@@ -141,7 +141,7 @@ module mips(clk, rst, PrAddr, PrDIn, PrDOut, Wen, HWInt) ;
     wire [1:0] CP0Sel;
     wire EXLSet, EXLClr;
     assign UpperPC = PC[31:2];
-    assign CP0Sel = imm[1:0];
+    assign CP0Sel = rd[1:0];
     assign {EXLClr, EXLSet} = EXLOp;
 
     CP0 cp0(

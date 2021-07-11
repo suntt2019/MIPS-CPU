@@ -7,14 +7,14 @@ module ifu_test(start, finish);
 
     // tested module I/O
     reg clk, reset, PCWr;
-    reg [1:0] NPCSel;
+    reg [2:0] NPCSel;
     reg [31:0] regPC, StoredInstruction;
     wire [31:0] instruction;
     wire [31:0] pc;
 
     // local variables
     integer i;
-    reg [1:0] NPCSelBuf;
+    reg [2:0] NPCSelBuf;
     reg IRWr;
 
     // tested module
@@ -138,6 +138,13 @@ module ifu_test(start, finish);
         #10 $display("      After beq-jmp(47-1+1==47) to hex_47h, pc=%h == %h, instruction=%h == %h", pc, `CODE_SEG_PC + 'h47*4, instruction, `hex_47h);
         ifu_beqjmp_4: assert(pc === `CODE_SEG_PC + 'h47*4 && instruction === `hex_47h);
         
+        // test int-jmp
+        $display("    int-jmp(NPCSel=0b100) test:");
+        reset = 0;
+        NPCSel = `NPC_SEL_INT_JMP;
+        #10 $display("      After int-jmp, pc=%h == %h", pc, `INT_PC);
+        ifu_intjmp: assert(pc === `INT_PC);
+
         $display(" *IFU test finished.");
         finish = 1;
     end

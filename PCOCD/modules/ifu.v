@@ -2,7 +2,7 @@
 
 module IFU(clk, reset, NPCSel, regPC, instruction, StoredInstruction, pc, PCWr);
     input clk, reset, PCWr;
-    input [1:0] NPCSel;
+    input [2:0] NPCSel;
     input [31:0] regPC, StoredInstruction;
     output [31:0] instruction;
     output reg [31:0] pc;
@@ -23,6 +23,7 @@ module IFU(clk, reset, NPCSel, regPC, instruction, StoredInstruction, pc, PCWr);
                     shifted_imm = pc[15:0] + (StoredInstruction[15:0] << 2);
                     pc = {pc[31:16], shifted_imm[15:0]};
                 end
+                `NPC_SEL_INT_JMP: pc = `INT_PC;
             endcase
         end
     end
