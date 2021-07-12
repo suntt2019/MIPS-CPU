@@ -1,4 +1,4 @@
-module overall();
+module sys_test();
 	
 	integer t;
 	reg clk, reset;

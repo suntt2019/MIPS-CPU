@@ -1,0 +1,134 @@
+#-----------------------------------------------------------
+# PlanAhead v14.5 (64-bit)
+# Build 247527 by xbuild on Mon Mar 25 17:13:07 MDT 2013
+# Start of session at: Mon Jul 12 21:21:22 2021
+# Process ID: 22096
+# Log file: C:/code/projects/MIPS-CPU/PCOCD-P4-5/planAhead_run_3/planAhead.log
+# Journal file: C:/code/projects/MIPS-CPU/PCOCD-P4-5/planAhead_run_3/planAhead.jou
+#-----------------------------------------------------------
+INFO: [Common 17-78] Attempting to get a license: PlanAhead
+INFO: [Common 17-290] Got license for PlanAhead
+INFO: [Device 21-36] Loading parts and site information from C:/Xilinx/14.5/ISE_DS/PlanAhead/data/parts/arch.xml
+Parsing RTL primitives file [C:/Xilinx/14.5/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
+Finished parsing RTL primitives file [C:/Xilinx/14.5/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
+start_gui
+source C:/code/projects/MIPS-CPU/PCOCD-P4-5/pa.fromHdl.tcl
+# create_project -name PCOCD-P4-5 -dir "C:/code/projects/MIPS-CPU/PCOCD-P4-5/planAhead_run_3" -part xc6slx45fgg676-3
+# set_param project.pinAheadLayout yes
+# set srcset [get_property srcset [current_run -impl]]
+# set_property target_constrs_file "practical.ucf" [current_fileset -constrset]
+Adding file 'C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.ucf' to fileset 'constrs_1'
+# set hdlfile [add_files [list {im.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {reg32.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {ifu.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {gpr.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {ext.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {dm.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {cp0.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {controller.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {bac.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {alu.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {tc.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {mips.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {bridge.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {main.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {dt_encoder.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set hdlfile [add_files [list {practical.v}]]
+# set_property file_type Verilog $hdlfile
+# set_property library work $hdlfile
+# set_property top practical $srcset
+# add_files [list {practical.ucf}] -fileset [get_property constrset [current_run]]
+# open_rtl_design -part xc6slx45fgg676-3
+Using Verific elaboration
+Parsing VHDL file "C:/Xilinx/14.5/ISE_DS/PlanAhead/data/parts/xilinx/rtl/lib/synplify/synattr.vhd" into library synplify
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/im.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/reg32.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/reg32.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/ifu.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/ifu.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/gpr.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/gpr.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/ext.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/ext.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/dm.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/cp0.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/cp0.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/controller.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/controller.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/bac.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/bac.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/alu.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/alu.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/tc.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/tc.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/mips.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/mips.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/bridge.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/bridge.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/main.v" into library work
+Parsing verilog file "macro.v" included at line 1. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/main.v:1]
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/dt_encoder.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.v" into library work
+Loading clock regions from C:/Xilinx/14.5/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/spartan6lx/xc6slx45/ClockRegion.xml
+Loading clock buffers from C:/Xilinx/14.5/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/spartan6lx/xc6slx45/ClockBuffers.xml
+Loading package pin functions from C:/Xilinx/14.5/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/PinFunctions.xml...
+Loading package from C:/Xilinx/14.5/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/spartan6lx/xc6slx45/fgg676/Package.xml
+Loading io standards from C:/Xilinx/14.5/ISE_DS/PlanAhead/data\./parts/xilinx/spartan6/IOStandards.xml
+Loading device configuration modes from C:/Xilinx/14.5/ISE_DS/PlanAhead/data\parts/xilinx/spartan6/ConfigModes.xml
+Loading list of drcs for the architecture : C:/Xilinx/14.5/ISE_DS/PlanAhead/data\./parts/xilinx/spartan6/drc.xml
+Parsing UCF File [C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.ucf]
+CRITICAL WARNING: [Constraints 18-5] Cannot loc instance 'nReset_INV_1' at site AE9, Unknown instance type 'RTL_INV' [C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.ucf:88]
+INFO: [Constraints 18-98] IO constraint IOSTANDARD with a setting of LVCMOS33 for net reset will not be propagated through the buffer. The constraint should be associated with the net that is connected to the top level port. [C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.ucf:94]
+Finished Parsing UCF File [C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.ucf]
+INFO: [Designutils 20-20] Invalid constraints found, use command 'write_ucf -constraints invalid <file>' to save all the invalid constraints to a file
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Phase 0 | Netlist Checksum: a02c0921
+open_rtl_design: Time (s): elapsed = 00:00:06 . Memory (MB): peak = 775.000 ; gain = 196.520
+update_compile_order -fileset sim_1
+startgroup
+set_property package_pin AE9 [get_ports nReset]
+endgroup
+set_property iostandard LVCMOS33 [get_ports [list nReset]]
+save_constraints
+exit
+ERROR: [PlanAhead 12-106] *** Exception: ui.h.b: Found deleted key in HTclEventBroker. Verify if the classes listed here call cleanup()
+HTclEvent: SIGNAL_BUS_MODIFY   Classes: ui.views.aR 
+HTclEvent: DEBUG_CORE_CONFIG_CHANGE   Classes: ui.views.aR 
+HTclEvent: DEBUG_PORT_CONFIG_CHANGE   Classes: ui.views.aR 
+HTclEvent: SIGNAL_MODIFY   Classes: ui.views.aR 
+ (See C:/code/projects/MIPS-CPU/PCOCD-P4-5\planAhead_pid22096.debug)
+ERROR: [Common 17-39] 'stop_gui' failed due to earlier errors.
+INFO: [Common 17-206] Exiting PlanAhead at Mon Jul 12 21:22:34 2021...
+INFO: [Common 17-83] Releasing license: PlanAhead

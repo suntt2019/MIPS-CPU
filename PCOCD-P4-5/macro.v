@@ -1,5 +1,6 @@
-`define DEBUG
-`define CONTROLLER_OUTPUT
+// `define DEBUG
+// `define CONTROLLER_OUTPUT
+// `define PC_OUTPUT
 // `define INSTRUCTION_OUTPUT
 
 // PC

@@ -25,6 +25,7 @@ module IFU(clk, reset, NPCSel, regPC, instruction, StoredInstruction, pc, PCWr);
                 end
                 `NPC_SEL_INT_JMP: pc = `INT_PC;
             endcase
+				`ifdef PC_OUTPUT
 				$write("New PC=%h", pc);
 				case(pc)
 					'h4180: $display("                                                                                                                           Start interrupt");
@@ -32,6 +33,7 @@ module IFU(clk, reset, NPCSel, regPC, instruction, StoredInstruction, pc, PCWr);
 					'h41a4: $display("                                                                                                                           Add 1");
 					default: $display("");
 				endcase
+				`endif
         end
     end
 endmodule

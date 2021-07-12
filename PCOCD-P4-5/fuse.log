@@ -1,4 +1,4 @@
-Running: C:\Xilinx\14.5\ISE_DS\ISE\bin\nt\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -lib secureip -o C:/code/projects/MIPS-CPU/PCOCD-P4-5/overall_isim_beh.exe -prj C:/code/projects/MIPS-CPU/PCOCD-P4-5/overall_beh.prj work.overall work.glbl 
+Running: C:\Xilinx\14.5\ISE_DS\ISE\bin\nt\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -lib secureip -o C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical_test_isim_beh.exe -prj C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical_test_beh.prj work.practical_test work.glbl 
 ISim P.58f (signature 0x8ef4fb42)
 Number of CPUs detected in this system: 16
 Turning on mult-threading, number of parallel sub-compilation jobs: 32 
@@ -17,11 +17,12 @@ Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/tc.v" into library 
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/mips.v" into library work
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/bridge.v" into library work
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/main.v" into library work
-Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/overall.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/dt_encoder.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.v" into library work
 Analyzing Verilog file "C:/Xilinx/14.5/ISE_DS/ISE//verilog/src/glbl.v" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 160668 KB
+Fuse Memory Usage: 160860 KB
 Fuse CPU Usage: 155 ms
 Compiling module im_256
 Compiling module IFU
@@ -37,10 +38,13 @@ Compiling module mips
 Compiling module Bridge
 Compiling module TC
 Compiling module main
-Compiling module overall
+Compiling module dt_encoder
+Compiling module practical
+Compiling module practical_test
 Compiling module glbl
 Time Resolution for simulation is 1ps.
-Compiled 16 Verilog Units
-Built simulation executable C:/code/projects/MIPS-CPU/PCOCD-P4-5/overall_isim_beh.exe
-Fuse Memory Usage: 170260 KB
-Fuse CPU Usage: 358 ms
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 18 Verilog Units
+Built simulation executable C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical_test_isim_beh.exe
+Fuse Memory Usage: 169748 KB
+Fuse CPU Usage: 327 ms

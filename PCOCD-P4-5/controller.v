@@ -103,7 +103,7 @@ module controller(
             $display("");
             for(i=1;i<=`INSTR_COUNT;i=i+1) begin
                 $write("%h: ", i);
-                for(k=0;k<=`STATUS_COUNT;k=k+1) begin
+                for(k=1;k<=`STATUS_COUNT;k=k+1) begin
                     $write("%h ", next[i][k]);
                 end
                 $display("");

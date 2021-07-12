@@ -1,5 +1,0 @@
-xst -intstyle ise -ifn "C:/code/projects/MIPS-CPU/PCOCD-P4/status_test.xst" -ofn "C:/code/projects/MIPS-CPU/PCOCD-P4/status_test.syr" 
-ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx45-fgg676-3 status_test.ngc status_test.ngd  
-map -intstyle ise -p xc6slx45-fgg676-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o status_test_map.ncd status_test.ngd status_test.pcf 
-par -w -intstyle ise -ol high -mt off status_test_map.ncd status_test.ncd status_test.pcf 
-trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml status_test.twx status_test.ncd -o status_test.twr status_test.pcf 
