@@ -1,0 +1,87 @@
+Running: C:\Xilinx\14.5\ISE_DS\ISE\bin\nt\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -lib secureip -o C:/code/projects/MIPS-CPU/PCOCD-P4-3/test_isim_beh.exe -prj C:/code/projects/MIPS-CPU/PCOCD-P4-3/test_beh.prj work.test work.glbl 
+ISim P.58f (signature 0x8ef4fb42)
+Number of CPUs detected in this system: 16
+Turning on mult-threading, number of parallel sub-compilation jobs: 32 
+Determining compilation order of HDL files
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/im.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/reg32.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/ifu.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/gpr.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/ext.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/dm.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/cp0.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/controller.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bac.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/alu.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/tc.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/mips.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/main.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/tc_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/p3_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/p2_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/p1_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/Instruction_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/im_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/ifu_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/gpr_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/ext_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/dm_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/cp0_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" into library work
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 45: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 49: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 53: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 58: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 62: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 66: Concatenation with unsized literal; will interpret as 32 bits
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bltzal_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bac_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/alu_test.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-3/test.v" into library work
+Analyzing Verilog file "C:/Xilinx/14.5/ISE_DS/ISE//verilog/src/glbl.v" into library work
+Starting static elaboration
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 45: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 49: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 53: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 58: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 62: Concatenation with unsized literal; will interpret as 32 bits
+WARNING:HDLCompiler:327 - "C:/code/projects/MIPS-CPU/PCOCD-P4-3/bridge_test.v" Line 66: Concatenation with unsized literal; will interpret as 32 bits
+Completed static elaboration
+Fuse Memory Usage: 161244 KB
+Fuse CPU Usage: 202 ms
+Compiling module dm_12k
+Compiling module dm_test
+Compiling module im_32k
+Compiling module im_test
+Compiling module IFU
+Compiling module ifu_test
+Compiling module ALU
+Compiling module alu_test
+Compiling module EXT
+Compiling module ext_test
+Compiling module GPR
+Compiling module gpr_test
+Compiling module BAC
+Compiling module controller
+Compiling module CP0
+Compiling module Reg32
+Compiling module mips
+Compiling module devices_for_test
+Compiling module instruction_test
+Compiling module p1_test
+Compiling module bac_test
+Compiling module p2_test
+Compiling module bltzal_test
+Compiling module TC
+Compiling module tc_test
+Compiling module Bridge
+Compiling module bridge_test
+Compiling module cp0_test
+Compiling module main
+Compiling module p3_test
+Compiling module test
+Compiling module glbl
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+ERROR:Simulator:861 - Failed to link the design
