@@ -17,13 +17,17 @@ Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/tc.v" into library 
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/mips.v" into library work
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/bridge.v" into library work
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/main.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/dynamic_scanner.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/dt_mux.v" into library work
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/dt_encoder.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/divider.v" into library work
 Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical.v" into library work
 Analyzing Verilog file "C:/Xilinx/14.5/ISE_DS/ISE//verilog/src/glbl.v" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 160860 KB
-Fuse CPU Usage: 155 ms
+Fuse Memory Usage: 159708 KB
+Fuse CPU Usage: 171 ms
+Compiling module divider(RATIO=1)
 Compiling module im_256
 Compiling module IFU
 Compiling module GPR
@@ -39,12 +43,13 @@ Compiling module Bridge
 Compiling module TC
 Compiling module main
 Compiling module dt_encoder
+Compiling module dynamic_scanner
+Compiling module dt_mux
 Compiling module practical
 Compiling module practical_test
 Compiling module glbl
 Time Resolution for simulation is 1ps.
-Waiting for 1 sub-compilation(s) to finish...
-Compiled 18 Verilog Units
+Compiled 21 Verilog Units
 Built simulation executable C:/code/projects/MIPS-CPU/PCOCD-P4-5/practical_test_isim_beh.exe
-Fuse Memory Usage: 169748 KB
-Fuse CPU Usage: 327 ms
+Fuse Memory Usage: 171348 KB
+Fuse CPU Usage: 311 ms

@@ -1,34 +1,32 @@
-module practical(clk, nReset, switches, digital_tubes);
+module practical(clk, nReset, switches, digital_tubes, digital_sel);
 	input clk, nReset;
 	input [31:0] switches;
 	output [6:0] digital_tubes;
+	output [7:0] digital_sel;
 	
-	integer cnt;
-	reg cvtClk;
+	wire sysClk, TCClk, DSClk;
+	wire [2:0] sel;
 	wire reset;
 	wire [3:0] nums;
 	wire [31:0] DOut;
 	assign reset = ~nReset;
-	assign nums = DOut[3:0];
 	
-	// Divider
-	always @(clk or reset) begin
-		if(reset) begin
-			cnt = 0;
-			cvtClk = 0;
-			// $display("Divider: reset, cnt = %d, cvtClk = %b",cnt,cvtClk);
-		end else begin
-			if(cnt == 2) begin
-				cvtClk = ~cvtClk;
-				cnt = 0;
-			end
-			cnt = cnt+1;
-			// $display("Divider: run, cnt = %d, cvtClk = %b",cnt,cvtClk);
-		end
-	end
+	// Divider-Sys
+	divider #(.RATIO(1)) div_sys(
+		.clk_in(clk),
+		.clk_out(sysClk),
+		.reset(reset)
+	);
+	
+	// Divider-DigitalTube
+	divider #(.RATIO(1)) div_dt(
+		.clk_in(clk),
+		.clk_out(DSClk),
+		.reset(reset)
+	);
 	
 	main sys(
-		.clk(cvtClk),
+		.clk(sysClk),
 		.reset(reset),
 		.DIn(switches),
 		.DOut(DOut)
@@ -38,13 +36,20 @@ module practical(clk, nReset, switches, digital_tubes);
 		.num(nums),
 		.dt(digital_tubes)
 	);
-/*	
+	
 	dynamic_scanner ds(
-		.clk(cvtClk),
-		.ds(ds),
+		.clk(DSClk),
+		.ds(digital_sel),
+		.sel(sel),
+		.reset(reset)
+	);
+	
+	dt_mux dtmux(
+		.num_in(DOut),
+		.num_out(nums),
 		.sel(sel)
 	);
-	*/
+	
 endmodule
 
 module practical_test();
@@ -53,12 +58,14 @@ module practical_test();
 	reg clk, nReset;
 	reg [31:0] DIn;
 	wire [6:0] dt;
+	wire [7:0]ds;
 	
 	practical p(
 		.clk(clk),
 		.nReset(nReset),
 		.switches(DIn),
-		.digital_tubes(dt)
+		.digital_tubes(dt),
+		.digital_sel(ds)
 	);
 	
 	initial begin
@@ -75,4 +82,11 @@ module practical_test();
 		clk = ~clk;
 		#10;
 	end
+	
+	/*
+	always @(posedge clk) begin
+		$display("tubes[%b]=%b", ds, dt);
+	end
+	*/
+	
 endmodule
