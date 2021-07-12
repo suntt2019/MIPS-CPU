@@ -41,7 +41,7 @@ module p3_test(start, finish);
         $display("      Start running");
         LastAWr = 0;
         DIn = 32'h1907_1110;
-        for(i=0; i<760 && sys.cpu.instruction !== 32'bx; i=i+1) begin
+        for(i=0;sys.cpu.instruction !== 32'bx; i=i+1) begin
             `ifdef INSTRUCTION_OUTPUT
             #1 $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b",
              t, i, sys.cpu.PC, sys.cpu.StoredInstruction, sys.cpu.ctr.status, sys.cpu.ctr.signals);
@@ -57,10 +57,13 @@ module p3_test(start, finish);
             // if(sys.cpu.PC === `INT_PC + 'h24) $display("ADD1!!!");
             // if(sys.cpu.PC === `INT_PC + 'h18) $display("**************************CHANGE!!!");
             if(i%100===0) DIn = DIn - 32'h1_0000;
-            $display("      Out=%h",DOut);
+            
             LastAWr = sys.cpu.AWr;
             #9;
-            while(sys.cpu.ctr.status !== `S1) #10;
+            while(sys.cpu.ctr.status !== `S1) begin
+                #10;
+                if(sys.DevWr[`DEV_OUT32]) $display("      Out=%h",DOut);
+            end
         end
         $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b, last instr: regs[%d]=%h",
          t, i, sys.cpu.PC, sys.cpu.StoredInstruction, sys.cpu.ctr.status, sys.cpu.ctr.signals, LastAWr, sys.cpu.gpr.regs[LastAWr]);

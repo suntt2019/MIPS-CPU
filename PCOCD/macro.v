@@ -1,6 +1,6 @@
 // `define DEBUG
-`define CONTROLLER_OUTPUT
-`define INSTRUCTION_OUTPUT
+// `define CONTROLLER_OUTPUT
+// `define INSTRUCTION_OUTPUT
 
 // PC
 `define CODE_SEG_PC 32'h0000_3000
