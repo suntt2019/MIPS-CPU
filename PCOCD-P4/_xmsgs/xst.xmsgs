@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 45: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 49: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 53: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 58: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 62: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 66: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="872" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\test.v" Line 31: Using initial value of <arg fmt="%s" index="1">start</arg> since it is never assigned
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\alu.v" Line 27: Signal &lt;<arg fmt="%s" index="1">Flag</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="413" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\gpr_test.v" Line 47: Result of <arg fmt="%d" index="1">6</arg>-bit expression is truncated to fit in <arg fmt="%d" index="2">5</arg>-bit target.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="413" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\mips.v" Line 33: Result of <arg fmt="%d" index="1">5</arg>-bit expression is truncated to fit in <arg fmt="%d" index="2">1</arg>-bit target.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\mips.v" Line 33: Assignment to <arg fmt="%s" index="1">shmat</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\controller.v" Line 53: Assignment to <arg fmt="%s" index="1">overflow</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\controller.v" Line 54: Assignment to <arg fmt="%s" index="1">zero</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="817" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\controller.v" Line 137: System task <arg fmt="%s" index="1">stop</arg> ignored for synthesis
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="817" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\controller.v" Line 324: System task <arg fmt="%s" index="1">stop</arg> ignored for synthesis
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="634" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\controller.v" Line 24: Net &lt;<arg fmt="%s" index="1">next[20][29][5]</arg>&gt; does not have a driver.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="817" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\cp0.v" Line 32: System task <arg fmt="%s" index="1">stop</arg> ignored for synthesis
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="817" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\cp0.v" Line 43: System task <arg fmt="%s" index="1">stop</arg> ignored for synthesis
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="634" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\mips.v" Line 25: Net &lt;<arg fmt="%s" index="1">shamt[5]</arg>&gt; does not have a driver.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="634" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\mips.v" Line 149: Net &lt;<arg fmt="%s" index="1">reset</arg>&gt; does not have a driver.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\Instruction_test.v" Line 315: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="634" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\Instruction_test.v" Line 22: Net &lt;<arg fmt="%s" index="1">reset</arg>&gt; does not have a driver.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="634" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\Instruction_test.v" Line 23: Net &lt;<arg fmt="%s" index="1">HWInt[6]</arg>&gt; does not have a driver.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p1_test.v" Line 33: Assignment to <arg fmt="%s" index="1">LastAWr</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p1_test.v" Line 69: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p1_test.v" Line 77: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p2_test.v" Line 35: Assignment to <arg fmt="%s" index="1">LastAWr</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p2_test.v" Line 71: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p2_test.v" Line 79: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bltzal_test.v" Line 33: Assignment to <arg fmt="%s" index="1">LastAWr</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bltzal_test.v" Line 69: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bltzal_test.v" Line 77: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="552" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\tc_test.v" Line 39: Input port <arg fmt="%s" index="1">a[31]</arg> is not connected on this instance
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 45: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 49: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 53: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 58: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 62: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="327" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 66: Concatenation with unsized literal; will interpret as 32 bits
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 21: Assignment to <arg fmt="%s" index="1">DevWD</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 22: Assignment to <arg fmt="%s" index="1">PrRD</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 23: Assignment to <arg fmt="%s" index="1">DevAddr</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="552" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\bridge_test.v" Line 18: Input port <arg fmt="%s" index="1">Wen</arg> is not connected on this instance
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="552" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\cp0_test.v" Line 49: Input port <arg fmt="%s" index="1">a[15]</arg> is not connected on this instance
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p3_test.v" Line 26: Assignment to <arg fmt="%s" index="1">DOut</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p3_test.v" Line 33: Assignment to <arg fmt="%s" index="1">LastAWr</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p3_test.v" Line 84: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="91" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\p3_test.v" Line 92: Signal &lt;<arg fmt="%s" index="1">t</arg>&gt; missing in the sensitivity list is added for synthesis purposes. HDL and post-synthesis simulations may differ as a result.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="817" delta="old" >"C:\code\projects\MIPS-CPU\PCOCD-P4\test.v" Line 38: System task <arg fmt="%s" index="1">stop</arg> ignored for synthesis
+</msg>
+
+<msg type="internal" file="Xst" num="0" delta="new" srcfile="../interf/cmain.c" srcline="3423" srcrcs="1.29" >
+Process will terminate. For technical support on this issue, please open a WebCase with this project attached at http://www.xilinx.com/support. 
+</msg>
+
+</messages>
+

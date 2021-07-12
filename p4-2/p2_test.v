@@ -37,7 +37,7 @@ always @(posedge start) begin
         
         t = 1; reset = 1;
         $display("      Read from file.");
-        // $readmemh(`P2_TEST_HEX_FILENAME, mips1.ifu.im.im, `CODE_SEG_PC, `CODE_SEG_PC+400);
+        $readmemh(`P2_TEST_HEX_FILENAME, mips1.ifu.im.im, `CODE_SEG_PC, `CODE_SEG_PC+400);
         #10 $display("      Reset finished."); reset = 0;
         `ifdef DEBUG
         $stop;

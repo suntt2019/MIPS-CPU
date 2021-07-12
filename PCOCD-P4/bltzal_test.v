@@ -1,9 +1,9 @@
 `timescale 1ns/ 1ns
 `include "macro.v"
-`define P2_TEST_HEX_FILENAME "../overall_test/p2-test.txt"
-`define P2_TEST_REGS_FILENAME "../overall_test/p2-test-regs.txt"
+`define BLTZAL_TEST_HEX_FILENAME "hex/bltzal-test.txt"
+`define BLTZAL_TEST_REGS_FILENAME "hex/bltzal-test-regs.txt"
 
-module p2_test(start, finish);
+module bltzal_test(start, finish);
     input start;
     output reg finish;
 
@@ -26,18 +26,16 @@ module p2_test(start, finish);
         .PrDOut()
     );
 
-
-
     initial begin
-        finish = 0; clk = 0;
+        finish = 0; clk = 0; t=1;
     end
 
 always @(posedge start) begin
-        $display(" *P2 test started.");
+        $display(" *BLTZAL test started.");
         
-        t = 1; reset = 1;
+        reset = 1;
         $display("      Read from file.");
-        // $readmemh(`P2_TEST_HEX_FILENAME, mips1.ifu.im.im, `CODE_SEG_PC, `CODE_SEG_PC+400);
+        // $readmemh(`BLTZAL_TEST_HEX_FILENAME, mips1.ifu.im.im, `CODE_SEG_PC, `CODE_SEG_PC+400);
         #10 $display("      Reset finished."); reset = 0;
         `ifdef DEBUG
         $stop;
@@ -52,15 +50,15 @@ always @(posedge start) begin
             #9;
             for(inc=0;inc<10;inc=inc+1)if(mips1.ctr.status !== `S1) #10;
         end
-        $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b, last instr: regs[%d]=%h",
-         t, i, mips1.PC, mips1.StoredInstruction, mips1.ctr.status, mips1.ctr.signals, LastAWr, mips1.gpr.regs[LastAWr]);
+        $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b",
+         t, i, mips1.PC, mips1.StoredInstruction, mips1.ctr.status, mips1.ctr.signals);
             
-        // $readmemh(`P2_TEST_REGS_FILENAME, expectedRegs);
+        // // $readmemh(`BLTZAL_TEST_REGS_FILENAME, expectedRegs);
         // for(i=0;i<32;i=i+1) begin
         //     $display("      regs[%d]=%h == %h",i,mips1.gpr.regs[i], expectedRegs[i]);
         //     if(~(mips1.gpr.regs[i] === expectedRegs[i])) $display("Assertion Error");
         // end
-        $display(" *P2 test finished.");
+        $display(" *BLTZAL test finished.");
         finish = 1;
     end
 
@@ -72,8 +70,12 @@ always @(posedge start) begin
         end
     end
 
-    always begin
-        #1 if(~finish) t = t+1;
+    always @(finish or start) begin
+	 if(start) begin
+            t=1;
+        end else begin
+				#1 if(~finish) t = t+1;
+        end
     end
 
 endmodule
