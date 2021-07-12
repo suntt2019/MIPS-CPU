@@ -80,8 +80,10 @@ module controller(
             
             for(i=1;i<=`INSTR_COUNT;i=i+1) begin
                 for(k=0;k<=`STATUS_COUNT;k=k+1) begin
-                   next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]] = steps[i][`STATUS_WIDTH:1];
-                    steps[i] = (steps[i] >> `STATUS_WIDTH);
+                    if(steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1] > 0) begin
+                        next[i][steps[i][`STATUS_WIDTH*2:`STATUS_WIDTH+1]] = steps[i][`STATUS_WIDTH:1];
+                    end
+                   steps[i] = (steps[i] >> `STATUS_WIDTH);
                 end
             end
 

@@ -35,8 +35,8 @@ always @(posedge start) begin
 
         t = 1; reset = 1;
         $display("      Read from file.");
-        $readmemh(`P3_TEST_HEX_MAIN_FILENAME, sys.cpu.ifu.im.im, `CODE_SEG_PC);
-        $readmemh(`P3_TEST_HEX_INT_FILENAME, sys.cpu.ifu.im.im, `INT_PC);
+        $readmemh(`P3_TEST_HEX_MAIN_FILENAME, sys.cpu.ifu.im.im, `CODE_SEG_PC, `CODE_SEG_PC+400);
+        $readmemh(`P3_TEST_HEX_INT_FILENAME, sys.cpu.ifu.im.im, `INT_PC, `INT_PC+400);
         #10 $display("      Reset finished."); reset = 0;
         `ifdef DEBUG
         $stop;
@@ -49,13 +49,13 @@ always @(posedge start) begin
             #1 $display("      t=%d,Step[%d], PC=%h, StoredInstruction=%h, status=%h signals=%b",
              t, i, sys.cpu.PC, sys.cpu.StoredInstruction, sys.cpu.ctr.status, sys.cpu.ctr.signals);
             `endif
-            if(sys.cpu.PC === `CODE_SEG_PC + 40) begin
-                $readmemh(`P3_TEST_REGS_FILENAME, expectedRegs);
-                for(i=0;i<32;i=i+1) begin
-                    $display("      regs[%d]=%h == %h",i,sys.cpu.gpr.regs[i], expectedRegs[i]);
-                    if(~(sys.cpu.gpr.regs[i] === expectedRegs[i])) $display("Assertion Error");
-                end;
-            end
+            // if(sys.cpu.PC === `CODE_SEG_PC + 40) begin
+            //     $readmemh(`P3_TEST_REGS_FILENAME, expectedRegs);
+            //     for(i=0;i<32;i=i+1) begin
+            //         $display("      regs[%d]=%h == %h",i,sys.cpu.gpr.regs[i], expectedRegs[i]);
+            //         if(~(sys.cpu.gpr.regs[i] === expectedRegs[i])) $display("Assertion Error");
+            //     end;
+            // end
             // if(sys.cpu.PC === `CODE_SEG_PC + 16) $stop;
             // if(sys.cpu.PC === `INT_PC + 'h24) $display("ADD1!!!");
             // if(sys.cpu.PC === `INT_PC + 'h18) $display("**************************CHANGE!!!");
@@ -64,7 +64,7 @@ always @(posedge start) begin
             LastAWr = sys.cpu.AWr;
             #9;
             for(inc=0;inc<10;inc=inc+1) begin
-                if(mips1.ctr.status !== `S1) begin
+                if(sys.cpu.ctr.status !== `S1) begin
                     #10;
                     if(sys.DevWr[`DEV_OUT32]) $display("      Out=%h",DOut);
                 end

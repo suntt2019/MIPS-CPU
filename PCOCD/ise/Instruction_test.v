@@ -21,7 +21,7 @@ module instruction_test(start, finish);
     // tested module I/O
     reg clk, reset;
     reg [`CP0_DEV_CNT:1] HWInt;
-    reg [31:0] PrDIn;
+    wire [31:0] PrDIn;
     wire [31:0] PrAddr, PrDOut;
     wire Wen;
 

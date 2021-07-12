@@ -40,7 +40,7 @@ always @(posedge start) begin
         // test reset
         $display("    Reset test:");
         $display("      Read from file.");
-        $readmemh(`unit_test_hex_filename, ifu1.im.im, `CODE_SEG_PC);
+        $readmemh(`unit_test_hex_filename, ifu1.im.im, `CODE_SEG_PC, `CODE_SEG_PC+400);
         reset = 1;
         #10 $display("      After reset, pc=%h == %h, instruction=%h == %h", pc, `CODE_SEG_PC + 'h0*4, instruction, `hex_0h);
         if(~(pc === `CODE_SEG_PC + 'h0*4 && instruction === `hex_0h)) $display("Assertion Error");

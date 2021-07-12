@@ -25,7 +25,7 @@ module im_test(start, finish);
 always @(posedge start) begin
         $display(" *IM test started.");
         $display("    Read from file.");
-        $readmemh(`unit_test_hex_filename, im1.im, `CODE_SEG_PC);
+        $readmemh(`unit_test_hex_filename, im1.im, `CODE_SEG_PC, `CODE_SEG_PC+400);
         $display("    Check memory");
         i = 0;
         addr = `CODE_SEG_PC;
