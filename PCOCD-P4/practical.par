@@ -1,0 +1,219 @@
+Release 14.5 par P.58f (nt64)
+Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+
+DESKTOP-9AMKRQN::  Wed Jul 14 02:08:02 2021
+
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd
+practical.pcf 
+
+
+Constraints file: practical.pcf.
+Loading device for application Rf_Device from file '6slx45.nph' in environment C:\Xilinx\14.5\ISE_DS\ISE\.
+   "practical" is an NCD, version 3.2, device xc6slx45, package fgg676, speed -2
+
+Initializing temperature to 85.000 Celsius. (default - Range: 0.000 to 85.000 Celsius)
+Initializing voltage to 1.140 Volts. (default - Range: 1.140 to 1.260 Volts)
+
+
+Device speed data version:  "PRODUCTION 1.23 2013-03-26".
+
+
+
+Device Utilization Summary:
+
+Slice Logic Utilization:
+  Number of Slice Registers:                 3,818 out of  54,576    6%
+    Number used as Flip Flops:               3,683
+    Number used as Latches:                    134
+    Number used as Latch-thrus:                  0
+    Number used as AND/OR logics:                1
+  Number of Slice LUTs:                      8,246 out of  27,288   30%
+    Number used as logic:                    8,111 out of  27,288   29%
+      Number using O6 output only:           7,732
+      Number using O5 output only:              95
+      Number using O5 and O6:                  284
+      Number used as ROM:                        0
+    Number used as Memory:                     128 out of   6,408    1%
+      Number used as Dual Port RAM:            128
+        Number using O6 output only:           128
+        Number using O5 output only:             0
+        Number using O5 and O6:                  0
+      Number used as Single Port RAM:            0
+      Number used as Shift Register:             0
+    Number used exclusively as route-thrus:      7
+      Number with same-slice register load:      4
+      Number with same-slice carry load:         3
+      Number with other load:                    0
+
+Slice Logic Distribution:
+  Number of occupied Slices:                 2,593 out of   6,822   38%
+  Number of MUXCYs used:                       288 out of  13,644    2%
+  Number of LUT Flip Flop pairs used:        8,402
+    Number with an unused Flip Flop:         4,635 out of   8,402   55%
+    Number with an unused LUT:                 156 out of   8,402    1%
+    Number of fully used LUT-FF pairs:       3,611 out of   8,402   42%
+    Number of slice register sites lost
+      to control set restrictions:               0 out of  54,576    0%
+
+  A LUT Flip Flop pair for this architecture represents one LUT paired with
+  one Flip Flop within a slice.  A control set is a unique combination of
+  clock, reset, set, and enable signals for a registered element.
+  The Slice Logic Distribution report is not meaningful if the design is
+  over-mapped for a non-slice resource or if Placement fails.
+
+IO Utilization:
+  Number of bonded IOBs:                        72 out of     358   20%
+    Number of LOCed IOBs:                       72 out of      72  100%
+
+Specific Feature Utilization:
+  Number of RAMB16BWERs:                         0 out of     116    0%
+  Number of RAMB8BWERs:                          0 out of     232    0%
+  Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
+  Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
+  Number of BUFG/BUFGMUXs:                       6 out of      16   37%
+    Number used as BUFGs:                        6
+    Number used as BUFGMUX:                      0
+  Number of DCM/DCM_CLKGENs:                     0 out of       8    0%
+  Number of ILOGIC2/ISERDES2s:                   0 out of     376    0%
+  Number of IODELAY2/IODRP2/IODRP2_MCBs:         0 out of     376    0%
+  Number of OLOGIC2/OSERDES2s:                   0 out of     376    0%
+  Number of BSCANs:                              0 out of       4    0%
+  Number of BUFHs:                               0 out of     256    0%
+  Number of BUFPLLs:                             0 out of       8    0%
+  Number of BUFPLL_MCBs:                         0 out of       4    0%
+  Number of DSP48A1s:                            0 out of      58    0%
+  Number of ICAPs:                               0 out of       1    0%
+  Number of MCBs:                                0 out of       2    0%
+  Number of PCILOGICSEs:                         0 out of       2    0%
+  Number of PLL_ADVs:                            0 out of       4    0%
+  Number of PMVs:                                0 out of       1    0%
+  Number of STARTUPs:                            0 out of       1    0%
+  Number of SUSPEND_SYNCs:                       0 out of       1    0%
+
+
+Overall effort level (-ol):   High 
+Router effort level (-rl):    High 
+
+Starting initial Timing Analysis.  REAL time: 2 secs 
+Finished initial Timing Analysis.  REAL time: 2 secs 
+
+Starting Router
+
+
+Phase  1  : 49880 unrouted;      REAL time: 3 secs 
+
+Phase  2  : 48328 unrouted;      REAL time: 5 secs 
+
+Phase  3  : 26765 unrouted;      REAL time: 24 secs 
+
+Phase  4  : 26765 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 25 secs 
+
+Updating file: practical.ncd with current fully routed design.
+
+Phase  5  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 49 secs 
+
+Phase  6  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 49 secs 
+
+Phase  7  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 49 secs 
+
+Phase  8  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 49 secs 
+
+Phase  9  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 49 secs 
+
+Phase 10  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 49 secs 
+Total REAL time to Router completion: 49 secs 
+Total CPU time to Router completion: 49 secs 
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Generating "PAR" statistics.
+
+**************************
+Generating Clock Report
+**************************
+
++---------------------+--------------+------+------+------------+-------------+
+|        Clock Net    |   Resource   |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
++---------------------+--------------+------+------+------------+-------------+
+|div_sys/clk_out_BUFG |              |      |      |            |             |
+|                     | BUFGMUX_X3Y13| No   | 1011 |  0.067     |  1.775      |
++---------------------+--------------+------+------+------------+-------------+
+|sys/cpu/ext/EXTOp[1] |              |      |      |            |             |
+|_GND_46_o_Mux_2_o_BU |              |      |      |            |             |
+|                  FG |  BUFGMUX_X2Y3| No   |    9 |  0.008     |  1.749      |
++---------------------+--------------+------+------+------------+-------------+
+|     led_0_OBUF_BUFG |  BUFGMUX_X2Y4| No   |   12 |  0.012     |  1.748      |
++---------------------+--------------+------+------+------------+-------------+
+|sys/bridge/DevID[2]_ |              |      |      |            |             |
+|GND_3640_o_Mux_7_o_B |              |      |      |            |             |
+|                 UFG | BUFGMUX_X2Y12| No   |    8 |  0.023     |  1.740      |
++---------------------+--------------+------+------+------------+-------------+
+|sys/cpu/alu/_n0145<0 |              |      |      |            |             |
+|              >_BUFG |  BUFGMUX_X2Y1| No   |   17 |  0.030     |  1.749      |
++---------------------+--------------+------+------+------------+-------------+
+|sys/cpu/Mram_Mem2Reg |              |      |      |            |             |
+|[1]_GND_3606_o_Mux_2 |              |      |      |            |             |
+|            8_o_BUFG |  BUFGMUX_X2Y2| No   |   16 |  0.057     |  1.769      |
++---------------------+--------------+------+------+------------+-------------+
+|sys/cpu/Mram_RegDst[ |              |      |      |            |             |
+|1]_GND_3602_o_Mux_16 |              |      |      |            |             |
+|                  _o |         Local|      |    3 |  0.729     |  1.315      |
++---------------------+--------------+------+------+------------+-------------+
+|sys/cpu/alu/ALUOp[2] |              |      |      |            |             |
+|  _ALUOp[2]_OR_107_o |         Local|      |    2 |  0.000     |  0.750      |
++---------------------+--------------+------+------+------------+-------------+
+|      div_dt/clk_out |         Local|      |    8 |  3.487     |  5.396      |
++---------------------+--------------+------+------+------------+-------------+
+
+* Net Skew is the difference between the minimum and maximum routing
+only delays for the net. Note this is different from Clock Skew which
+is reported in TRCE timing report. Clock Skew is the difference between
+the minimum and maximum path delays which includes logic delays.
+
+* The fanout is the number of component pins not the individual BEL loads,
+for example SLICE loads not FF loads.
+
+Timing Score: 0 (Setup: 0, Hold: 0, Component Switching Limit: 0)
+
+Asterisk (*) preceding a constraint indicates it was not met.
+   This may be due to a setup or hold violation.
+
+----------------------------------------------------------------------------------------------------------
+  Constraint                                |    Check    | Worst Case |  Best Case | Timing |   Timing   
+                                            |             |    Slack   | Achievable | Errors |    Score   
+----------------------------------------------------------------------------------------------------------
+  TS_clk = PERIOD TIMEGRP "TNM_clk" 10 ns H | SETUP       |     4.811ns|     5.189ns|       0|           0
+  IGH 50%                                   | HOLD        |     0.451ns|            |       0|           0
+----------------------------------------------------------------------------------------------------------
+
+
+All constraints were met.
+
+
+Generating Pad Report.
+
+All signals are completely routed.
+
+Total REAL time to PAR completion: 50 secs 
+Total CPU time to PAR completion: 50 secs 
+
+Peak Memory Usage:  4646 MB
+
+Placer: Placement generated during map.
+Routing: Completed - No errors found.
+Timing: Completed - No errors found.
+
+Number of error messages: 0
+Number of warning messages: 0
+Number of info messages: 0
+
+Writing design to file practical.ncd
+
+
+
+PAR done!

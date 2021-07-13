@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=D:\stt\PCOCD-P4-9\practical.ncd
+OUTFILE=D:\stt\PCOCD-P4-9\practical.bit
+FAMILY=Spartan6
+PART=xc6slx45-2fgg676
+WORKINGDIR=D:\stt\PCOCD-P4-9
+LICENSE=WebPack
+USER_INFO=__0_0_0

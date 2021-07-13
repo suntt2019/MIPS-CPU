@@ -1,0 +1,53 @@
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 
+xst -intstyle ise -ifn "D:/stt/PCOCD-P4-9/practical.xst" -ofn "D:/stt/PCOCD-P4-9/practical.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc practical.ucf -p xc6slx45-fgg676-2 practical.ngc practical.ngd  
+map -intstyle ise -p xc6slx45-fgg676-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o practical_map.ncd practical.ngd practical.pcf 
+par -w -intstyle ise -ol high -mt off practical_map.ncd practical.ncd practical.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml practical.twx practical.ncd -o practical.twr practical.pcf -ucf practical.ucf 
+bitgen -intstyle ise -f practical.ut practical.ncd 

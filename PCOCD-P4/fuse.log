@@ -1,0 +1,56 @@
+Running: C:\Xilinx\14.5\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -lib secureip -o C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/practical_test_isim_beh.exe -prj C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/practical_test_beh.prj work.practical_test work.glbl 
+ISim P.58f (signature 0x7708f090)
+Number of CPUs detected in this system: 16
+Turning on mult-threading, number of parallel sub-compilation jobs: 32 
+Determining compilation order of HDL files
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/im.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/reg32.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/ifu.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/gpr.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/ext.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/dm.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/cp0.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/controller.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/bac.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/alu.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/tc.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/mips.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/bridge.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/revert32.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/multi_dt.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/main.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/dt_encoder.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/divider.v" into library work
+Analyzing Verilog file "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/practical.v" into library work
+Analyzing Verilog file "C:/Xilinx/14.5/ISE_DS/ISE//verilog/src/glbl.v" into library work
+Starting static elaboration
+WARNING:HDLCompiler:1016 - "C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/practical.v" Line 107: Port digital_tubes2 is not connected to this instance
+Completed static elaboration
+Compiling module revert32
+Compiling module divider(RATIO=50)
+Compiling module im_256
+Compiling module IFU
+Compiling module GPR
+Compiling module ALU
+Compiling module dm_256
+Compiling module EXT
+Compiling module BAC
+Compiling module controller
+Compiling module CP0
+Compiling module Reg32
+Compiling module mips
+Compiling module Bridge
+Compiling module TC
+Compiling module main
+Compiling module divider(RATIO=100000)
+Compiling module dt_encoder
+Compiling module multi_dt
+Compiling module practical
+Compiling module practical_test
+Compiling module glbl
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 22 Verilog Units
+Built simulation executable C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/practical_test_isim_beh.exe
+Fuse Memory Usage: 31476 KB
+Fuse CPU Usage: 734 ms

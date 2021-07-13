@@ -7,8 +7,8 @@
 * 计算机组成原理课设
   * Project1：单周期（[PCOCD-P1](PCOCD-P1)）
   * Project2：多周期（[PCOCD-P2](PCOCD-P2)）
-
-
+  * Project3：硬件中断（[PCOCD-P3](PCOCD-P3)）
+  * Project4：FPGA测试（[PCOCD-P4](PCOCD-P4)）
 
 其中，大作业使用LogicSim，电路以xml形式存储；课设使用ModelSim，电路以verilog形式存储。
 

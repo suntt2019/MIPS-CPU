@@ -1,0 +1,36 @@
+ISim log file
+Running: C:\code\projects\MIPS-CPU\PCOCD-P4-9(FINAL)_2MHz\practical_test_isim_beh.exe -intstyle ise -gui -tclbatch isim.cmd -wdb C:/code/projects/MIPS-CPU/PCOCD-P4-9(FINAL)_2MHz/practical_test_isim_beh.wdb 
+ISim P.58f (signature 0x7708f090)
+This is a Full version of ISim.
+Time resolution is 1 ps
+# onerror resume
+# wave add /
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 100.00us
+# run 1000.00us
+# run 1000.00us
+# run 1000.00us
+# run 1000.00us
+# run 1000.00us
+# run 1000.00us
+# run 1000.00us
+# run 1000.00us
+# run 3000.00us
+# run 3000.00us
+# run 3000.00us
+# run 3000.00us

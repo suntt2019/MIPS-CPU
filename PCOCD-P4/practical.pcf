@@ -1,0 +1,105 @@
+//! **************************************************************************
+// Written by: Map P.58f on Wed Jul 14 02:07:58 2021
+//! **************************************************************************
+
+SCHEMATIC START;
+COMP "clk" LOCATE = SITE "D14" LEVEL 1;
+COMP "digital_tubes<0>" LOCATE = SITE "AF14" LEVEL 1;
+COMP "digital_tubes<1>" LOCATE = SITE "AC14" LEVEL 1;
+COMP "digital_tubes<2>" LOCATE = SITE "AA15" LEVEL 1;
+COMP "digital_tubes<3>" LOCATE = SITE "Y14" LEVEL 1;
+COMP "digital_tubes<4>" LOCATE = SITE "AD14" LEVEL 1;
+COMP "digital_tubes<5>" LOCATE = SITE "Y15" LEVEL 1;
+COMP "digital_tubes<6>" LOCATE = SITE "AB15" LEVEL 1;
+COMP "digital_tubes2<0>" LOCATE = SITE "AC12" LEVEL 1;
+COMP "digital_tubes2<1>" LOCATE = SITE "AD13" LEVEL 1;
+COMP "digital_tubes2<2>" LOCATE = SITE "AF12" LEVEL 1;
+COMP "digital_tubes2<3>" LOCATE = SITE "AA13" LEVEL 1;
+COMP "digital_tubes2<4>" LOCATE = SITE "AA12" LEVEL 1;
+COMP "digital_tubes2<5>" LOCATE = SITE "AD12" LEVEL 1;
+COMP "digital_tubes2<6>" LOCATE = SITE "AC13" LEVEL 1;
+COMP "led<10>" LOCATE = SITE "AD18" LEVEL 1;
+COMP "led<11>" LOCATE = SITE "AF18" LEVEL 1;
+COMP "led<12>" LOCATE = SITE "Y16" LEVEL 1;
+COMP "led<13>" LOCATE = SITE "AA17" LEVEL 1;
+COMP "led<14>" LOCATE = SITE "AA18" LEVEL 1;
+COMP "led<15>" LOCATE = SITE "AB18" LEVEL 1;
+COMP "switches<0>" LOCATE = SITE "C7" LEVEL 1;
+COMP "switches<1>" LOCATE = SITE "A6" LEVEL 1;
+COMP "switches<2>" LOCATE = SITE "B6" LEVEL 1;
+COMP "switches<3>" LOCATE = SITE "A5" LEVEL 1;
+COMP "switches<4>" LOCATE = SITE "C5" LEVEL 1;
+COMP "switches<5>" LOCATE = SITE "A4" LEVEL 1;
+COMP "switches<6>" LOCATE = SITE "B4" LEVEL 1;
+COMP "switches<7>" LOCATE = SITE "A2" LEVEL 1;
+COMP "switches<8>" LOCATE = SITE "C11" LEVEL 1;
+COMP "switches<9>" LOCATE = SITE "C6" LEVEL 1;
+COMP "switches<10>" LOCATE = SITE "D6" LEVEL 1;
+COMP "switches<11>" LOCATE = SITE "A9" LEVEL 1;
+COMP "switches<12>" LOCATE = SITE "C9" LEVEL 1;
+COMP "switches<20>" LOCATE = SITE "C13" LEVEL 1;
+COMP "switches<13>" LOCATE = SITE "A8" LEVEL 1;
+COMP "switches<21>" LOCATE = SITE "A12" LEVEL 1;
+COMP "switches<14>" LOCATE = SITE "B8" LEVEL 1;
+COMP "switches<22>" LOCATE = SITE "B12" LEVEL 1;
+COMP "switches<30>" LOCATE = SITE "B16" LEVEL 1;
+COMP "switches<15>" LOCATE = SITE "A7" LEVEL 1;
+COMP "switches<23>" LOCATE = SITE "A11" LEVEL 1;
+COMP "switches<31>" LOCATE = SITE "A15" LEVEL 1;
+COMP "switches<16>" LOCATE = SITE "C15" LEVEL 1;
+COMP "switches<24>" LOCATE = SITE "D21" LEVEL 1;
+COMP "switches<17>" LOCATE = SITE "C14" LEVEL 1;
+COMP "switches<25>" LOCATE = SITE "C18" LEVEL 1;
+COMP "switches<18>" LOCATE = SITE "B14" LEVEL 1;
+COMP "switches<26>" LOCATE = SITE "D18" LEVEL 1;
+COMP "switches<19>" LOCATE = SITE "A13" LEVEL 1;
+COMP "switches<27>" LOCATE = SITE "A17" LEVEL 1;
+COMP "switches<28>" LOCATE = SITE "C17" LEVEL 1;
+COMP "switches<29>" LOCATE = SITE "A16" LEVEL 1;
+COMP "led<0>" LOCATE = SITE "AE19" LEVEL 1;
+COMP "led<1>" LOCATE = SITE "AF19" LEVEL 1;
+COMP "led<2>" LOCATE = SITE "AC20" LEVEL 1;
+COMP "led<3>" LOCATE = SITE "AD21" LEVEL 1;
+COMP "led<4>" LOCATE = SITE "Y18" LEVEL 1;
+COMP "led<5>" LOCATE = SITE "AA19" LEVEL 1;
+COMP "led<6>" LOCATE = SITE "AC19" LEVEL 1;
+COMP "led<7>" LOCATE = SITE "AD19" LEVEL 1;
+COMP "led<8>" LOCATE = SITE "V16" LEVEL 1;
+COMP "led<9>" LOCATE = SITE "W17" LEVEL 1;
+COMP "nReset" LOCATE = SITE "AE9" LEVEL 1;
+COMP "digital_sel<0>" LOCATE = SITE "AD11" LEVEL 1;
+COMP "digital_sel<1>" LOCATE = SITE "V12" LEVEL 1;
+COMP "digital_sel<2>" LOCATE = SITE "W12" LEVEL 1;
+COMP "digital_sel<3>" LOCATE = SITE "AE11" LEVEL 1;
+COMP "digital_sel<4>" LOCATE = SITE "AB11" LEVEL 1;
+COMP "digital_sel<5>" LOCATE = SITE "V13" LEVEL 1;
+COMP "digital_sel<6>" LOCATE = SITE "W14" LEVEL 1;
+COMP "digital_sel<7>" LOCATE = SITE "AC11" LEVEL 1;
+TIMEGRP TNM_clk = BEL "div_sys/clk_out" BEL "div_dt/clk_out" BEL
+        "div_sys/cnt_0" BEL "div_sys/cnt_1" BEL "div_sys/cnt_2" BEL
+        "div_sys/cnt_3" BEL "div_sys/cnt_4" BEL "div_sys/cnt_5" BEL
+        "div_sys/cnt_6" BEL "div_sys/cnt_7" BEL "div_sys/cnt_8" BEL
+        "div_sys/cnt_9" BEL "div_sys/cnt_10" BEL "div_sys/cnt_11" BEL
+        "div_sys/cnt_12" BEL "div_sys/cnt_13" BEL "div_sys/cnt_14" BEL
+        "div_sys/cnt_15" BEL "div_sys/cnt_16" BEL "div_sys/cnt_17" BEL
+        "div_sys/cnt_18" BEL "div_sys/cnt_19" BEL "div_sys/cnt_20" BEL
+        "div_sys/cnt_21" BEL "div_sys/cnt_22" BEL "div_sys/cnt_23" BEL
+        "div_sys/cnt_24" BEL "div_sys/cnt_25" BEL "div_sys/cnt_26" BEL
+        "div_sys/cnt_27" BEL "div_sys/cnt_28" BEL "div_sys/cnt_29" BEL
+        "div_sys/cnt_30" BEL "div_sys/cnt_31" BEL "div_sys/cnt_32" BEL
+        "div_sys/cnt_33" BEL "div_sys/cnt_34" BEL "div_dt/cnt_0" BEL
+        "div_dt/cnt_1" BEL "div_dt/cnt_2" BEL "div_dt/cnt_3" BEL
+        "div_dt/cnt_4" BEL "div_dt/cnt_5" BEL "div_dt/cnt_6" BEL
+        "div_dt/cnt_7" BEL "div_dt/cnt_8" BEL "div_dt/cnt_9" BEL
+        "div_dt/cnt_10" BEL "div_dt/cnt_11" BEL "div_dt/cnt_12" BEL
+        "div_dt/cnt_13" BEL "div_dt/cnt_14" BEL "div_dt/cnt_15" BEL
+        "div_dt/cnt_16" BEL "div_dt/cnt_17" BEL "div_dt/cnt_18" BEL
+        "div_dt/cnt_19" BEL "div_dt/cnt_20" BEL "div_dt/cnt_21" BEL
+        "div_dt/cnt_22" BEL "div_dt/cnt_23" BEL "div_dt/cnt_24" BEL
+        "div_dt/cnt_25" BEL "div_dt/cnt_26" BEL "div_dt/cnt_27" BEL
+        "div_dt/cnt_28" BEL "div_dt/cnt_29" BEL "div_dt/cnt_30" BEL
+        "div_dt/cnt_31" BEL "div_dt/cnt_32" BEL "div_dt/cnt_33" BEL
+        "div_dt/cnt_34" BEL "led_0_OBUF_BUFG" BEL "led<0>";
+TS_clk = PERIOD TIMEGRP "TNM_clk" 10 ns HIGH 50%;
+SCHEMATIC END;
+
