@@ -10,5 +10,4 @@
   * Project3：硬件中断（[PCOCD-P3](PCOCD-P3)）
   * Project4：FPGA测试（[PCOCD-P4](PCOCD-P4)）
 
-其中，大作业使用LogicSim，电路以xml形式存储；课设使用ModelSim，电路以verilog形式存储。
-
+其中，大作业使用LogicSim，电路以xml形式存储；课设P1至P3使用ModelSim，P4使用ISE，电路以verilog形式存储。
