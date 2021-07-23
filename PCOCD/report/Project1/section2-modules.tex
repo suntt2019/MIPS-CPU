@@ -1,0 +1,418 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{模块设计}
+\subsection{IFU}
+\subsubsection{基本描述}
+IFU完成程序计数器$PC$的维护、以及指令存储器$IM$的读取。
+\paragraph{程序计数器$PC$的维护}
+程序计数器$PC$的维护工作，即是在每次时钟信号$clk$出现上升沿时，根据输入的控制信号$NPCSel$，使用对应的方式生成新的PC值。
+
+支持四种新$PC$生成方式。$PC+4$模式为大部分指令服务，相对跳转模式为$beq$等指令服务，绝对跳转模式 为$j$等指令服务，寄存器模式为$jr$等指令服务。
+
+\paragraph{指令存储器$IM$的读取}
+程序计数器$PC$的值即是指令存储器$IM$的地址，该模块时刻读出$PC$指向$IM$中的值。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{IFU模块接口}
+    \begin{tabular}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $clk$ & input & 1bit & 时钟信号。\\
+        $reset$ & input & 1bit & \makecell[lt]{
+            复位信号。\\
+             0：复位。\\
+             1：无效。
+        } \\
+        $NPCSel$ & input & 2bit & \makecell[lt]{
+            新$PC$值生成方式选择的控制信号。\\
+            NPC\_SEL\_PC\_ADD\_4(0b00)：使用$PC+4$模式。\\
+            NPC\_SEL\_BEQ\_JMP(0b01)：使用相对跳转模式。\\
+            NPC\_SEL\_J\_JMP(0b10)：使用绝对跳转模式。\\
+            NPC\_SEL\_REG\_JMP(0b11)：使用寄存器跳转模式。
+        } \\
+        \midrule
+        $regPC$ & input & 32bit & 寄存器跳转到的地址。\\
+        $Instr$ & output & 32bit & 32bit的$MIPS$指令。\\
+        $pc$ & output & 32bit & 当前$PC$的值。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{IFU功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 复位 & $reset \land clk\uparrow \Rightarrow  PC \leftarrow 0x000003000$ \\
+        2 & 取指令 & $Instr \leftarrow IM[PC] $ \\
+        3.1 & $PC+4$模式 & $NPCSel == 0b00 \Rightarrow PC \leftarrow PC + 4 $ \\
+        3.2 & 相对跳转 & $NPCSel == 0b01 \Rightarrow PC \leftarrow PC + 4 + Instr_{15..0}\ ||\ 0^2$ \\
+        3.3 & 绝对跳转 & $NPCSel == 0b10 \Rightarrow PC \leftarrow (PC+4)_{31..28}\ ||\ Instr_{25..0}\ ||\ 0^2 $ \\
+        3.4 & 寄存器跳转 & $NPCSel == 0b11 \Rightarrow PC \leftarrow regPC $ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+
+IFU模块中，每次$clk$出现上升沿时，根据$NPCSel$选择模式，计算新的$PC$值并写入$PC$寄存器。
+
+$PC$值作为指令存储器$IM$的地址，固定将对应数据输出到$Instr$。
+
+\clearpage \subsection{GPR}
+\subsubsection{基本描述}
+GPR为CPU寄存器组，完成$32$个32bit寄存器并行的两路读取和一路写入。同时处理标志位的存取操作。
+\paragraph{两路读取}
+GPR根据输入的两寄存器编号$A_1$，$A_2$分别读取对应两寄存器数据$RD1$，$RD2$。
+\paragraph{一路写入}
+GPR根据输入的一寄存器编号$A_{wr}$将输入的数据$WD$存入对应的寄存器中。
+\paragraph{标志位存取}
+GPR固定将标志位寄存器（$\$30$）的值输出到$Flag$，并在根据控制信号将$NFlag$写入标志位寄存器。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{GPR模块接口}
+    \begin{tabular}{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $clk$ & input & 1bit & 时钟信号。\\
+        $reset$ & input & 1bit & \makecell[lt]{
+            复位信号。\\
+             0：复位。\\
+             1：无效。
+        } \\
+        $FlagOp$ & input & 2bit & \makecell[lt]{
+            新$PC$值生成方式选择的控制信号。\\
+            FLAG\_OP\_DIS(0b00)：进行常规写入，不写入标志位。\\
+            FLAG\_OP\_SET(0b01)：不进行常规写入，写入标志位。\\
+            FLAG\_OP\_SET\_AND\_WR(0b10)：常规、标志位均写入。\\
+        } \\
+        $WE$ & input & 1bit & 高有效写允许信号。 \\
+        \midrule
+        $A_1$ & input & 5bit & 第一路读取寄存器编号。 \\
+        $A_2$ & input & 5bit & 第二路读取寄存器编号。 \\
+        $A_{wr}$ & input & 5bit & 写入寄存器编号。 \\
+        $D_{in}$ & input & 32bit & 写入的数据。 \\
+        $NFlag$ & input & 32bit & 新的标志位数值。 \\
+        $RD_1$ & output & 32bit & 第一路读取的数据。 \\
+        $RD_2$ & output & 32bit & 第二路读取的数据。 \\
+        $Flag$ & output & 32bit & 当前的标志位数。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\clearpage
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{GPR功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 复位 & $reset \land clk\uparrow \Rightarrow  Reg[i] = 0x00000000, i=0, 1, \dots 31 $ \\
+        2 & 读取寄存器值 & $ RD_1 \leftarrow Reg[A_1], RD_2 \leftarrow Reg[A_2] $ \\
+        3 & 写入寄存器值 & \makecell[lt]{
+            $A_{wr} \neq 0 \land WE \land clk\uparrow \land FlagOp\in\{DIS, SET\_AND\_WR\}$ \\
+            \ \ $\Rightarrow Reg[A_{wr}] \leftarrow  D_{in}$
+        } \\
+        4 & 读取标志位 & $ Flag \leftarrow Reg[30] $ \\
+        5 & 写入标志位 & $ clk\uparrow \land FlagOp\in\{SET, SET\_AND\_WR\} \Rightarrow Reg[30] \leftarrow NFlag$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+GPR模块中包含32个32位寄存器。模块对$clk$和$reset$上升沿敏感，触发后按照功能说明进行对应访存操作。
+
+\clearpage \subsection{ALU}
+\subsubsection{基本描述}
+ALU完成数据计算、数据比较、地址偏移量计算、新标志位生成。
+
+\paragraph{数据计算}
+ALU支持对两个32bit数进行加法、减法、按位与、按位或、有符号大小比较运算。
+\paragraph{数据比较与地址偏移量计算}
+数据比较和地址偏移量计算分别借助ALU的减法、加法功能实现。
+\paragraph{新标志位生成}
+ALU进行加减运算时判断是否溢出，时刻判断计算结果是否为0。
+
+两个结果分别作为溢出标志位、零标志位，与现有标志位进行运算，生成新标志位。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{ALU模块接口}
+    \begin{tabular}{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $ALUOp$ & input & 3bit & \makecell[lt]{
+            $ALU$运算模式的控制信号。\\
+            ALU\_OP\_ADD(0b00)：加法运算。\\
+            ALU\_OP\_SUB(0b001)：减法运算。\\
+            ALU\_OP\_AND(0b010)：按位与运算。 \\
+            ALU\_OP\_OR(0b011)：按位或运算。 \\
+            ALU\_OP\_LESS(0b100)：有符号比较运算。 \\
+            ALU\_OP\_B(0b101)：输出第二运算数。 \\
+        } \\
+        \midrule
+        x & input & 32bit & 第一运算数。 \\
+        y & input & 32bit & 第二运算数。 \\
+        Flag & input & 32bit & 现在的标志位。\\
+        shamt & input & 6bit & 移位数量。\\
+        ALUOut & output & 32bit & 运算结果。 \\
+        NFlag & output & 32bit & 新生成的标志位。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\clearpage
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{ALU功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1.1 & 加法运算 & $ALUOp = ADD \Rightarrow ofbit || ALUOut \leftarrow A+B$ \\
+        1.2 & 减法运算 & $ALUOp = SUB \Rightarrow ofbit || ALUOut \leftarrow A-B$ \\
+        1.3 & 按位与运算 & $ALUOp = AND \Rightarrow ALUOut \leftarrow A\ \&\ B$ \\
+        1.4 & 按位或运算 & $ALUOp = OR \Rightarrow ALUOut \leftarrow A\ |\ B$ \\
+        1.5 & 有符号比较运算 & $ALUOp = LESS \Rightarrow ALUOut \leftarrow A\ <\ B$ \\
+        2.1 & 溢出判断 & \makecell[lt]{
+            $ALUOp\in\{ADD, SUB\} $ \\
+            $\ \ \Rightarrow overflow \leftarrow ofbit \xor ALUOut_{31} \xor A_{31} \xor B_{31} $
+        }\\
+        2.2 & 零判断 & $zero \leftarrow (ALUOut = 0)$ \\
+        3 & 标志位生成 & $NFlag = Flag_{31..2}\ ||\ zero\ ||\ overflow \lor Flag_1$ \\
+        
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+上表中有符号比较的公式为：$(x\ <\ y) \leftarrow unsigned\_less(x, y) \xor (x[31] \xor y[31]) $。
+
+其中，$unsigned\_less$为无符号比较结果。鉴于补码的性质，两运算数符号一致时此结果与有符号比较结果一致，而符号不同时则相反。故此可得出此公式。
+
+
+\subsubsection{模块实现}
+ALU模块为组合电路，当输入变化时，首先进行运算，随后进行各标志判断，最后生成新的标志位。
+
+\clearpage \subsection{EXT}
+\subsubsection{基本描述}
+EXT完成从16位数据拓展到32位的三种拓展，并根据$EXTOP$指令选择对应的结果输出。三种拓展具体为零拓展、符号拓展、高位载入拓展。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{EXT模块接口}
+    \begin{tabular}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $EXTOP$ & input & 2bit & \makecell[lt]{
+            拓展模式选择的控制信号。\\
+            EXT\_OP\_ZERO(0b00)：输出零拓展。 \\
+            EXT\_OP\_SIGN(0b01)：输出符号拓展。 \\
+            EXT\_OP\_LUI(0b10)：输出高位载入拓展。 \\
+        } \\
+        \midrule
+        $in$ & input & 16bit & 16位输入数据。\\
+        $out$ & output & 32bit & 32位拓展结果。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{EXT功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 零拓展 & $EXTOP = ZERO \Rightarrow out \leftarrow 0^{16}\ ||\ in$ \\
+        2 & 符号拓展 & $EXTOP = SIGN \Rightarrow out \leftarrow \left(in_{15}\right)^{16}\ ||\ in$ \\
+        3 & 高位载入拓展 & $EXTOP = LUI \Rightarrow out \leftarrow in\ ||\ 0^{16}$\\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+EXT模块为组合电路，当$EXTOp$或$in$变化时，根据$EXTOp$对$in$进行指定拓展并输出到$out$。
+
+\clearpage \subsection{dm\_1k}
+\subsubsection{基本描述}
+dm\_1k作为系统主存，完成主存的读取和写入功能。
+\paragraph{主存的读取}
+根据输入的地址$addr$，输出对应的数据到$D_{out}$。
+\paragraph{主存的写入}
+根据输入的地址$addr$，将输入的数据$D_{in}$写入到对应位置。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{dm\_1k模块接口}
+    \begin{tabular}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $clk$ & input & 1bit & 时钟信号。\\
+        $we$ & input & 1bit & 高有效写使能信号。\\
+        \midrule
+        $addr$ & input & 32bit & 读出或写入内存的地址。\\
+        $D_{in}$ & input & 32bit & 写入的数据。 \\
+        $D_{out}$ & output & 32bit & 读出的数据。\\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{dm\_1k功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 读取内存值 & $ D_{out} \leftarrow Mem[addr] $ \\
+        2 & 写入内存值 & $ we \land clk\uparrow \Rightarrow Mem[addr] \leftarrow D_{in}$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+dm\_1k模块中包含1024个8位寄存器。模块对$clk$上升沿敏感，触发后按照功能说明进行对应访存操作。
+
+\clearpage \subsection{Controller}
+\subsubsection{基本描述}
+Controller完成指令的种类判断，并输出对应的控制信号。
+\paragraph{指令种类判断}
+根据输入的$opcode$、$funct$和$NFlag$信号判断指令种类。
+\paragraph{产生控制信号}
+根据判断出的指令类型，选取对应的控制信号输出。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{controller模块接口}
+    \begin{longtable}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $opcode$ & input & 6bit & $MIPS$指令中的高6位，用于区分指令种类。\\
+        $funct$ & input & 6bit & $MIPS$指令中的低6位，R类型指令中用于区分指令种类。 \\
+        $NFlag$ & input & 32bit & 新计算出的标志位。 \\
+        \midrule
+        $RegDst$ & output & 2bit & \makecell[lt]{
+            写回的寄存器编号选择信号。\\
+             REGDST\_RT(0b00)：写回到$rt$。 \\
+             REGDST\_RD(0b01)：写回到$rd$。\\
+             REGDST\_RET(0b10)：写回到返回值寄存器（$\$31$）。
+        } \\
+        $ALUSrc$ & output & 1bit & \makecell[lt]{
+            $ALU$第二个运算数的输入选择信号。\\
+             ALUSRC\_B(0)：选择$B$。 \\
+             ALUSRC\_EXT(1)：选择$Ext$。
+        } \\
+        $Mem2Reg$ & output & 2bit & \makecell[lt]{
+            写回内容的选择信号。\\
+             MEM2REG\_ALU(0b00)：写回$ALU$计算结果。 \\
+             MEM2REG\_RAM(0b01)：写回$dm\_1k$中读出值。\\
+             MEM2REG\_RET(0b10)：写回$PC+4$。\\
+        } \\
+        $RegWr$ & output & 1bit & 寄存器的高有效写使能信号。\\
+        $MemWr$ & output & 1bit & 内存的高有效写使能信号。\\
+        $NPCSel$ & output & 2bit & 模块$IFU$控制信号，详见其说明。\\
+        $EXTOP$ & output & 2bit & 模块$EXT$控制信号，详见其说明。\\
+        $FlagOP$ & output & 2bit & 模块$GPR$控制信号，详见其说明。\\
+        $ALUOp$ & output & 3bit & 模块$ALU$控制信号，详见其说明。\\
+        \bottomrule
+    \end{longtable}
+\end{center}
+
+\clearpage
+\subsubsection{功能定义}
+
+针对需要实现的$MIPS$指令给出以下定义：
+
+指令判断函数组$check_i, i=0, 1, \dots 13$：
+$$
+\left\{
+\begin{array}{rcl}
+check_1(opcode, funct, NFlag) &=& (opcode == 0b000000) \land (funct == 0b100001), (addu) \\
+check_2(opcode, funct, NFlag) &=& (opcode == 0b000000) \land (funct == 0b100011), (subu)\\
+check_3(opcode, funct, NFlag) &=& (opcode == 0b000000) \land (funct == 0b101010), (slt)\\
+check_4(opcode, funct, NFlag) &=& (opcode == 0b000000) \land (funct == 0b0001000), (jr)\\
+check_5(opcode, funct, NFlag) &=& (opcode == 0b000000) \land (funct == 0b000000), (nop)\\
+check_6(opcode, funct, NFlag) &=& (opcode == 0b001101), (ori)\\
+check_7(opcode, funct, NFlag) &=& (opcode == 0b100011), (lw)\\
+check_8(opcode, funct, NFlag) &=& (opcode == 0b101011), (sw)\\
+check_9(opcode, funct, NFlag) &=& (opcode == 0b000100) \land zero, (beq-not-zero)\\
+check_{10}(opcode, funct, NFlag) &=& (opcode == 0b000100) \land \neg zero, (beq-zero)\\
+check_{11}(opcode, funct, NFlag) &=& (opcode == 0b001111), (lui)\\
+check_{12}(opcode, funct, NFlag) &=& (opcode == 0b000010), (j)\\
+check_{13}(opcode, funct, NFlag) &=& (opcode == 0b001000) \land overflow, (addi-not-overflow)\\
+check_{14}(opcode, funct, NFlag) &=& (opcode == 0b001000) \land \neg overflow, (addi-overflow)\\
+check_{15}(opcode, funct, NFlag) &=& (opcode == 0b001001), (addiu)\\
+check_{16}(opcode, funct, NFlag) &=& (opcode == 0b000011), (jal)\\
+\end{array}
+\right.
+$$
+
+控制信号矩阵$MS$（为简化省略控制信号名称前缀，$ZZ$表示高阻态）：
+$$
+MS = 
+\left[
+\begin{array}{ccccccccc}
+    RD & B & ALU & EN & DIS & ADD_4 & ZZ & ADD & DIS \\
+    RD & B & ALU & EN & DIS & ADD_4 & ZZ & SUB & DIS \\
+    RT & EXT & ALU & EN & DIS & ADD_4 & ZERO & OR & DIS \\
+    RT & EXT & RAM & EN & DIS & ADD_4 & SIGN & ADD & DIS \\
+    RT & EXT & RAM & DIS & EN & ADD_4 & SIGN & ADD & DIS \\
+    RT & B & ZZ & DIS & DIS & ADD_4 & ZZ & SUB & DIS \\
+    RT & B & ZZ & DIS & DIS & JMP & ZZ & SUB & DIS \\
+    RT & EXT & ALU & EN & DIS & ADD_4 & LUI & OR & DIS \\
+    ZZ & ZZ & ZZ & DIS & DIS & JMP & ZZ & ZZ & DIS \\
+    RT & EXT & ALU & EN & DIS & ADD_4 & SIGN & ADD & SET \\
+    RT & EXT & ALU & EN & DIS & ADD_4 & SIGN & ADD & DIS \\
+    RT & EXT & ALU & EN & DIS & ADD_4 & SIGN & ADD & DIS \\
+    RD & B & ALU & EN & DIS & ADD_4 & ZZ & LESS & DIS \\
+    RET & ZZ & RET & EN & DIS & JMP & ZZ & ZZ & DIS \\
+    ZZ & ZZ & ZZ & DIS & DIS & JMP & ZZ & ZZ & DIS \\
+    ZZ & ZZ & ZZ & DIS & DIS & ADD_4 & ZZ & ZZ & DIS \\
+    RD & B & ALU & EN & DIS & ADD_4 & ZZ & SAR & DIS \\
+\end{array}
+\right]
+$$
+
+控制信号行向量$MR$：
+$$
+M_R =
+\small {
+\left[
+\begin{array}{ccccccccc}
+    RegDst & ALUSrc & Mem2Reg & RegWrite & MemWrite & NPCSel &EXTOP & ALUOp & FlagOp \\
+\end{array}
+\right]
+}
+$$
+
+\begin{center}
+    \captionof{table}{controller功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 指令种类判断 & $CmdID \leftarrow max\left(\left\{ x\in Z | check_x(opcode, funct, NFlag), 1\leq x \leq 16\right\}\right) $ \\
+        2 & 生成控制信号 & $ MR_{1 \  i} \leftarrow MS_{CmdID \ i}, i = 1, 2, \dots9$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+controller模块为组合电路，当输入变化时，首先进行指令种类判断，随后生成控制信号。
+
+\clearpage
+
+\end{document}

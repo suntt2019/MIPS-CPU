@@ -1,0 +1,345 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{模块设计}
+
+\paragraph{增量介绍说明}
+鉴于Project2基于Project1开发，大部分模块与Project1一致，这里只介绍进行改动或新增加的模块。与Project1一致的模块详见报告第一部分。
+
+\subsection{IFU}
+\subsubsection{基本描述}
+IFU完成程序计数器$PC$的维护、以及指令存储器$IM$的读取。
+\paragraph{程序计数器$PC$的维护}
+程序计数器$PC$的维护工作，即是在每次时钟信号$clk$出现上升沿时，根据输入的控制信号$NPCSel$，使用对应的方式生成新的PC值。
+
+支持四种新$PC$生成方式。$PC+4$模式为大部分指令服务，相对跳转模式为$beq$等指令服务，绝对跳转模式 为$j$等指令服务，寄存器模式为$jr$等指令服务。
+
+\paragraph{指令存储器$IM$的读取}
+程序计数器$PC$的值即是指令存储器$IM$的地址，该模块时刻读出$PC$指向$IM$中的值。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{IFU模块接口}
+    \begin{tabular}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $clk$ & input & 1bit & 时钟信号。\\
+        $reset$ & input & 1bit & \makecell[lt]{
+            复位信号。\\
+             0：复位。\\
+             1：无效。
+        } \\
+        $PCWr$ & input & 1bit & （新增）高有效的$PC$写使能信号。\\
+        $NPCSel$ & input & 2bit & \makecell[lt]{
+            新$PC$值生成方式选择的控制信号。\\
+            NPC\_SEL\_PC\_ADD\_4(0b00)：使用$PC+4$模式。\\
+            NPC\_SEL\_BEQ\_JMP(0b01)：使用相对跳转模式。\\
+            NPC\_SEL\_J\_JMP(0b10)：使用绝对跳转模式。\\
+            NPC\_SEL\_REG\_JMP(0b11)：使用寄存器跳转模式。
+        } \\
+        \midrule
+        $StoredInstr$ & input & 32bit & （新增）$IR$寄存器中存储的指令。 \\
+        $regPC$ & input & 32bit & 寄存器跳转到的地址。\\
+        $Instr$ & output & 32bit & 32bit的$MIPS$指令。\\
+        $pc$ & output & 32bit & 当前$PC$的值。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\clearpage
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{IFU功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 复位 & $reset \land clk\uparrow \Rightarrow  PC \leftarrow 0x000003000$ \\
+        2 & 取指令 & $Instr \leftarrow IM[PC] $ \\
+        3.1 & $PC+4$模式 & $NPCSel == 0b00 \Rightarrow PC \leftarrow PC + 4 $ \\
+        3.2 & 相对跳转 & （更新）$NPCSel == 0b01 \Rightarrow PC \leftarrow PC + StoredInstr_{15..0}\ ||\ 0^2$ \\
+        3.3 & 绝对跳转 & （更新）$NPCSel == 0b10 \Rightarrow PC \leftarrow PC_{31..28}\ ||\ StoredInstr_{25..0}\ ||\ 0^2 $ \\
+        3.4 & 寄存器跳转 & $NPCSel == 0b11 \Rightarrow PC \leftarrow regPC $ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+
+IFU模块中，每次$clk$出现上升沿时，根据$NPCSel$选择模式，计算新的$PC$值并写入$PC$寄存器。
+
+$PC$值作为指令存储器$IM$的地址，固定将对应数据输出到$Instr$。
+
+\subsubsection{变化总结}
+IFU模块的变化主要在于两点：
+
+\paragraph{使用缓存后的$StoredInstr$}
+Project2的IFU使用$StoredInstr$代替原来$Instr$作为跳转数据来源。这是由于多周期当前执行指令固定存储在$IR$中的性质带来的，原本每条指令执行在一个周期中，可以直接使用$Instr$而多周期中这样会读成下一条指令，故此读取缓存的$StoredInstr$。
+
+\paragraph{使用$PC$而非$PC+4$}
+Project2的IFU使用$PC$而非$PC+4$作为跳转运算的基础。这也是由多周期的性质带来的，多周期处理器在取指阶段固定将$PC$变为$PC+4$，因此若之后再进行跳转，当时的$PC$已经相当于是单周期时的$PC+4$了，故此改变IFU保证执行效果统一。
+
+\clearpage \subsection{BAC}
+\subsubsection{基本描述}
+BAC完成访存主存时，字节与字之间的转换。具体包括地址转换、读取内容转换、写入内容转换。
+
+BAC模块为Project2新增模块。
+
+\paragraph{地址转换}
+按字节访存时，BAC将访问字节时的地址完成4的倍数对齐，并保证访存的字范围包含字节范围。
+
+\paragraph{读取内容转换}
+按字节读取时，BAC将读到的字节固定放到字的最低位，并进行符号拓展。
+
+\paragraph{读取内容转换}
+按字节写入时，BAC先从主存读取对应的字，将待写入的字节放到这个字的对应位置，再将字写回主存。
+
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{BAC模块接口}
+    \begin{tabular}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $BACOp$ & input & 1bit & \makecell[lt]{
+            选择访存模式。\\
+            BAC\_OP\_WORD(0)：使用字访存模式。\\
+            BAC\_OP\_BYTE(1)：使用字节访存模式。\\
+        } \\
+        \midrule
+        $Ain$ & input & 32bit & 输入的地址。 \\
+        $Din1$ & input & 32bit & 待写入的数据。 \\
+        $Din2$ & input & 32bit & 从$dm\_1k$读取的数据。\\
+        $Aout$ & output & 32bit & 输出给$dm\_1k$的地址。\\
+        $Dout1$ & output & 32bit & 输出给$dm\_1k$的数据。 \\
+        $Dout2$ & output & 32bit & 读取的结果。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{BAC功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 生成字地址 & $BACOp = BYTE \Rightarrow Aout \leftarrow Ain_{31..2}\ ||\ 0^2$ \\
+        2 & 获取字中位置 & $d \leftarrow Ain_{1..0} << 3$ \\
+        3 & 字节读取 & \makecell[lt]{
+                        $byte2 \leftarrow (Din2>>(d))_{3..0}$ \\
+                        $BACOp = BYTE \Rightarrow Dout2 \leftarrow byte2[7]^{24}\ ||\ byte2$
+        } \\
+        4 & 字节写入 & \makecell[lt]{
+                        $BACOp = BYTE$ \\
+                        $\ \ \Rightarrow Dout1 \leftarrow Din2_{31..(d+8)}\ ||\ Din1{7..0}\ ||\ Din2_{d-1..0}$ \\
+        } \\
+        5 & 字访存 & $BACOp = WORD \Rightarrow Aout\leftarrow Ain, Dout1\leftarrow Din1, Dout2\leftarrow Din2$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+BAC为组合电路，当输入发生变化时，根据$BACOp$对应进行字节或字访存的数据转换。
+
+
+\clearpage \subsection{Controller}
+\subsubsection{基本描述}
+Controller完成指令的种类判断，状态跳转，并输出对应的控制信号。
+
+\paragraph{指令种类判断}
+根据输入的$opcode$和$funct$信号判断指令种类。
+
+\paragraph{状态跳转}
+根据当前指令种类、标志位信号$StoredNFlag$跳转到新的状态。
+
+\paragraph{产生控制信号}
+根据判断出的状态，选取对应的控制信号输出。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{controller模块接口}
+    \begin{longtable}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $clk$ & input & 1bit & 时钟信号。\\
+        $reset$ & input & 1bit & \makecell[lt]{
+            复位信号。\\
+             0：复位。\\
+             1：无效。
+        } \\
+        \midrule
+        $opcode$ & input & 6bit & $MIPS$指令中的高6位，用于区分指令种类。\\
+        $funct$ & input & 6bit & $MIPS$指令中的低6位，R类型指令中用于区分指令种类。 \\
+        $NFlag$ & input & 32bit & 新计算出的标志位。 \\
+        \midrule
+        $RegDst$ & output & 2bit & \makecell[lt]{
+            写回的寄存器编号选择信号。\\
+             REGDST\_RT(0b00)：写回到$rt$。 \\
+             REGDST\_RD(0b01)：写回到$rd$。\\
+             REGDST\_RET(0b10)：写回到返回值寄存器（$\$31$）。
+        } \\
+        $ALUSrc$ & output & 1bit & \makecell[lt]{
+            $ALU$第二个运算数的输入选择信号。\\
+             ALUSRC\_B(0)：选择$B$。 \\
+             ALUSRC\_EXT(1)：选择$Ext$。
+        } \\
+        $Mem2Reg$ & output & 2bit & \makecell[lt]{
+            写回内容的选择信号。\\
+             MEM2REG\_ALU(0b00)：写回$ALU$计算结果。 \\
+             MEM2REG\_RAM(0b01)：写回$dm\_1k$中读出值。\\
+             MEM2REG\_RET(0b10)：（更新）写回$PC$。\\
+        } \\
+        \midrule
+        $PCWr$ & output & 1bit & （新增）$PC$的高有效写使能信号。\\
+        $IRWr$ & output & 1bit & （新增）$IR$的高有效写使能信号。\\
+        $RegWr$ & output & 1bit & 寄存器的高有效写使能信号。\\
+        $MemWr$ & output & 1bit & 内存的高有效写使能信号。\\
+        $ALUOWr$ & output & 1bit & （新增）$ALU$输出的高有效写使能信号。\\
+        \midrule
+        $BACOp$ & output & 1bit & 模块$BAC$控制信号，详见其说明。\\
+        $NPCSel$ & output & 2bit & 模块$IFU$控制信号，详见其说明。\\
+        $EXTOP$ & output & 2bit & 模块$EXT$控制信号，详见其说明。\\
+        $FlagOP$ & output & 2bit & 模块$GPR$控制信号，详见其说明。\\
+        $ALUOp$ & output & 3bit & 模块$ALU$控制信号，详见其说明。\\
+        \bottomrule
+    \end{longtable}
+\end{center}
+
+\subsubsection{功能定义}
+
+多周期处理器存在多个状态，控制器的本质是一个有限状态机。这里我们给出指令类型、状态、标志位和控制信号之间的关系。
+
+\paragraph{状态按执行步骤分类}
+处理器执行指令包括：取指、译码与寄存器读取、计算、访存主存、写回，这五个步骤。而对于跳转指令，还存在跳转步骤。故此一共六个执行步骤。
+
+根据这6个执行步骤，我们可以将状态进行分类，五个步骤分别记为$S1$至$S5$，而跳转步骤记为$S6$。
+
+特别地，一些需要进行判断的特别步骤通常在计算（$S3$）之后，为了方便表示，我也将其归入$S3$，不过其性质与计算并不一致。
+
+\paragraph{指令类型决定大部分状态转移}
+大部分的状态转移具有很强的确定性，每条指令存在一个状态循环节，每走完一次这个循环节即执行了一次这条指令。
+
+不同指令的状态循环节有所不同，但可根据状态按执行步骤的分类归纳如下表的“指令类型-状态循环节”对应关系。
+
+\begin{center}
+    \captionof{table}{各指令的状态循环节}
+    \begin{tabular}{ccccccc}
+        \toprule
+        指令类型 & S1 & S2 & S3 & S4 & S5 & S6 \\
+        \midrule
+            ADDU    &   S1 & S2 & S3\_EXE\_ADD     &-              &S5\_ALU\_R\_FD   & - \\
+            SUBU    &   S1 & S2 & S3\_EXE\_SUB     &-              &S5\_ALU\_R\_FD   & - \\
+            ORI     &   S1 & S2 & S3\_EXEI\_OR     &-              &S5\_ALU\_I\_FD   & - \\
+            LW      &   S1 & S2 & S3\_EXEI\_ADD    &S4\_RD\_WORD    &S5\_DM\_WORD    & - \\
+            SW      &   S1 & S2 & S3\_EXEI\_ADD    &S4\_WR\_WORD    & -             & - \\
+            BEQ     &   S1 & S2 & S3\_EXE\_SUB     &S3\_BR\_BEQ     & -             &S6\_BEQ  \\
+            J       &   S1 & S2 & -               & -             & -             &S6\_J  \\
+            LUI     &   S1 & S2 & S3\_EXEI\_LUI    &-              &S5\_ALU\_I\_FD   & - \\
+            ADDI    &   S1 & S2 & S3\_EXEI\_ADD,   &S3\_CK\_OF      &S5\_ALU\_I\_FD   & - \\
+            ADDIU   &   S1 & S2 & S3\_EXEI\_ADD    &-              &S5\_ALU\_I\_FD   & - \\
+            SLT     &   S1 & S2 & S3\_EXE\_SLT     &-              &S5\_ALU\_R\_FD   & - \\
+            NOP     &   S1 & S2 &-                & -             & -             & -  \\
+            LB      &   S1 & S2 & S3\_EXEI\_ADD,   &S4\_RD\_BYTE    & S5\_DM\_WORD   &-  \\
+            SB      &   S1 & S2 & S3\_EXEI\_ADD,   &S4\_WR\_BYTE    & -             & -  \\
+            JAL     &   S1 & S2 &-                & -             &S5\_RET        &S6\_J  \\
+            JR      &   S1 & S2 &-                & -             & -             &S6\_REG  \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\paragraph{标志位决定少部分状态转移}
+由于少数指令需要执行到指定周期才能确定后续跳转的状态，故此标志位会决定少数的状态转移，相当于是系统中的特例，如下表所示。
+
+\begin{center}
+    \captionof{table}{标志位决定的状态转移}
+    \begin{tabular}{cccc}
+        \toprule
+        源状态 & 标志位名称 & 为1时到达 & 为0时到达 \\
+        \midrule
+            S3\_BR\_BEQ & zero & S6\_BEQ & S1 \\
+            S3\_CK\_OF & overflow & S5\_ALU\_I\_FS & S5\_ALU\_I\_FD \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\paragraph{状态决定控制信号}
+对于每个指定的状态，controller的输出是固定的，下面给出状态-控制信号对应表（见下一页，省略控制信号前缀）。
+
+\paragraph{功能总结}
+由上述的分别描述，我们可以将功能总结为如下定义。
+
+\begin{center}
+    \captionof{table}{controller功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 复位 &  $reset \Rightarrow status \leftarrow S2$\\
+        2 & 指令种类判断 &  由$opcode$和$funct$判断指令类型$InstrID$\\
+        3 & 下一状态生成 &  \makecell[lt]{
+                             由指令类型$InstrID$、当前状态$status$\\
+                             \ \ 和标志位$StoredNFlag$，生成下一状态
+                            }\\
+        4 & 生成控制信号 &  由状态$status$确定输出信号 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+\paragraph{整体概述}
+controller模块为有限状态机，对$clk$和$reset$的上升沿敏感。当$clk$出现上升沿时，首先判断指令种类，再在状态循环节中找到下一状态，若此状态需要经过标志位判断跳转则再次转移状态，最后将与状态对应的控制信号输出。
+
+\paragraph{特别的有限状态机策略}
+本模块有限状态机的实现方法与课内所讲有所不同。课内的实现方式优先根据当前状态分类，再判断指令类型、标志位决定下一状态；而本模块优先根据指令种类分类，再在少数状态下根据标志位分两步转移到下一状态。
+
+\paragraph{自动化的状态转移生成功能}
+值得一提的是，本模块在复位的时候，其实会进行每类指令状态转移$next$数组的生成（由于与外部特性无关，仅体现在实现部分）。
+
+初始化时，controller会将预设好的每类指令的状态循环节$steps$变为状态转移$next$数组。这样一来，开发者一端可以清晰明了地看到每条指令的状态循环节；而程序运行时，只需要将当前状态作为下标输入给$next$数组，就能轻松得到循环节中的下一个状态了。
+
+这样的设计为修改状态循环节提供了极大的便利，针对添加指令、调试等工作十分方便。但同时，这样的结构若直接写入硬件也会导致大量的寄存器低频使用，十分浪费。个人认为这是此方法的优劣所在。
+
+\clearpage
+
+\Rotatebox{90}{%
+\begin{tabular}[]{cccccccccccccc}
+    \toprule
+    状态名 & PCWr & IRWr & RegWr & MemWr & ALUOWr & ALUSrc & RegDst & Mem2Reg & BACOp & NPCSel & EXTOp & FlagOp & ALUOp \\
+    \midrule
+     S1  & EN  & EN  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & ADD\_4  & ZZ  & ZZ  & ZZ \\
+    S2  & DIS  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S3\_EXE\_ADD  & DIS  & DIS  & DIS  & DIS  & EN & B  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & ADD \\
+    S3\_EXE\_SUB  & DIS  & DIS  & DIS  & DIS  & EN & B  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & SUB \\
+    S3\_EXE\_SLT  & DIS  & DIS  & DIS  & DIS  & EN & B  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & LESS \\
+    S3\_EXEI\_ADD  & DIS  & DIS  & DIS  & DIS  & EN & EXT  & ZZ  & ZZ & ZZ  & ZZ  & SIGN  & ZZ  & ADD \\
+    S3\_EXEI\_OR  & DIS  & DIS  & DIS  & DIS  & EN & EXT  & ZZ  & ZZ & ZZ  & ZZ  & ZERO  & ZZ  & OR \\
+    S3\_EXEI\_LUI  & DIS  & DIS  & DIS  & DIS  & EN & EXT  & ZZ  & ZZ & ZZ  & ZZ  & LUI  & ZZ  & OR \\
+    S3\_EXE\_LTZ  & DIS  & DIS  & DIS  & DIS  & EN & B  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & LESS \\
+    S3\_BR\_BEQ  & DIS  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S3\_BR\_BLTZAL  & DIS  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S3\_CK\_OF  & DIS  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S4\_RD\_WORD  & DIS  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & WORD  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S4\_RD\_BYTE  & DIS  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & BYTE  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S4\_WR\_WORD  & DIS  & DIS  & DIS  & EN  & DIS & ZZ  & ZZ  & ZZ & WORD  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S4\_WR\_BYTE  & DIS  & DIS  & DIS  & EN  & DIS & ZZ  & ZZ  & ZZ & BYTE  & ZZ  & ZZ  & ZZ  & ZZ \\
+    S5\_DM\_WORD  & DIS  & DIS  & EN  & DIS  & DIS & ZZ  & RT  & RAM & WORD  & ZZ  & ZZ  & DIS  & ZZ \\
+    S5\_DM\_BYTE  & DIS  & DIS  & EN  & DIS  & DIS & ZZ  & RT  & RAM & BYTE  & ZZ  & ZZ  & DIS  & ZZ \\
+    S5\_ALU\_I\_FD  & DIS  & DIS  & EN  & DIS  & DIS & ZZ  & RT  & ALU & WORD  & ZZ  & ZZ  & DIS  & ZZ \\
+    S5\_ALU\_I\_FS  & DIS  & DIS  & EN  & DIS  & DIS & ZZ  & RT  & ALU & WORD  & ZZ  & ZZ  & SET  & ZZ \\
+    S5\_ALU\_R\_FD  & DIS  & DIS  & EN  & DIS  & DIS & ZZ  & RD  & ALU & WORD  & ZZ  & ZZ  & DIS  & ZZ \\
+    S5\_RET  & DIS  & DIS  & EN  & DIS  & DIS & ZZ  & RET  & RET & WORD  & ZZ  & ZZ  & DIS  & ZZ \\
+    S6\_BEQ  & EN  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & JMP  & ZZ  & ZZ  & ZZ \\
+    S6\_J  & EN  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & JMP  & ZZ  & ZZ  & ZZ \\
+    S6\_REG  & EN  & DIS  & DIS  & DIS  & DIS & ZZ  & ZZ  & ZZ & ZZ  & JMP  & ZZ  & ZZ  & ZZ \\
+    \bottomrule
+\end{tabular}
+}%
+
+\clearpage
+
+\end{document}

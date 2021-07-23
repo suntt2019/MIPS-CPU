@@ -1,0 +1,62 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\section{程序运行测试}
+
+\subsection{测试程序}
+我使用老师提供的测试程序对系统进行测试，以下为添加注释后的测试程序源码：
+\inputminted[linenos]{gas}{Project2/p2-test-commented.asm}
+
+\clearpage
+
+\subsection{测试方法与结果}
+
+\paragraph{测试方法}
+使用$ModelSim$对系统进行仿真测试，运行完成后，将最终状态的寄存器数据与$Mars$模拟运行的寄存器数据对比，以此判断系统是否符合预期。
+
+\paragraph{测试结果}
+最终结果如下表所示，可见系统仿真结果与$Mars$模拟基本一致，不一致的四个寄存器均是由于系统设计不同导致，测试通过。
+
+\begin{center}
+    \captionof{table}{Project2 测试结果}
+    \begin{longtable}[]{c c c c}
+        \toprule
+        寄存器编号 & 系统仿真结果 & $Mars$模拟结果 & 备注 \\
+        \midrule
+        0 & 0x00000000 & 0x00000000 &  - \\
+        1 & 0xababcdcd & 0xababcdcd &  - \\
+        2 & 0xababcdd3 & 0xababcdd3 &  - \\
+        3 & 0xababcdcd & 0xababcdcd &  - \\
+        4 & 0x2babcdd1 & 0x2babcdd1 &  - \\
+        5 & 0x80000002 & 0x80000002 &  - \\
+        6 & 0x00000000 & 0x00000000 &  - \\
+        7 & 0x00000000 & 0x00000000 &  - \\
+        8 & 0x2babcdd1 & 0x2babcdd1 &  - \\
+        9 & 0x2babcdd1 & 0x2babcdd1 &  - \\
+        10 & 0x00690000 & 0x00690000 &  - \\
+        11 & 0x00000000 & 0x00000000 &  - \\
+        12 & 0x0000abab & 0x0000abab &  - \\
+        13 & 0x000a0000 & 0x000a0000 &  - \\
+        14 & 0x0000007f & 0x0000007f &  - \\
+        15 & 0xab000000 & 0xab000000 &  - \\
+        16 & 0x00000003 & 0x00000003 &  - \\
+        17 & 0x00000001 & 0x00000001 &  - \\
+        18 & 0xffffff80 & 0xffffff80 &  - \\
+        19 & 0xefef0000 & 0xefef0000 &  - \\
+        20 & 0x00000000 & 0x00000000 &  - \\
+        21 & 0x00000000 & 0x00000000 &  - \\
+        22 & 0x00000000 & 0x00000000 &  - \\
+        23 & 0x00000000 & 0xababcdd2 &  $Mars$中ADDI溢出时也写回 \\
+        24 & 0x7fffffff & 0x7fffffff &  - \\
+        25 & 0x00000001 & 0x00000001 &  - \\
+        26 & 0x00000000 & 0x00000000 &  - \\
+        27 & 0x00000000 & 0x00000000 &  - \\
+        28 & 0x00000000 & 0x00001800 &  系统未要求实现堆栈 \\
+        29 & 0x00000000 & 0x00002ffc &  系统未要求实现堆栈 \\
+        30 & 0x00000001 & 0x00000000 &  $MIPS32$无标志位 \\
+        31 & 0x000030b4 & 0x000030b4 &  - \\
+        \bottomrule
+    \end{longtable}
+\end{center}
+
+\end{document}

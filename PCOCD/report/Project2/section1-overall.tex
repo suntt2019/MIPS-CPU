@@ -1,0 +1,41 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\section{整体设计}
+\subsection{整体设计框图}
+系统整体设计如下方框图所示。图中白色方框为模块，橙色梯形为MUX，紫色方框为32位寄存器，箭头连线为数据连接线，彩色图形为控制信号。
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/PCOCD-P2-overall-block.png}
+\caption{整体设计框图}
+\end{figure}
+
+图中共有$6$个模块，分别与任务要求的六个模块对应，实现的功能与课程要求一致。
+
+图中共有$13$路控制信号，均由$Controller$模块产生。具体功能见下表。
+
+\begin{center}
+    \captionof{table}{控制信号说明}
+    \begin{tabular}{c c c c c}
+        \toprule
+        标识颜色 & 控制信号类型 & 位宽 & 作用元件 & 效果\\
+        \midrule
+         绿色 & 写入使能信号 & 1bit & 存储器（寄存器组、内存） & 高有效写入使能 \\
+         黄色 & 数据控制信号 & 1-2bit & 32bit二选一MUX & 从两至三路信号中选择一路 \\
+         蓝色 & 模块功能信号 & 2-3bit & 多功能模块 & 选择模块功能 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+图中共有两路外部输入信号：时钟信号$clk$和系统重置信号$reset$。
+
+\clearpage
+
+\begin{figure}[h]
+  \begin{adjustbox}{addcode={\begin{minipage}{\width}}{\caption{Project2 顶层模块mips框图}\end{minipage}},rotate=90,center}
+		\includegraphics[width=10 in]{images/PCOCD-P2-overall-block.png}%
+	\end{adjustbox}
+\end{figure}
+\clearpage
+
+\end{document}

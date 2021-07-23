@@ -1,0 +1,325 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{模块设计}
+
+\paragraph{增量介绍说明}
+鉴于Project3基于Project2开发，大部分模块与Project1一致，这里只介绍进行改动或新增加的模块。与Project2一致的模块详见报告第二部分。
+
+\subsection{CP0}
+
+\subsubsection{基本描述}
+CP0完成硬件中断的管理，具体表现为寄存器读写、控制请求生成、$EXL$更新三点功能。
+
+\paragraph{寄存器读写}
+CP0通过内部$RegSR$、$RegCause$、$EPC$、$RegPRID$实现其功能，每个周期处理来自CPU的读写。
+
+\paragraph{控制请求生成}
+CP0根据各硬件中断请求、中断使能控制、当前中断状态综合生成控制请求$IntReq$。
+
+\paragraph{$EXL$更新}
+CP0在中断开始和结束时对$EXL$更新，同时协助对$PC$进行缓存和写回操作。
+
+CP0模块为Project3新增模块。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{Bridge模块接口}
+    \begin{tabular}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $clk$ & input & 1bit & 时钟信号。\\
+        $reset$ & input & 1bit & \makecell[lt]{
+            复位信号。\\
+             0：复位。\\
+             1：无效。
+        } \\
+        \midrule
+        $PC$ & input & 1bit & CPU传来的外设整体高有效写使能。 \\
+        $Wen$ & input & 1bit & CP0高有效写使能。 \\
+        $EXLOp$ & input & 2bit & \makecell[lt]{
+            EXL模式选择信号。\\
+             EXL\_OP\_NOP(0b00)：EXL无操作。\\
+             EXL\_OP\_SET(0b01)：设置EXL。\\
+             EXL\_OP\_CLR(0b10)：清除EXL。
+        } \\
+        \midrule
+        $Din$ & input & 32bit & CP0输入数据。 \\
+        $HWInt$ & input & 6bit & 硬件中断请求。 \\
+        $Sel$ & input & 2bit & CP0寄存器选择信号。\\
+        $IntReq$ & output & 1bit & 整体中断请求。\\
+        $EPC$ & output & 32bit & 中断返回地址。 \\
+        $DOut$ & output & 32bit & CP0输出数据。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\clearpage
+
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{CP0功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 复位 & \makecell[lt]{
+                        $ reset \Rightarrow $\\
+                        $\ \ RegSR \leftarrow 0^{30}\ ||\ UNLOCK\ ||\ EN $\\
+                        $\ \ RegCause \leftarrow 0^{32} $\\
+                        $\ \ EPC \leftarrow 0^{30} $\\
+                        $\ \ RegPRID \leftarrow PRID $ \\
+        }\\
+        2.1 & 读取寄存器 & \makecell[lt]{
+                        $sel = SR \Rightarrow DOut \leftarrow RegSR$ \\
+                        $sel = CAS \Rightarrow DOut \leftarrow RegCouse$ \\
+                        $sel = EPC \Rightarrow DOut \leftarrow RegEPC$ \\
+                        $sel = PRID \Rightarrow DOut \leftarrow RegPRID$ \\
+        } \\
+        2.2 & 写寄存器 & $sel = SR \land we \land clk \uparrow \Rightarrow RegSR \leftarrow Din$ \\
+        3.1 & 控制信号生成 & $im \leftarrow RegSR_{15..10}, exl \leftarrow RegSR_1, ie \leftarrow RegSR_0 $ \\
+        3.2 & 原因设置 & $clk \uparrow \Rightarrow RegCouse_{15..10} =HWInt$ \\
+        3.3 & 中断请求生成 & $IntReq \leftarrow |( HWInt \& im ) \land ie \land \neg exl $ \\
+        4.1 & 设置EXL & $EXLOp = SET \land clk \uparrow \Rightarrow RegSR_1=1, EPC\leftarrow PC $ \\
+        4.2 & 清除EXL & $EXLOp = CLR \land clk \uparrow \Rightarrow RegSR_1=0 $ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+CP0中有四个寄存器，模块对$clk$和$reset$上升沿敏感，若非重置，执行寄存器读写、中断请求生成、EXL更新等操作。
+
+
+
+\clearpage \subsection{Bridge}
+\subsubsection{基本描述}
+Bridge完成CPU与外设之间的通信连通。
+
+Bridge模块为Project3新增模块。
+
+\paragraph{地址转换}
+Bridge将CPU传来的地址转换为外设内部的地址。
+
+\paragraph{CPU读取内容选择}
+Bridge根据CPU传来的地址选择指定外设的值供CPU读取。
+
+\paragraph{外设写使能生成}
+Bridge根据CPU传来的地址$PrAddr$和写使能$Wen$生成各个外设的写使能。
+
+\paragraph{外设写入内容传递}
+Bridge将CPU传给外设写入的数据传递给外设。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{Bridge模块接口}
+    \begin{tabular}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $Wen$ & input & 1bit & CPU传来的外设整体高有效写使能。 \\
+        $PrAddr$ & input & 32bit & CPU传来的地址。 \\
+        $PrWD$ & input & 32bit & CPU传给外设写入的数据。 \\
+        $DevRD$ & input & 6*32bit & 外设传给CPU写入的数据。\\
+        $DevWr$ & output & 6bit & 外设的高有效写使能。\\
+        $DevAddr$ & output & 32bit & 外设使用的地址。 \\
+        $DevWD$ & output & 32bit & 给外设写入的数据。 \\
+        $PrRD$ & output & 32bit & CPU获取到的数据。 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{功能定义}
+\begin{center}
+    \captionof{table}{Bridge功能定义}
+    \begin{tabular}{c c l}
+        \toprule
+        序号 & 功能名称 & 功能描述 \\
+        \midrule
+        1 & 生成外设地址 & $DevAddr \leftarrow PrAddr_{3..0}$ \\
+        2 & 获取外设ID & $DevID \leftarrow PrAddr_{5..4} << 3$ \\
+        3 & 外设写入 & \makecell[lt]{
+                        $DevWD \leftarrow PrWD$ \\
+                        $DewWr_i \leftarrow DevID = i \land Wen, 0\leq i\leq 2$
+        } \\
+        4 & CPU写入 & $PrRD = DevRD_{DevID}$ \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\subsubsection{模块实现}
+Bridge为组合电路，当输入发生变化时，根据$PrAddr$对应实现CPU和外设的数据交换。
+
+
+\clearpage \subsection{Controller}
+
+\subsubsection{基本描述}
+Controller完成指令的种类判断，状态跳转，并输出对应的控制信号。
+
+\paragraph{指令种类判断}
+根据输入的$opcode$和$funct$信号判断指令种类。
+
+\paragraph{状态跳转}
+根据当前指令种类、标志位信号$StoredNFlag$跳转到新的状态。
+
+\paragraph{产生控制信号}
+根据判断出的状态，选取对应的控制信号输出。
+
+\subsubsection{模块接口}
+\begin{center}
+    \captionof{table}{controller模块接口}
+    \begin{longtable}[]{c c c l}
+        \toprule
+        信号名称 & 方向 & 位宽 & 描述 \\
+        \midrule
+        $opcode$ & input & 6bit & $MIPS$指令中的高6位，用于区分指令种类。\\
+        $funct$ & input & 6bit & $MIPS$指令中的低6位，R类型指令中用于区分指令种类。 \\
+        $NFlag$ & input & 32bit & 新计算出的标志位。 \\
+        \midrule
+        $RegDst$ & output & 2bit & \makecell[lt]{
+            写回的寄存器编号选择信号。\\
+             REGDST\_RT(0b00)：写回到$rt$。 \\
+             REGDST\_RD(0b01)：写回到$rd$。\\
+             REGDST\_RET(0b10)：写回到返回值寄存器（$\$31$）。
+        } \\
+        $ALUSrc$ & output & 1bit & \makecell[lt]{
+            $ALU$第二个运算数的输入选择信号。\\
+             ALUSRC\_B(0)：选择$B$。 \\
+             ALUSRC\_EXT(1)：选择$Ext$。
+        } \\
+        $Mem2Reg$ & output & 2bit & \makecell[lt]{
+            写回内容的选择信号。\\
+             MEM2REG\_ALU(0b00)：写回$ALU$计算结果。 \\
+             MEM2REG\_RAM(0b01)：写回$dm\_1k$中读出值。\\
+             MEM2REG\_RET(0b10)：（更新）写回$PC$。\\
+        } \\
+        $DRSrc$ & output & 1bit & \makecell[lt]{
+            （新增）$DR$的输入选择信号。\\
+             DRSRC\_DM(0)：选择$DMOut$。 \\
+             DRSRC\_CP0(1)：选择$CP0Out$。
+        } \\
+        $JRegSrc$ & output & 1bit & \makecell[lt]{
+            （新增）$IFU$的$regPC$的输入选择信号。\\
+             JREGSRC\_A(0)：选择$StoredA$。 \\
+             JREGSRC\_EPC(1)：选择$EPC$。
+        } \\
+        \midrule
+        $PCWr$ & output & 1bit & $PC$的高有效写使能信号。\\
+        $IRWr$ & output & 1bit & $IR$的高有效写使能信号。\\
+        $RegWr$ & output & 1bit & 寄存器的高有效写使能信号。\\
+        $MemWr$ & output & 1bit & 内存的高有效写使能信号。\\
+        $ALUOWr$ & output & 1bit & $ALU$输出的高有效写使能信号。\\
+        $CP0Wr$ & output & 1bit & $CP0$的高有效写使能信号。\\
+        \midrule
+        $BridgeOp$ & output & 1bit & 模块$Bridge$控制信号，详见其说明。\\
+        $EXTOP$ & output & 2bit & 模块$EXT$控制信号，详见其说明。\\
+        $FlagOP$ & output & 2bit & 模块$GPR$控制信号，详见其说明。\\
+        $EXLOP$ & output & 2bit & （新增）模块$CP0$控制信号，详见其说明。\\
+        $NPCSel$ & output & 3bit & （更新）模块$IFU$控制信号，详见其说明。\\
+        $ALUOp$ & output & 3bit & 模块$ALU$控制信号，详见其说明。\\
+        \bottomrule
+    \end{longtable}
+\end{center}
+
+\clearpage
+\subsubsection{功能定义}
+
+鉴于Project2中较为详细地阐述了多周期controller的设计思路、工作原理，而Project3仅是在此基础上添加了指令和状态，为此我只给出更新后的两张关键表格，不再赘述原理。原理详见Project2/controller部分。
+
+\begin{center}
+    \captionof{table}{各指令的状态循环节}
+    \begin{tabular}{cccccccc}
+        \toprule
+        指令类型 & S1 & S2 & S3 & S4 & S5 & S6 & S7 \\
+        \midrule
+            ADDU    &   S1 & S2 & S3\_EXE\_ADD     &-              &S5\_ALU\_R\_FD   & - & S7 \\
+            SUBU    &   S1 & S2 & S3\_EXE\_SUB     &-              &S5\_ALU\_R\_FD   & - & S7 \\
+            ORI     &   S1 & S2 & S3\_EXEI\_OR     &-              &S5\_ALU\_I\_FD   & - & S7 \\
+            LW      &   S1 & S2 & S3\_EXEI\_ADD    &S4\_RD\_WORD    &S5\_DM\_WORD    & - & S7 \\
+            SW      &   S1 & S2 & S3\_EXEI\_ADD    &S4\_WR\_WORD    & -             & - & S7 \\
+            BEQ     &   S1 & S2 & S3\_EXE\_SUB     &S3\_BR\_BEQ     & -             &S6\_BEQ  & S7 \\
+            J       &   S1 & S2 & -               & -             & -             &S6\_J  & S7 \\
+            LUI     &   S1 & S2 & S3\_EXEI\_LUI    &-              &S5\_ALU\_I\_FD   & - & S7 \\
+            ADDI    &   S1 & S2 & S3\_EXEI\_ADD,   &S3\_CK\_OF      &S5\_ALU\_I\_FD   & - & S7 \\
+            ADDIU   &   S1 & S2 & S3\_EXEI\_ADD    &-              &S5\_ALU\_I\_FD   & - & S7 \\
+            SLT     &   S1 & S2 & S3\_EXE\_SLT     &-              &S5\_ALU\_R\_FD   & - & S7 \\
+            NOP     &   S1 & S2 &-                & -             & -             & -  & S7 \\
+            LB      &   S1 & S2 & S3\_EXEI\_ADD,   &S4\_RD\_BYTE    & S5\_DM\_WORD   &-  & S7 \\
+            SB      &   S1 & S2 & S3\_EXEI\_ADD,   &S4\_WR\_BYTE    & -             & -  & S7 \\
+            JAL     &   S1 & S2 &-                & -             &S5\_RET        &S6\_J  & S7 \\
+            JR      &   S1 & S2 &-                & -             & -             &S6\_REG  & S7 \\
+            ERET    &   S1 & S2 &-                & -             & -             &S6\_ERET & S7 \\
+            MFC0    &   S1 & S2 &-                & S4\_RD\_CP0     & S5\_DM\_WORD  &- & S7 \\
+            MTC0    &   S1 & S2 &-                & S4\_WR\_CP0     & -             &- & S7 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\Rotatebox{90}{%
+\footnotesize
+\begin{tabular}[]{cccccccccccccccccc}
+    \toprule
+    状态名 & PCWr & IRWr & RegWr & MemWr & ALUOWr & CP0Wr & ALUSrc & RegDst & Mem2Reg & DRSrc & JRegSrc & BridgeOp & NPCSel & EXTOp & FlagOp & ALUOp & EXLOp \\
+    \midrule
+        S1 & EN & EN & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ADD\_4 & ZZ & ZZ & ZZ & NOP \\
+        S2 & DIS & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S3\_EXE\_ADD & DIS & DIS & DIS & DIS & EN & DIS & B & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ADD & NOP \\
+        S3\_EXE\_SUB & DIS & DIS & DIS & DIS & EN & DIS & B & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & SUB & NOP \\
+        S3\_EXE\_SLT & DIS & DIS & DIS & DIS & EN & DIS & B & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & LESS & NOP \\
+        S3\_EXEI\_ADD & DIS & DIS & DIS & DIS & EN & DIS & EXT & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & SIGN & ZZ & ADD & NOP \\
+        S3\_EXEI\_OR & DIS & DIS & DIS & DIS & EN & DIS & EXT & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZERO & ZZ & OR & NOP \\
+        S3\_EXEI\_LUI & DIS & DIS & DIS & DIS & EN & DIS & EXT & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & LUI & ZZ & OR & NOP \\
+        S3\_EXE\_LTZ & DIS & DIS & DIS & DIS & EN & DIS & B & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & LESS & NOP \\
+        S3\_BR\_BEQ & DIS & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S3\_BR\_BLTZAL & DIS & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S3\_CK\_OF & DIS & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S4\_RD\_WORD & DIS & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & DM & ZZ & WORD & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S4\_RD\_BYTE & DIS & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & DM & ZZ & BYTE & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S4\_RD\_CP0 & DIS & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & CP0 & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S4\_WR\_WORD & DIS & DIS & DIS & EN & DIS & DIS & ZZ & ZZ & ZZ & DM & ZZ & WORD & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S4\_WR\_BYTE & DIS & DIS & DIS & EN & DIS & DIS & ZZ & ZZ & ZZ & DM & ZZ & BYTE & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S4\_WR\_CP0 & DIS & DIS & DIS & EN & DIS & EN & ZZ & ZZ & ZZ & CP0 & ZZ & BYTE & ZZ & ZZ & ZZ & ZZ & NOP \\
+        S5\_DM\_WORD & DIS & DIS & EN & DIS & DIS & DIS & ZZ & RT & RAM & ZZ & ZZ & WORD & ZZ & ZZ & DIS & ZZ & NOP \\
+        S5\_DM\_BYTE & DIS & DIS & EN & DIS & DIS & DIS & ZZ & RT & RAM & ZZ & ZZ & BYTE & ZZ & ZZ & DIS & ZZ & NOP \\
+        S5\_ALU\_I\_FD & DIS & DIS & EN & DIS & DIS & DIS & ZZ & RT & ALU & ZZ & ZZ & WORD & ZZ & ZZ & DIS & ZZ & NOP \\
+        S5\_ALU\_I\_FS & DIS & DIS & EN & DIS & DIS & DIS & ZZ & RT & ALU & ZZ & ZZ & WORD & ZZ & ZZ & SET & ZZ & NOP \\
+        S5\_ALU\_R\_FD & DIS & DIS & EN & DIS & DIS & DIS & ZZ & RD & ALU & ZZ & ZZ & WORD & ZZ & ZZ & DIS & ZZ & NOP \\
+        S5\_RET & DIS & DIS & EN & DIS & DIS & DIS & ZZ & RET & RET & ZZ & ZZ & WORD & ZZ & ZZ & DIS & ZZ & NOP \\
+        S6\_BEQ & EN & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & JMP & ZZ & ZZ & ZZ & NOP \\
+        S6\_J & EN & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & JMP & ZZ & ZZ & ZZ & NOP \\
+        S6\_REG & EN & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & A & ZZ & JMP & ZZ & ZZ & ZZ & NOP \\
+        S6\_ERET & EN & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & EPC & ZZ & JMP & ZZ & ZZ & ZZ & CLR \\
+        S7 & EN & DIS & DIS & DIS & DIS & DIS & ZZ & ZZ & ZZ & ZZ & ZZ & ZZ & JMP & ZZ & ZZ & ZZ & SET \\
+    \bottomrule
+\end{tabular}
+}%
+
+\clearpage \subsection{其他模块}
+
+Project3相较于Project2， 除了新增了协处理器$CP0$、$Bridge$，并修改了$Controller$外，存在以下变化。由于较为简单，集中在此简单描述。
+
+\paragraph{$im\_1k$和$dm\_1k$容量扩大}
+
+根据Project3的要求，将指令存储器$im_1k$扩充到32KB，将数据存储器$dm_1k$扩充到12KB。
+
+其中$im_1k$比要求扩充的更大是为了将主程序指令起始地址0x3000和中断服务程序起始地址0x4180纳入合法地址范围，而不需要进行整体地址转换（整体地址-0x3000再访存寄存器）。
+
+\paragraph{新增计时器$TC$}
+
+根据Project3的要求，系统中新增了计时器$TC$。外特性与要求基本上完全一致，只有一点进行了微小的修改，故此不再详细赘述。
+
+这一点微小的更改是将在模式0下时，$Count$为0后，会将$Preset$也设为0。这样的修改使得多次向$Preset$赋相同的数值也可以达到多次启动计时的效果（由于模式0下，仅在$Preset$变化时重新开始计时）。
+
+\paragraph{输入输出设备$In32$和$Out32$}
+
+系统中新增了输入输出设备$In32$和$Out32$。但这二者在实际代码中甚至没有专门的模块，实现十分简单，描述如下。
+
+$In32$的输出直接接入整体系统的输入，其他没有连线。
+
+$Out32$为一个32位寄存器，输出固定为该寄存器的值，当有写使能时，在$clk$上升沿将输入写入这个寄存器。
+
+\paragraph{新的顶层模块$main$}
+鉴于Project3使用了外设，原来的顶层模块$mips$无法承载全部系统，故此新增了顶层模块$main$，其中包含作为CPU的模块$mips$。二者具体关系详见整体设计的第二张图。
+
+\end{document}

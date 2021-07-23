@@ -1,0 +1,46 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\section{程序运行测试}
+
+\subsection{测试程序}
+我按照老师要求，开发以下程序并进行测试：
+
+主程序加载到0x0000\_3000，内容如下：
+\inputminted[linenos]{gas}{Project3/p3-test-main-commented.asm}
+
+中断服务程序加载到0x0000\_4180，内容如下：
+\inputminted[linenos]{gas}{Project3/p3-test-int-commented.asm}
+
+\clearpage
+
+\subsection{测试方法与结果}
+
+\paragraph{测试方法}
+在$IFU$中修改$PC$处增加系统任务$\$display$代码，在$PC$到达特定值时输出log。使用$ModelSim$对系统进行仿真测试，观察log结果是否与预期一致以测试系统。
+
+添加的log功能如下表所示。
+
+\begin{center}
+    \captionof{table}{Project3 $PC$监测点}
+    \begin{longtable}[]{c c c c}
+        \toprule
+        监测地址 & 地址意义 & 输出内容 \\
+        \midrule
+        0x4180 & 中断服务程序开始运行 & Start int \\
+        0x4190 & 置数变化，更新数值 & New IN32 \\
+        0x4198 & 置数不变，数值加一 & Add 1 \\
+        0x41a4 & 重置计数器，重新计数 & Preset \\
+        \bottomrule
+    \end{longtable}
+\end{center}
+
+\paragraph{测试结果}
+
+\subparagraph{log结果} log中第一次出现 "Start int", "New IN32", "Preset" 序列，之后持续出现 "Start int", "Add 1", "Preset" 序列。若修改输入内容（置数内容），则再出现一次"Start int", "New IN32", "Preset"序列。可见硬件中断处理正常，中断服务程序正常运行。
+
+\subparagraph{输出结果} 将$DOut$值输出，可见其规律性增长，每次增长间隔均匀。尝试修改测试程序中$\$10$存储的值，增长频率显著发生变化，可见硬件中断请求产生正常，计时器正常工作。
+
+\subparagraph{整体总结} 测试结果与预期一致，验证了系统的工作正确性。
+
+\end{document}
